@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 import MainPage from '../MainPage/MainPage';
+import Products from '../Products/Products';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -86,7 +87,7 @@ export default function NavTabs() {
         <MainPage />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Products
+        <Products />
       </TabPanel>
       <TabPanel value={value} index={2}>
         Customers
