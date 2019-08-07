@@ -1,4 +1,3 @@
-import { combineEpics } from 'redux-observable';
 import { Observable } from 'rxjs';
 
 import 'rxjs/add/operator/switchMap';
@@ -8,16 +7,16 @@ import 'rxjs/add/operator/catch';
 
 import { ajax } from 'rxjs/observable/dom/ajax';
 
-
 import {
   FETCH_PRODUCTS,
   fetchProductsSuccess,
   fetchProductsFailure
 } from "../actions/products";
 
+
 const url = 'https://api.invoice-app.2muchcoffee.com/api/products';
 
-function fetchProductsEpic(action$) {
+export function fetchProductsEpic(action$) {
 
   return action$
     .ofType(FETCH_PRODUCTS) // ofType(FETCH_PRODUCTS) is just a simpler version of .filter(x => x.type === FETCH_PRODUCTS)
@@ -38,5 +37,3 @@ function fetchProductsEpic(action$) {
     // if an error occurs, create an Observable of the action to be dispatched on error. Unlike other operators, catch does not explicitly return an Observable.
     .catch(error => Observable.of(fetchProductsFailure(error.message)))
 }
-
-export const rootEpic = combineEpics(fetchProductsEpic);

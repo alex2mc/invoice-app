@@ -9,7 +9,7 @@ import { createEpicMiddleware } from 'redux-observable';
 import { Provider } from 'react-redux';
 
 import rootReducer from './store/reducers/products';
-import { rootEpic } from './store/epics/products';
+import { rootEpic } from './store/epics/index';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
