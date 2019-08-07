@@ -9,6 +9,7 @@ import Box from '@material-ui/core/Box';
 
 import MainPage from '../MainPage/MainPage';
 import Products from '../Products/Products';
+import Customers from '../Customers/Customers';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -84,13 +85,13 @@ export default function NavTabs() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        {/*<MainPage />*/}
+        <MainPage />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Products />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Customers
+        <Customers />
       </TabPanel>
       <TabPanel value={value} index={3}>
         Invoices
