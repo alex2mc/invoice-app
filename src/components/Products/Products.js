@@ -37,13 +37,6 @@ function createData(productName, price ) {
   return { productName, price };
 }
 
-// const rows = [
-//   createData('car', "355$"),
-//   createData('camera', "101$"),
-//   createData('laptop', "140$"),
-//
-// ];
-
 const useStyles = makeStyles(theme => ({
   root: {
     width: '70%',
@@ -70,10 +63,6 @@ class Products extends Component {
     } = this.props;
 
 
-      const prods = products.map(product => (
-        createData(`${product.name}`, `${product.price}`)
-      ))
-
 
     return (
       <>
@@ -87,26 +76,12 @@ class Products extends Component {
           </TableHead>
           <TableBody>
 
-
-              {/*<StyledTableRow >*/}
-              {/*  <StyledTableCell component="th" scope="row">ggggggggggg </StyledTableCell>*/}
-              {/*  <StyledTableCell >ggggggggggg</StyledTableCell>*/}
-              {/*</StyledTableRow>*/}
-
             {products.map(product => (
               <StyledTableRow key={product._id}>
                 <StyledTableCell component="th" scope="row">{product.name}</StyledTableCell>
                 <StyledTableCell >{product.price}</StyledTableCell>
               </StyledTableRow>
             ))}
-
-            {/*{prods.map(prod => (*/}
-            {/*  <StyledTableRow key={prod._id}>*/}
-            {/*    <StyledTableCell component="th" scope="row">{prod.productName}</StyledTableCell>*/}
-            {/*    <StyledTableCell >{prod.price}</StyledTableCell>*/}
-            {/*  </StyledTableRow>*/}
-            {/*))}*/}
-
 
           </TableBody>
         </Table>
