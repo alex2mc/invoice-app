@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function CustomizedTables() {
+export default function MainPage() {
   const classes = useStyles();
 
   return (
@@ -58,7 +58,7 @@ export default function CustomizedTables() {
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            <StyledTableCell >Invoive ID</StyledTableCell>
+            <StyledTableCell >Invoiсe ID</StyledTableCell>
             <StyledTableCell >Customer Name</StyledTableCell>
             <StyledTableCell >Discount (%)</StyledTableCell>
             <StyledTableCell >Total</StyledTableCell>
