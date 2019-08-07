@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {Component} from 'react';
+
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -6,6 +7,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchProducts } from '../../store/actions/products';
 
 
 
@@ -29,15 +34,15 @@ const StyledTableRow = withStyles(theme => ({
 }))(TableRow);
 
 function createData(productName, price ) {
-  return { productName, price};
+  return { productName, price };
 }
 
-const rows = [
-  createData('car', "355$"),
-  createData('camera', "101$"),
-  createData('laptop', "140$"),
-
-];
+// const rows = [
+//   createData('car', "355$"),
+//   createData('camera', "101$"),
+//   createData('laptop', "140$"),
+//
+// ];
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,27 +55,75 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Products() {
-  const classes = useStyles();
+class Products extends Component {
 
-  return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell >Product Name</StyledTableCell>
-            <StyledTableCell >Price</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map(row => (
-            <StyledTableRow key={row.productName}>
-              <StyledTableCell component="th" scope="row">{row.productName}</StyledTableCell>
-              <StyledTableCell >{row.price}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
-  );
+  componentDidMount() {
+    this.props.fetchProducts();
+  }
+
+  render () {
+    // const classes = useStyles();
+    const {
+      isLoading,
+      error,
+      products
+    } = this.props;
+
+
+      const prods = products.map(product => (
+        createData(`${product.name}`, `${product.price}`)
+      ))
+
+
+    return (
+      <>
+      <Paper >
+        <Table >
+          <TableHead>
+            <TableRow>
+              <StyledTableCell >Product Name</StyledTableCell>
+              <StyledTableCell >Price</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+
+
+              {/*<StyledTableRow >*/}
+              {/*  <StyledTableCell component="th" scope="row">ggggggggggg </StyledTableCell>*/}
+              {/*  <StyledTableCell >ggggggggggg</StyledTableCell>*/}
+              {/*</StyledTableRow>*/}
+
+            {products.map(product => (
+              <StyledTableRow key={product._id}>
+                <StyledTableCell component="th" scope="row">{product.name}</StyledTableCell>
+                <StyledTableCell >{product.price}</StyledTableCell>
+              </StyledTableRow>
+            ))}
+
+            {/*{prods.map(prod => (*/}
+            {/*  <StyledTableRow key={prod._id}>*/}
+            {/*    <StyledTableCell component="th" scope="row">{prod.productName}</StyledTableCell>*/}
+            {/*    <StyledTableCell >{prod.price}</StyledTableCell>*/}
+            {/*  </StyledTableRow>*/}
+            {/*))}*/}
+
+
+          </TableBody>
+        </Table>
+      </Paper>
+
+
+        </>
+    );
+  }
+
 }
+
+const mapStateToProps = state => ({ ...state });
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({
+    fetchProducts
+  }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Products);

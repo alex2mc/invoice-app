@@ -84,10 +84,10 @@ export default function NavTabs() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <MainPage />
+        {/*<MainPage />*/}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Products />
+        {/*<Products />*/}
       </TabPanel>
       <TabPanel value={value} index={2}>
         Customers
