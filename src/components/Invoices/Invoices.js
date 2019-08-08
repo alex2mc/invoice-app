@@ -11,7 +11,6 @@ export default function Invoices() {
   return (
     <Content buttons={
       <>
-        <Button variant="contained" color="secondary"> View </Button>
         <Button variant="contained" color="secondary"> Edit </Button>
         <Button variant="contained" color="secondary"> Delete </Button>
       </>}/>

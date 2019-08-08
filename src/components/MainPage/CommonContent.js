@@ -13,6 +13,7 @@ import { bindActionCreators } from 'redux';
 import { fetchInvoices } from '../../store/actions/invoices';
 
 import Spinner from '../UI/Spinner/Spinner';
+import Button from "@material-ui/core/Button";
 
 
 
@@ -69,7 +70,7 @@ class CommonContent extends Component {
           <StyledTableCell>{invoice.discount}</StyledTableCell>
           <StyledTableCell>{invoice.total}</StyledTableCell>
           <StyledTableCell>
-
+            <Button variant="contained" color="secondary"> View </Button>
             {this.props.buttons}
 
           </StyledTableCell>
