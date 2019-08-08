@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -48,37 +49,42 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function MainPage() {
-  const classes = useStyles();
+class Invoices extends Component {
 
-  return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell >Invoiсe ID</StyledTableCell>
-            <StyledTableCell >Customer Name</StyledTableCell>
-            <StyledTableCell >Discount (%)</StyledTableCell>
-            <StyledTableCell >Total</StyledTableCell>
-            <StyledTableCell >Actions</StyledTableCell>
-            <StyledTableCell >Actions</StyledTableCell>
-            <StyledTableCell >Actions</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map(row => (
-            <StyledTableRow key={row.invoiceId}>
-              <StyledTableCell component="th" scope="row">{row.invoiceId}</StyledTableCell>
-              <StyledTableCell >{row.customerName}</StyledTableCell>
-              <StyledTableCell >{row.discount}</StyledTableCell>
-              <StyledTableCell >{row.total}</StyledTableCell>
-              <StyledTableCell >{row.action1}</StyledTableCell>
-              <StyledTableCell >{row.action2}</StyledTableCell>
-              <StyledTableCell >{row.action3}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
-  );
+  render() {
+    // const classes = useStyles();
+
+    return (
+      <Paper>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Invoiсe ID</StyledTableCell>
+              <StyledTableCell>Customer Name</StyledTableCell>
+              <StyledTableCell>Discount (%)</StyledTableCell>
+              <StyledTableCell>Total</StyledTableCell>
+              <StyledTableCell>Actions</StyledTableCell>
+              <StyledTableCell>Actions</StyledTableCell>
+              <StyledTableCell>Actions</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map(row => (
+              <StyledTableRow key={row.invoiceId}>
+                <StyledTableCell component="th" scope="row">{row.invoiceId}</StyledTableCell>
+                <StyledTableCell>{row.customerName}</StyledTableCell>
+                <StyledTableCell>{row.discount}</StyledTableCell>
+                <StyledTableCell>{row.total}</StyledTableCell>
+                <StyledTableCell>{row.action1}</StyledTableCell>
+                <StyledTableCell>{row.action2}</StyledTableCell>
+                <StyledTableCell>{row.action3}</StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
+    );
+  }
 }
+
+export default Invoices;
