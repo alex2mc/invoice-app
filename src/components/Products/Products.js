@@ -94,7 +94,11 @@ class Products extends Component {
 
 }
 
-const mapStateToProps = state => ({ ...state });
+const mapStateToProps =  state => {
+  return {
+    products: state.product.products,
+  }
+}
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({

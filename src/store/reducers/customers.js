@@ -10,7 +10,7 @@ const initialState = {
   error: false
 };
 
-export default function rootReducer(state = initialState, action) {
+export default function customersReducer(state = initialState, action) {
   switch (action.type) {
 
     case FETCH_CUSTOMERS:
