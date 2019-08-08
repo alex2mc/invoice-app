@@ -11,6 +11,7 @@ import MainPage from '../MainPage/MainPage';
 import Products from '../Products/Products';
 import Customers from '../Customers/Customers';
 import Invoices from '../Invoices/Invoices';
+import ViewMode from "../Invoices/Modes/ViewMode";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -98,7 +99,7 @@ export default function NavTabs() {
        <Invoices />
       </TabPanel>
       <TabPanel value={value} index={4}>
-         New Invoice
+         <ViewMode />
       </TabPanel>
     </div>
   );
