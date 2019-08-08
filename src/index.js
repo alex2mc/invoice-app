@@ -10,6 +10,7 @@ import { Provider } from 'react-redux';
 
 import customersReducer from './store/reducers/customers';
 import productsReducer from './store/reducers/products';
+import invoicesReducer from './store/reducers/invoices';
 import { rootEpic } from './store/epics/index';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -19,6 +20,7 @@ const epicMiddleware = createEpicMiddleware();
 const rootReducer = combineReducers({
   product: productsReducer,
   customer: customersReducer,
+  invoice: invoicesReducer
 
 });
 
