@@ -12,6 +12,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchCustomers } from '../../store/actions/customers';
 
+import Spinner from '../UI/Spinner/Spinner';
+
 
 
 
@@ -33,15 +35,6 @@ const StyledTableRow = withStyles(theme => ({
   },
 }))(TableRow);
 
-function createData(customerName, customerAddress, customerPhone ) {
-return { customerName, customerAddress, customerPhone };
-}
-
-// const rows = [
-// createData('Mickle Scott', 'Pencilvania', '+380930000000'),
-// createData('Dwight', 'Pencilvania', '+380930000000'),
-// createData('Creed', 'Pencilvania', '+380930000000'),
-// ];
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -53,6 +46,7 @@ const useStyles = makeStyles(theme => ({
     minWidth: 500,
   },
 }));
+
 
 class Customers extends Component {
 
@@ -69,6 +63,16 @@ class Customers extends Component {
       customers
     } = this.props;
 
+    const customersRows =  isLoading
+      ? <Spinner />
+      : customers.map(customer => (
+        <StyledTableRow key={customer.id}>
+          <StyledTableCell component="th" scope="row">{customer.name}</StyledTableCell>
+          <StyledTableCell >{customer.address}</StyledTableCell>
+          <StyledTableCell >{customer.phone}</StyledTableCell>
+        </StyledTableRow>
+      ))
+
     return (
       <Paper >
         <Table >
@@ -81,13 +85,8 @@ class Customers extends Component {
           </TableHead>
           <TableBody>
 
-            {customers.map(customer => (
-              <StyledTableRow key={customer.id}>
-                <StyledTableCell component="th" scope="row">{customer.name}</StyledTableCell>
-                <StyledTableCell >{customer.address}</StyledTableCell>
-                <StyledTableCell >{customer.phone}</StyledTableCell>
-              </StyledTableRow>
-            ))}
+            {customersRows}
+
 
           </TableBody>
         </Table>

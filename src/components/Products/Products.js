@@ -8,6 +8,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+import Spinner from '../UI/Spinner/Spinner';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../../store/actions/products';
@@ -33,10 +35,6 @@ const StyledTableRow = withStyles(theme => ({
   },
 }))(TableRow);
 
-function createData(productName, price ) {
-  return { productName, price };
-}
-
 const useStyles = makeStyles(theme => ({
   root: {
     width: '70%',
@@ -47,6 +45,7 @@ const useStyles = makeStyles(theme => ({
     minWidth: 700,
   },
 }));
+
 
 class Products extends Component {
 
@@ -62,10 +61,18 @@ class Products extends Component {
       products
     } = this.props;
 
+    const productsRows =  isLoading
+      ? <Spinner />
+      : products.map(product => (
+        <StyledTableRow key={product.id}>
+          <StyledTableCell component="th" scope="row">{product.name}</StyledTableCell>
+          <StyledTableCell >{product.price}</StyledTableCell>
+        </StyledTableRow>
+      ))
+
 
 
     return (
-      <>
       <Paper >
         <Table >
           <TableHead>
@@ -76,19 +83,11 @@ class Products extends Component {
           </TableHead>
           <TableBody>
 
-            {products.map(product => (
-              <StyledTableRow key={product.id}>
-                <StyledTableCell component="th" scope="row">{product.name}</StyledTableCell>
-                <StyledTableCell >{product.price}</StyledTableCell>
-              </StyledTableRow>
-            ))}
+            {productsRows}
 
           </TableBody>
         </Table>
       </Paper>
-
-
-        </>
     );
   }
 
