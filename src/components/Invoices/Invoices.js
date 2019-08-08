@@ -9,6 +9,11 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchInvoices } from '../../store/actions/invoices';
+
+
 
 
 const StyledTableCell = withStyles(theme => ({
@@ -29,14 +34,7 @@ const StyledTableRow = withStyles(theme => ({
   },
 }))(TableRow);
 
-function createData(invoiceId, customerName, discount, total, action1, action2, action3) {
-  return { invoiceId, customerName, discount, total, action1, action2, action3 };
-}
 
-const rows = [
-  createData('123', "Name Surname", 10, 24, <Button variant="contained" color="secondary"> View </Button>,  <Button variant="contained" color="secondary"> Edit </Button>, <Button variant="contained" color="secondary"> Delete </Button>),
-
-];
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,8 +49,21 @@ const useStyles = makeStyles(theme => ({
 
 class Invoices extends Component {
 
+  componentDidMount() {
+    this.props.fetchInvoices();
+  }
+
   render() {
     // const classes = useStyles();
+    // console.log(this.props)
+
+    const {
+      isLoading,
+      error,
+      invoices,
+      customers
+    } = this.props;
+
 
     return (
       <Paper>
@@ -64,22 +75,31 @@ class Invoices extends Component {
               <StyledTableCell>Discount (%)</StyledTableCell>
               <StyledTableCell>Total</StyledTableCell>
               <StyledTableCell>Actions</StyledTableCell>
-              <StyledTableCell>Actions</StyledTableCell>
-              <StyledTableCell>Actions</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map(row => (
-              <StyledTableRow key={row.invoiceId}>
-                <StyledTableCell component="th" scope="row">{row.invoiceId}</StyledTableCell>
-                <StyledTableCell>{row.customerName}</StyledTableCell>
-                <StyledTableCell>{row.discount}</StyledTableCell>
-                <StyledTableCell>{row.total}</StyledTableCell>
-                <StyledTableCell>{row.action1}</StyledTableCell>
-                <StyledTableCell>{row.action2}</StyledTableCell>
-                <StyledTableCell>{row.action3}</StyledTableCell>
+
+            {invoices.map(invoice => (
+              <StyledTableRow key={invoice.id} >
+                <StyledTableCell component="th" scope="row">{invoice.id}</StyledTableCell>
+                <StyledTableCell>
+
+                  {customers.find(customer => (
+                    customer.id === invoice.customer )).name}
+
+                </StyledTableCell>
+                <StyledTableCell>{invoice.discount}</StyledTableCell>
+                <StyledTableCell>{invoice.total}</StyledTableCell>
+                <StyledTableCell>
+                  <Button variant="contained" color="secondary"> View </Button>
+                  <Button variant="contained" color="secondary"> Edit </Button>
+                  <Button variant="contained" color="secondary"> Delete </Button>
+                </StyledTableCell>
+
               </StyledTableRow>
+
             ))}
+
           </TableBody>
         </Table>
       </Paper>
@@ -87,4 +107,16 @@ class Invoices extends Component {
   }
 }
 
-export default Invoices;
+const mapStateToProps =  state => {
+  return {
+    invoices: state.invoice.invoices,
+    customers: state.customer.customers,
+  }
+}
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({
+    fetchInvoices
+  }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Invoices);

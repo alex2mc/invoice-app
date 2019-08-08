@@ -77,7 +77,7 @@ class Products extends Component {
           <TableBody>
 
             {products.map(product => (
-              <StyledTableRow key={product._id}>
+              <StyledTableRow key={product.id}>
                 <StyledTableCell component="th" scope="row">{product.name}</StyledTableCell>
                 <StyledTableCell >{product.price}</StyledTableCell>
               </StyledTableRow>

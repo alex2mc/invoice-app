@@ -82,7 +82,7 @@ class Customers extends Component {
           <TableBody>
 
             {customers.map(customer => (
-              <StyledTableRow key={customer._id}>
+              <StyledTableRow key={customer.id}>
                 <StyledTableCell component="th" scope="row">{customer.name}</StyledTableCell>
                 <StyledTableCell >{customer.address}</StyledTableCell>
                 <StyledTableCell >{customer.phone}</StyledTableCell>
