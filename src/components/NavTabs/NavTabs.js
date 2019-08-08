@@ -10,6 +10,7 @@ import Box from '@material-ui/core/Box';
 import MainPage from '../MainPage/MainPage';
 import Products from '../Products/Products';
 import Customers from '../Customers/Customers';
+import Invoices from '../Invoices/Invoices';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -94,7 +95,7 @@ export default function NavTabs() {
         <Customers />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        Invoices
+       <Invoices />
       </TabPanel>
       <TabPanel value={value} index={4}>
          New Invoice
