@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -20,7 +20,7 @@ const StyledTableCell = withStyles(theme => ({
   },
 }))(TableCell);
 
- const StyledTableRow = withStyles(theme => ({
+const StyledTableRow = withStyles(theme => ({
   root: {
     '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.background.default,
@@ -28,50 +28,55 @@ const StyledTableCell = withStyles(theme => ({
   },
 }))(TableRow);
 
- function createData(customerName, customerAddress, customerPhone ) {
-  return { customerName, customerAddress, customerPhone };
+function createData(customerName, customerAddress, customerPhone ) {
+return { customerName, customerAddress, customerPhone };
 }
 
- const rows = [
-  createData('Mickle Scott', 'Pencilvania', '+380930000000'),
-  createData('Dwight', 'Pencilvania', '+380930000000'),
-  createData('Creed', 'Pencilvania', '+380930000000'),
- ];
+const rows = [
+createData('Mickle Scott', 'Pencilvania', '+380930000000'),
+createData('Dwight', 'Pencilvania', '+380930000000'),
+createData('Creed', 'Pencilvania', '+380930000000'),
+];
 
- const useStyles = makeStyles(theme => ({
-  root: {
-    width: '70%',
-    marginTop: theme.spacing(3),
-    overflowX: 'auto',
-  },
-  table: {
-    minWidth: 500,
-  },
-}));
+// const useStyles = makeStyles(theme => ({
+//   root: {
+//     width: '70%',
+//     marginTop: theme.spacing(3),
+//     overflowX: 'auto',
+//   },
+//   table: {
+//     minWidth: 500,
+//   },
+// }));
 
- export default function Customers() {
-  const classes = useStyles();
+class Customers extends Component {
 
-   return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell >Customer Name</StyledTableCell>
-            <StyledTableCell >Customer Address</StyledTableCell>
-            <StyledTableCell >Customer Phone Number</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map(row => (
-            <StyledTableRow key={row.customerName}>
-              <StyledTableCell component="th" scope="row">{row.customerName}</StyledTableCell>
-              <StyledTableCell >{row.customerAddress}</StyledTableCell>
-              <StyledTableCell >{row.customerPhone}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
-  );
-} 
+  render () {
+    // const classes = useStyles();
+
+    return (
+      <Paper >
+        <Table >
+          <TableHead>
+            <TableRow>
+              <StyledTableCell >Customer Name</StyledTableCell>
+              <StyledTableCell >Customer Address</StyledTableCell>
+              <StyledTableCell >Customer Phone Number</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map(row => (
+              <StyledTableRow key={row.customerName}>
+                <StyledTableCell component="th" scope="row">{row.customerName}</StyledTableCell>
+                <StyledTableCell >{row.customerAddress}</StyledTableCell>
+                <StyledTableCell >{row.customerPhone}</StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
+    );
+  }
+}
+
+export default Customers;
