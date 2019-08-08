@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 
+import { BrowserRouter } from 'react-router-dom'
+import Router from './Router'
+
 import NavTabs from './components/NavTabs/NavTabs'
 
 import { connect } from 'react-redux';
@@ -10,6 +13,7 @@ import './App.css';
 import {fetchProducts} from "./store/actions/products";
 import { fetchCustomers } from './store/actions/customers';
 import { fetchInvoices} from './store/actions/invoices';
+import {RootRef} from "@material-ui/core";
 
 
 class App extends Component {
@@ -23,9 +27,10 @@ class App extends Component {
   render () {
 
   return (
-    <div className="App">
+    <BrowserRouter>
         <NavTabs />
-    </div>
+        <Router />
+    </BrowserRouter>
   );
 }}
 

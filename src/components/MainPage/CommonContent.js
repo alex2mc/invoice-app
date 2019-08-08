@@ -15,6 +15,7 @@ import { fetchInvoices } from '../../store/actions/invoices';
 import Spinner from '../UI/Spinner/Spinner';
 import Button from "@material-ui/core/Button";
 
+import { Link } from 'react-router-dom';
 
 
 
@@ -70,7 +71,9 @@ class CommonContent extends Component {
           <StyledTableCell>{invoice.discount}</StyledTableCell>
           <StyledTableCell>{invoice.total}</StyledTableCell>
           <StyledTableCell>
-            <Button variant="contained" color="secondary"> View </Button>
+            <Link to={`/viewmode`}>
+              <Button variant="contained" color="secondary"> View </Button>
+            </Link>
             {this.props.buttons}
 
           </StyledTableCell>

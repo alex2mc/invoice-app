@@ -13,6 +13,8 @@ import Customers from '../Customers/Customers';
 import Invoices from '../Invoices/Invoices';
 import ViewMode from "../Invoices/Modes/ViewMode";
 
+import { Link, } from 'react-router-dom';
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -79,28 +81,24 @@ export default function NavTabs() {
           onChange={handleChange}
           aria-label="nav tabs"
         >
-          <LinkTab label="Logo" href="/mainpage" {...a11yProps(0)} />
-          <LinkTab label="Products" href="/products" {...a11yProps(1)} />
-          <LinkTab label="Customers" href="/customers" {...a11yProps(2)} />
-          <LinkTab label="Invoices" href="/invoices" {...a11yProps(3)} />
-          <LinkTab label="+ New Invoice" href="/newinvoice" {...a11yProps(4)} />
+          <Link to="/">
+            <Tab label="Logo" {...a11yProps(0)} />
+          </Link>
+          <Link to="/products">
+            <Tab label="Products"  {...a11yProps(1)} />
+          </Link>
+          <Link to="/customers">
+            <Tab label="Customers" href="/customers" {...a11yProps(2)} />
+          </Link>
+          <Link to="/invoices">
+            <Tab label="Invoices" href="/invoices" {...a11yProps(3)} />
+          </Link>
+          <Link to="/newinvoice">
+            <Tab label="+ New Invoice" href="/newinvoice" {...a11yProps(4)} />
+          </Link>
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
-        <MainPage />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <Products />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <Customers />
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-       <Invoices />
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-         <ViewMode />
-      </TabPanel>
+
     </div>
   );
 }
