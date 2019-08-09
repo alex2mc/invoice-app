@@ -15,6 +15,8 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import TextField from '@material-ui/core/TextField';
+
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -53,6 +55,15 @@ const useStyles = makeStyles(theme => ({
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
+  },
+  container: {
+    // display: 'flex',
+    // flexWrap: 'wrap',
+  },
+  textField: {
+    // marginLeft: theme.spacing(1),
+    // marginRight: theme.spacing(1),
+    width: 50,
   },
 
 }));
@@ -164,7 +175,22 @@ export default function InvoiceCreateMode() {
                     </form>
 
                   </TableCell>
-                  <TableCell align="right"> q-ty</TableCell>
+                  <TableCell align="right">
+                    <form className={classes.container} noValidate>
+                      <TextField
+                        id="quantity"
+                        type="number"
+                        defaultValue="1"
+                        className={classes.textField}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        inputProps={{
+                          step: 1, // 5 min
+                        }}
+                      />
+                    </form>
+                  </TableCell>
                   <TableCell align="right">
                     price
                     {/*{ccyFormat(row.price)}*/}
@@ -186,7 +212,22 @@ export default function InvoiceCreateMode() {
 
         <Paper className={classes.rootRight}>
           <Typography variant="h6" align="center" gutterBottom className={classes.tableHeader}>Discount (%)</Typography>
-          <Typography variant="h4" align="center" gutterBottom className={classes.tableHeader}>15</Typography>
+          <Typography variant="h4" align="center" gutterBottom className={classes.tableHeader}>
+            <form className={classes.container} noValidate>
+              <TextField
+                id="discount"
+                type="number"
+                defaultValue="1"
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{
+                  step: 1, // 5 min
+                }}
+              />
+            </form>
+          </Typography>
         </Paper>
       </div>
     </Paper>
