@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles, withStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -9,15 +9,17 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from "@material-ui/core/Button";
+import { green } from "@material-ui/core/colors";
 
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
+
 
 import TextField from '@material-ui/core/TextField';
 import Customers from "./Customers";
 import Products from "./Products";
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -99,19 +101,26 @@ const invoiceSubtotal = subtotal(rows);
 const invoiceDiscount = (Discount * invoiceSubtotal) / 100;
 const invoiceTotal = invoiceSubtotal - invoiceDiscount;
 
+
+
+
 export default function InvoiceCreateMode() {
   const classes = useStyles();
+
+  const ColorButtonGreen = withStyles(theme => ({
+    root: {
+      color: theme.palette.getContrastText(green[500]),
+      backgroundColor: green[500],
+      '&:hover': {
+        backgroundColor: green[700],
+      },
+    },
+  }))(Button);
 
   const [values, setValues] = React.useState({
     customerName: '',
     productName: ' ',
   });
-
-  // const inputLabel = React.useRef(null);
-  // const [labelWidth, setLabelWidth] = React.useState(0);
-  // React.useEffect(() => {
-  //   setLabelWidth(inputLabel.current.offsetWidth);
-  // }, []);
 
   function handleChange(event) {
     setValues(oldValues => ({
@@ -210,7 +219,7 @@ export default function InvoiceCreateMode() {
               </TableRow>
             </TableBody>
           </Table>
-          <Button variant="contained" color="secondary" className={classes.button}>Save Invoice</Button>
+          <ColorButtonGreen variant="contained" color="secondary" className={classes.button}>Save Invoice</ColorButtonGreen>
         </Paper>
 
 
