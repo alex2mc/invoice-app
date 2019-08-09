@@ -72,7 +72,7 @@ class CommonContent extends Component {
           <StyledTableCell>{invoice.total}</StyledTableCell>
           <StyledTableCell>
             <Link to={`/viewmode`}>
-              <Button variant="contained" color="secondary"> View </Button>
+              <Button variant="contained" color="primary"> View </Button>
             </Link>
             {this.props.buttons}
 
