@@ -16,6 +16,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import TextField from '@material-ui/core/TextField';
+import Customers from "./Customers";
+import Products from "./Products";
 
 
 const useStyles = makeStyles(theme => ({
@@ -133,9 +135,10 @@ export default function InvoiceCreateMode() {
               id: 'customer-name',
             }}
           >
-            <MenuItem value={`Name Surname 1`}>Name Surname 1</MenuItem>
-            <MenuItem value={`Name Surname 2`}>Name Surname 2</MenuItem>
-            <MenuItem value={`Name Surname 3`}>Name Surname 3</MenuItem>
+            <Customers />
+            {/*<MenuItem value={`Name Surname 1`}>Name Surname 1</MenuItem>*/}
+            {/*<MenuItem value={`Name Surname 2`}>Name Surname 2</MenuItem>*/}
+            {/*<MenuItem value={`Name Surname 3`}>Name Surname 3</MenuItem>*/}
           </Select>
         </FormControl>
       </form>
@@ -167,9 +170,11 @@ export default function InvoiceCreateMode() {
                             id: 'product-name',
                           }}
                         >
-                          <MenuItem value={`Name Surname 1`}>car</MenuItem>
-                          <MenuItem value={`Name Surname 2`}>phone</MenuItem>
-                          <MenuItem value={`Name Surname 3`}>water</MenuItem>
+
+                         <Products />
+                          {/*<MenuItem value={`Name Surname 1`}>car</MenuItem>*/}
+                          {/*<MenuItem value={`Name Surname 2`}>phone</MenuItem>*/}
+                          {/*<MenuItem value={`Name Surname 3`}>water</MenuItem>*/}
                         </Select>
                       </FormControl>
                     </form>
