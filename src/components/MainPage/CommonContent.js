@@ -52,7 +52,7 @@ class CommonContent extends Component {
 
     const {
       isLoading,
-      error,
+      // error,
       invoices,
       customers
     } = this.props;

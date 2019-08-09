@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -35,16 +35,7 @@ const StyledTableRow = withStyles(theme => ({
   },
 }))(TableRow);
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: '70%',
-    marginTop: theme.spacing(3),
-    overflowX: 'auto',
-  },
-  table: {
-    minWidth: 700,
-  },
-}));
+
 
 
 class Products extends Component {
@@ -54,10 +45,10 @@ class Products extends Component {
   }
 
   render () {
-    // const classes = useStyles();
+
     const {
       isLoading,
-      error,
+      // error,
       products
     } = this.props;
 
