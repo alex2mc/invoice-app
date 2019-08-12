@@ -71,37 +71,6 @@ const styles = theme => ({
 
 });
 
-function ccyFormat(num) {
-  return `${num.toFixed(2)}`;
-}
-
-function priceRow(qty, unit) {
-  return qty * unit;
-}
-
-function createRow(desc, qty, unit) {
-  const price = priceRow(qty, unit);
-  return { desc, qty, unit, price };
-}
-
-function subtotal(items) {
-  return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
-}
-
-const rows = [
-  createRow('Paperclips (Box)', 1, 2),
-  createRow('Paper (Case)', 10, 3),
-  createRow('Waste Basket', 2, 2),
-];
-
-const Discount = 15;
-
-const invoiceSubtotal = subtotal(rows);
-const invoiceDiscount = (Discount * invoiceSubtotal) / 100;
-const invoiceTotal = invoiceSubtotal - invoiceDiscount;
-
-
-
 
 class InvoiceCreateMode extends Component {
   state = {
@@ -109,6 +78,7 @@ class InvoiceCreateMode extends Component {
     choosenProduct: '',
     discount: 0,
     quantity: 1,
+    total: ''
   }
 
   handleChange = e => {
@@ -118,16 +88,28 @@ class InvoiceCreateMode extends Component {
         ...state,
         [name]: value
       }
-    })
+    }, makeAfterSetState)
+
+    function makeAfterSetState() {
+    const invoiceSubtotal = this.state.quantity * this.state.choosenProduct.price;
+
+    const invoiceDiscount = (this.state.discount * invoiceSubtotal) / 100;
+    const invoiceTotal = invoiceSubtotal - invoiceDiscount;
+
+    this.setState(state => {
+      return  {
+        ...state,
+      total: invoiceTotal.toFixed(2)
+    }
+    })}
   }
 
 
 
   render() {
     const {classes, isProductsLoading, isCustomersLoading, customers, products} = this.props;
-
     // console.log(this.props)
-    console.log(this.state)
+    // console.log(this.state)
 
     if (isProductsLoading && isCustomersLoading) {
       return <Spinner />
@@ -235,7 +217,7 @@ class InvoiceCreateMode extends Component {
                 <TableRow>
                   <TableCell/>
                   <TableCell colSpan={1}>Total</TableCell>
-                  <TableCell align="right">{ccyFormat(invoiceTotal)}</TableCell>
+                  <TableCell align="right">{this.state.total}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
