@@ -47,11 +47,10 @@ class ViewMode extends Component {
   render () {
     const { classes, customers, isCustomersLoading }= this.props;
 
-    const neededCustomer = customers
-      ? customers.find(customer => this.props.match.params.customerId === customer.id)
-      : <Spinner />
+    const neededCustomer = customers && 
+      customers.find(customer => this.props.match.params.customerId === customer.id)
 
-    if(isCustomersLoading && !neededCustomer) {
+    if(isCustomersLoading || !neededCustomer) {
       return <Spinner />
     }
 
