@@ -43,6 +43,7 @@ export default function invoicesReducer(state = initialState, action) {
       };
     case POST_INVOICE_SUCCESS:
       return {
+        ...state,
         isLoading: false,
         error: null
       };

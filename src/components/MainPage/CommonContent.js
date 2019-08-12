@@ -70,8 +70,9 @@ class CommonContent extends Component {
           <StyledTableCell component="th" scope="row">{invoice.id}</StyledTableCell>
           <StyledTableCell>
 
-            {customers.find(customer => (
-              customer.id === invoice.customer )).name}
+            {customers &&
+              (customers.find(customer => customer.id === invoice.customer ) || { name: 'Unnamed' }).name
+            }
 
           </StyledTableCell>
           <StyledTableCell>{invoice.discount}</StyledTableCell>

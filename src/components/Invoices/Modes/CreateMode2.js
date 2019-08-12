@@ -106,9 +106,11 @@ class InvoiceCreateMode extends Component {
     })}
   }
 
-  handleSavingInvoice = () => {
-    this.props.postInvoice({customer_id: this.state.choosenCustomer.id, discount: +this.state.discount, total: +this.state.total})
-    this.props.fetchInvoices()
+  handleSavingInvoice = async () => {
+     this.props.postInvoice({customer_id: this.state.choosenCustomer.id, discount: +this.state.discount, total: +this.state.total})
+     await this.props.fetchInvoices()
+    this.props.history.push("/invoices")
+    
   }
 
 
