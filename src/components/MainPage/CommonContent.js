@@ -41,6 +41,9 @@ const StyledTableRow = withStyles(theme => ({
 
 
 class CommonContent extends Component {
+  state = {
+
+  }
 
   componentDidMount() {
     this.props.fetchInvoices();
@@ -74,8 +77,8 @@ class CommonContent extends Component {
           <StyledTableCell>{invoice.discount}</StyledTableCell>
           <StyledTableCell>{invoice.total}</StyledTableCell>
           <StyledTableCell>
-            <Link to={`/viewmode`}>
-              <Button variant="contained" color="primary"> View </Button>
+            <Link to={`/viewmode/${invoice.customer}`}>
+              <Button variant="contained" color="primary" > View </Button>
             </Link>
             {this.props.buttons}
 

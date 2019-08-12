@@ -1,5 +1,5 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, {Component} from 'react';
+import { withStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -7,9 +7,15 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+// import {bindActionCreators} from "redux";
+// import {fetchInvoices, postInvoice} from "../../../store/actions/invoices";
+import {connect} from "react-redux";
+
+import Spinner from '../../UI/Spinner/Spinner'
+import { Link } from 'react-router-dom'
 
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
   wrapper: {
     padding: theme.spacing(2),
   },
@@ -32,78 +38,82 @@ const useStyles = makeStyles(theme => ({
   table: {
     minWidth: 500,
   },
-}));
+});
 
-function ccyFormat(num) {
-  return `${num.toFixed(2)}`;
-}
 
-function priceRow(qty, unit) {
-  return qty * unit;
-}
 
-function createRow(desc, qty, unit) {
-  const price = priceRow(qty, unit);
-  return { desc, qty, unit, price };
-}
+class ViewMode extends Component {
 
-function subtotal(items) {
-  return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
-}
+  render () {
+    const { classes, customers, isCustomersLoading }= this.props;
 
-const rows = [
-  createRow('Paperclips (Box)', 1, 2),
-  createRow('Paper (Case)', 10, 3),
-  createRow('Waste Basket', 2, 2),
-];
+    const neededCustomer = customers
+      ? customers.find(customer => this.props.match.params.customerId === customer.id)
+      : <Spinner />
 
-const Discount = 15;
+    if(isCustomersLoading && !neededCustomer) {
+      return <Spinner />
+    }
 
-const invoiceSubtotal = subtotal(rows);
-const invoiceDiscount = (Discount * invoiceSubtotal) / 100;
-const invoiceTotal = invoiceSubtotal - invoiceDiscount;
+    return (
+      <Paper className={classes.wrapper}>
+        <Typography variant="subtitle2" gutterBottom className={classes.tableHeader}>Invoice id</Typography>
+        <Link to="/customers">
+          <Typography variant="h6" gutterBottom className={classes.tableHeader}>{neededCustomer.name}</Typography>
+        </Link>
+        <div style={{display: "flex"}}>
+          <Paper className={classes.root}>
 
-export default function SpanningTable() {
-  const classes = useStyles();
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Products</TableCell>
+                  <TableCell align="right">Q-ty</TableCell>
+                  <TableCell align="right">Price ($)</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
 
-  return (
-    <Paper className={classes.wrapper}>
-      <Typography variant="subtitle2" gutterBottom className={classes.tableHeader}>Invoice id</Typography>
-      <Typography variant="h6" gutterBottom className={classes.tableHeader}>Name Surname</Typography>
-    <div style={{display: "flex"}}>
-      <Paper className={classes.root}>
+                  <TableRow >
+                    <TableCell>fffffffffff</TableCell>
+                    <TableCell align="right">ffffffffffff</TableCell>
+                    <TableCell align="right">fffffffffff</TableCell>
+                  </TableRow>
 
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Products</TableCell>
-              <TableCell align="right">Q-ty</TableCell>
-              <TableCell align="right">Price ($)</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map(row => (
-              <TableRow key={row.desc}>
-                <TableCell>{row.desc}</TableCell>
-                <TableCell align="right">{row.qty}</TableCell>
-                <TableCell align="right">{ccyFormat(row.price)}</TableCell>
-              </TableRow>
-            ))}
 
-            <TableRow>
-              <TableCell  />
-              <TableCell colSpan={1}>Total</TableCell>
-              <TableCell align="right" >{ccyFormat(invoiceTotal)}</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+                <TableRow>
+                  <TableCell/>
+                  <TableCell colSpan={1}>Total</TableCell>
+                  <TableCell align="right">fffffffffff</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Paper>
+
+          <Paper className={classes.rootRight}>
+            <Typography variant="h6" align="center" gutterBottom className={classes.tableHeader}>Discount
+              (%)</Typography>
+            <Typography variant="h4" align="center" gutterBottom className={classes.tableHeader}>15</Typography>
+          </Paper>
+        </div>
       </Paper>
-
-      <Paper className={classes.rootRight}>
-        <Typography variant="h6" align="center" gutterBottom className={classes.tableHeader}>Discount (%)</Typography>
-        <Typography variant="h4" align="center" gutterBottom className={classes.tableHeader}>15</Typography>
-      </Paper>
-    </div>
-    </Paper>
-  );
+    );
+  }
 }
+
+const mapStateToProps =  state => {
+  return {
+    products: state.product.products,
+    isProductsLoading: state.product.isLoading,
+    customers: state.customer.customers,
+    isCustomersLoading: state.customer.isLoading
+  }
+}
+
+// const mapDispatchToProps = dispatch =>
+//   bindActionCreators({
+//     postInvoice,
+//     fetchInvoices
+//   }, dispatch);
+
+export default withStyles(styles)(connect(mapStateToProps)(ViewMode));
