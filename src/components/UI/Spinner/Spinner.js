@@ -12,8 +12,8 @@ export default function CircularIndeterminate() {
   const classes = useStyles();
 
   return (
-    <div>
+    <>
       <CircularProgress className={classes.progress} color="secondary" />
-    </div>
+    </>
   );
 }

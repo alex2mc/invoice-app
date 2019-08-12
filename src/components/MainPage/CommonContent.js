@@ -57,9 +57,10 @@ class CommonContent extends Component {
       customers
     } = this.props;
 
-    const invoicesRows = isLoading && !customers
-      ? <Spinner />
-      :  invoices.map(invoice => (
+
+
+
+    const invoicesRows  =   invoices.map(invoice => (
         <StyledTableRow key={invoice.id} >
           <StyledTableCell component="th" scope="row">{invoice.id}</StyledTableCell>
           <StyledTableCell>
@@ -82,6 +83,9 @@ class CommonContent extends Component {
 
       ))
 
+    if(isLoading && !customers)  {
+      return <Spinner />
+    }
 
     return (
       <Paper>
@@ -111,6 +115,7 @@ const mapStateToProps =  state => {
   return {
     invoices: state.invoice.invoices,
     customers: state.customer.customers,
+    isLoading: state.invoice.isLoading
   }
 }
 

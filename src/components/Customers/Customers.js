@@ -53,15 +53,18 @@ class Customers extends Component {
       customers
     } = this.props;
 
-    const customersRows =  isLoading
-      ? <Spinner />
-      : customers.map(customer => (
-        <StyledTableRow key={customer.id}>
-          <StyledTableCell component="th" scope="row">{customer.name}</StyledTableCell>
-          <StyledTableCell >{customer.address}</StyledTableCell>
-          <StyledTableCell >{customer.phone}</StyledTableCell>
-        </StyledTableRow>
-      ))
+    const customersRows = customers.map(customer => (
+      <StyledTableRow key={customer.id}>
+        <StyledTableCell component="th" scope="row">{customer.name}</StyledTableCell>
+        <StyledTableCell >{customer.address}</StyledTableCell>
+        <StyledTableCell >{customer.phone}</StyledTableCell>
+      </StyledTableRow>
+    ))
+
+
+     if(isLoading)  {
+       return <Spinner />
+     }
 
     return (
       <Paper >
@@ -77,7 +80,6 @@ class Customers extends Component {
 
             {customersRows}
 
-
           </TableBody>
         </Table>
       </Paper>
@@ -88,6 +90,7 @@ class Customers extends Component {
 const mapStateToProps =  state => {
   return {
     customers: state.customer.customers,
+    isLoading: state.customer.isLoading
   }
 }
 

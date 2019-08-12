@@ -52,16 +52,17 @@ class Products extends Component {
       products
     } = this.props;
 
-    const productsRows =  isLoading
-      ? <Spinner />
-      : products.map(product => (
+
+    const productsRows =  products.map(product => (
         <StyledTableRow key={product.id}>
           <StyledTableCell component="th" scope="row">{product.name}</StyledTableCell>
           <StyledTableCell >{product.price}</StyledTableCell>
         </StyledTableRow>
       ))
 
-
+    if(isLoading)  {
+      return <Spinner />
+    }
 
     return (
       <Paper >
@@ -87,6 +88,7 @@ class Products extends Component {
 const mapStateToProps =  state => {
   return {
     products: state.product.products,
+    isLoading: state.product.isLoading
   }
 }
 
