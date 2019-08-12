@@ -1,12 +1,13 @@
 import {combineEpics} from 'redux-observable';
 import { fetchProductsEpic} from './products';
 import { fetchCustomersEpic } from './customers';
-import { fetchInvoicesEpic } from './invoices';
+import { fetchInvoicesEpic, postInvoiceEpic } from './invoices';
 
 
 
 export const rootEpic = combineEpics(
   fetchProductsEpic,
   fetchCustomersEpic,
-  fetchInvoicesEpic
+  fetchInvoicesEpic,
+  postInvoiceEpic
 );

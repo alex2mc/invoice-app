@@ -1,7 +1,10 @@
 import {
   FETCH_INVOICES,
   FETCH_INVOICES_SUCCESS,
-  FETCH_INVOICES_FAILURE
+  FETCH_INVOICES_FAILURE,
+  POST_INVOICE,
+  POST_INVOICE_SUCCESS,
+  POST_INVOICE_FAILURE
 } from '../actions/invoices';
 
 const initialState = {
@@ -29,6 +32,22 @@ export default function invoicesReducer(state = initialState, action) {
       return {
         invoices: [],
         isLoading: false,
+        error: action.payload
+      };
+
+    case POST_INVOICE:
+      return {
+        ...state,
+        isLoading: true,
+        error: null
+      };
+    case POST_INVOICE_SUCCESS:
+      return {
+        isLoading: false,
+        error: null
+      };
+    case POST_INVOICE_FAILURE:
+      return {
         error: action.payload
       };
 
