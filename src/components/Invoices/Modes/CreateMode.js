@@ -133,24 +133,7 @@ export default function InvoiceCreateMode() {
     <Paper className={classes.wrapper}>
       <Typography variant="subtitle2" gutterBottom className={classes.tableHeader}>Invoice id</Typography>
 
-      {/*<form className={classes.rootForm} autoComplete="off">*/}
-      {/*  <FormControl className={classes.formControl}>*/}
-      {/*    <InputLabel htmlFor="customer-name">Select Name</InputLabel>*/}
-      {/*    <Select*/}
-      {/*      value={values.customerName}*/}
-      {/*      onChange={handleChange}*/}
-      {/*      inputProps={{*/}
-      {/*        name: 'customerName',*/}
-      {/*        id: 'customer-name',*/}
-      {/*      }}*/}
-      {/*    >*/}
-      {/*      <Customers />*/}
-      {/*      /!*<MenuItem value={`Name Surname 1`}>Name Surname 1</MenuItem>*!/*/}
-      {/*      /!*<MenuItem value={`Name Surname 2`}>Name Surname 2</MenuItem>*!/*/}
-      {/*      /!*<MenuItem value={`Name Surname 3`}>Name Surname 3</MenuItem>*!/*/}
-      {/*    </Select>*/}
-      {/*  </FormControl>*/}
-      {/*</form>*/}
+            <Customers />
 
       <div style={{display: "flex"}}>
         <Paper className={classes.root}>

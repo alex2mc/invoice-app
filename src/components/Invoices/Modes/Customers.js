@@ -37,11 +37,17 @@ class Customers extends Component {
       customers
     } = this.props;
 
-    const customersRows = isLoading
-      ? <Spinner />
-      : customers.map(customer => (
+// debugger
+    const customersRows = customers
+    ? customers.map(customer => (
         <MenuItem key={customer.id} value={customer.name}>{customer.name}</MenuItem>
+
       ))
+      : null
+
+    if(isLoading) {
+      return <Spinner />
+    }
 
     return (
       <>
