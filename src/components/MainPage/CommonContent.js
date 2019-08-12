@@ -52,6 +52,7 @@ class CommonContent extends Component {
 
     const {
       isLoading,
+      isCustomerLoading,
       // error,
       invoices,
       customers
@@ -83,7 +84,7 @@ class CommonContent extends Component {
 
       ))
 
-    if(isLoading && !customers)  {
+    if(isLoading && isCustomerLoading)  {
       return <Spinner />
     }
 
@@ -115,7 +116,8 @@ const mapStateToProps =  state => {
   return {
     invoices: state.invoice.invoices,
     customers: state.customer.customers,
-    isLoading: state.invoice.isLoading
+    isLoading: state.invoice.isLoading,
+    isCustomerLoading: state.customer.isLoading
   }
 }
 

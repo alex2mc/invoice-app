@@ -8,18 +8,16 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-
-
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-
-
 import TextField from '@material-ui/core/TextField';
-
+import MenuItem from "@material-ui/core/MenuItem";
 
 import ColorButtonGreen from '../../UI/Buttons/Button'
-import MenuItem from "@material-ui/core/MenuItem";
+import Spinner from '../../UI/Spinner/Spinner'
+
+import { connect } from 'react-redux';
 
 
 
@@ -108,7 +106,9 @@ const invoiceTotal = invoiceSubtotal - invoiceDiscount;
 class InvoiceCreateMode extends Component {
   state = {
     customerName: '',
-    productName: ''
+    choosenProduct: ''
+    // productName: '',
+    // price: ''
   }
 
   handleChange = e => {
@@ -123,8 +123,14 @@ class InvoiceCreateMode extends Component {
 
 
   render() {
-    const {classes} = this.props;
+    const {classes, isProductsLoading, isCustomersLoading, customers, products} = this.props;
 
+    // console.log(this.props)
+    console.log(this.state)
+
+    if (isProductsLoading && isCustomersLoading) {
+      return <Spinner />
+    }
 
     return (
       <Paper className={classes.wrapper}>
@@ -145,10 +151,14 @@ class InvoiceCreateMode extends Component {
                 id: 'customer-name',
               }}
             >
-              <MenuItem>ccc </MenuItem>
-              <MenuItem>ccc </MenuItem>
-              <MenuItem>ccc </MenuItem>
-              {/*<MenuItem key={customer.id} value={customer.name}>{customer.name}</MenuItem>*/}
+              {
+                customers
+                  ? customers.map(customer => (
+                    <MenuItem key={customer.id} value={customer.name}>{customer.name}</MenuItem>
+
+                  ))
+                  : null
+              }
             </Select>
           </FormControl>
         </form>
@@ -172,22 +182,23 @@ class InvoiceCreateMode extends Component {
                     <form
                       className={classes.rootForm}
                       autoComplete="off">
-                      <FormControl
-                        className={classes.formControl}
-                      >
+                      <FormControl className={classes.formControl}>
                         <InputLabel htmlFor="product-name">Add Product</InputLabel>
                         <Select
-                          value={this.state.productName}
+                          value={this.state.choosenProduct}
                           onChange={this.handleChange}
                           inputProps={{
-                            name: 'productName',
+                            name: 'choosenProduct',
                             id: 'product-name',
                           }}
                         >
-                          <MenuItem>12323 </MenuItem>
-                          <MenuItem>12323 </MenuItem>
-                          <MenuItem>12323 </MenuItem>
-                          {/*<MenuItem id={product.id} key={product.id} value={product.name}>{product.name}</MenuItem>*/}
+                          {
+                            products
+                              ? products.map(product => (
+                                <MenuItem id={product.id} key={product.id} value={product} >{product.name}</MenuItem>
+                              ))
+                              : null
+                          }
                         </Select>
                       </FormControl>
 
@@ -213,8 +224,7 @@ class InvoiceCreateMode extends Component {
                     </form>
                   </TableCell>
                   <TableCell align="right">
-                    price
-                    {/*{ccyFormat(row.price)}*/}
+                    {this.state.choosenProduct.price}
                   </TableCell>
                 </TableRow>
 
@@ -228,7 +238,7 @@ class InvoiceCreateMode extends Component {
             </Table>
 
             <ColorButtonGreen variant="contained" color="secondary" className={classes.button}>
-              SaveInvoice
+              Save Invoice
             </ColorButtonGreen>
 
           </Paper>
@@ -261,5 +271,15 @@ class InvoiceCreateMode extends Component {
   }
 }
 
+const mapStateToProps =  state => {
+  return {
+    products: state.product.products,
+    isProductsLoading: state.product.isLoading,
+    customers: state.customer.customers,
+    isCustomersLoading: state.customer.isLoading
+  }
+}
 
-export default withStyles(styles)(InvoiceCreateMode);
+
+
+export default withStyles(styles)(connect(mapStateToProps)(InvoiceCreateMode));
