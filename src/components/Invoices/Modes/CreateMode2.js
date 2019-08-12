@@ -106,9 +106,9 @@ const invoiceTotal = invoiceSubtotal - invoiceDiscount;
 class InvoiceCreateMode extends Component {
   state = {
     customerName: '',
-    choosenProduct: ''
-    // productName: '',
-    // price: ''
+    choosenProduct: '',
+    discount: 0,
+    quantity: 1,
   }
 
   handleChange = e => {
@@ -120,6 +120,7 @@ class InvoiceCreateMode extends Component {
       }
     })
   }
+
 
 
   render() {
@@ -212,7 +213,9 @@ class InvoiceCreateMode extends Component {
                       <TextField
                         id="quantity"
                         type="number"
-                        defaultValue="1"
+                        name="quantity"
+                        value={this.state.quantity}
+                        onChange={this.handleChange}
                         className={classes.textField}
                         InputLabelProps={{
                           shrink: true,
@@ -247,14 +250,14 @@ class InvoiceCreateMode extends Component {
           <Paper className={classes.rootRight}>
             <Typography variant="h6" align="center" gutterBottom className={classes.tableHeader}>Discount (%)</Typography>
             <Typography variant="h4" align="center" gutterBottom className={classes.tableHeader}>
-              <form
-                className={classes.container}
-                noValidate>
+              <form className={classes.container} noValidate>
                 <TextField
                   id="discount"
                   type="number"
-                  defaultValue="1"
+                  name="discount"
+                  value={this.state.discount}
                   className={classes.textField}
+                  onChange={this.handleChange}
                   InputLabelProps={{
                     shrink: true,
                   }}
