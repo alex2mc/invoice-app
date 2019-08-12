@@ -151,25 +151,7 @@ export default function InvoiceCreateMode() {
                 <TableRow >
                   <TableCell>
 
-                    <form className={classes.rootForm} autoComplete="off">
-                      <FormControl className={classes.formControl}>
-                        <InputLabel htmlFor="product-name">Add Product</InputLabel>
-                        <Select
-                          value={values.productName}
-                          onChange={handleChange}
-                          inputProps={{
-                            name: 'productName',
-                            id: 'product-name',
-                          }}
-                        >
-
-                         <Products />
-                          {/*<MenuItem value={`Name Surname 1`}>car</MenuItem>*/}
-                          {/*<MenuItem value={`Name Surname 2`}>phone</MenuItem>*/}
-                          {/*<MenuItem value={`Name Surname 3`}>water</MenuItem>*/}
-                        </Select>
-                      </FormControl>
-                    </form>
+                    <Products />
 
                   </TableCell>
                   <TableCell align="right">
