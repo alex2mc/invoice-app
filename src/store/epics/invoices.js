@@ -47,7 +47,7 @@ export function postInvoiceEpic(action$) {
         return ajax
           .post(
           url,
-          action.payload,
+            JSON.stringify(action.payload),
           {'Content-Type': 'application/json'}
         )
           .map(response => postInvoiceSuccess(response))

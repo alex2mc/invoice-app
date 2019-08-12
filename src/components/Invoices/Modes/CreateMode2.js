@@ -18,6 +18,8 @@ import ColorButtonGreen from '../../UI/Buttons/Button'
 import Spinner from '../../UI/Spinner/Spinner'
 
 import { connect } from 'react-redux';
+import {bindActionCreators} from "redux";
+import {fetchInvoices, postInvoice} from "../../../store/actions/invoices";
 
 
 
@@ -74,7 +76,7 @@ const styles = theme => ({
 
 class InvoiceCreateMode extends Component {
   state = {
-    customerName: '',
+    choosenCustomer: '',
     choosenProduct: '',
     discount: 0,
     quantity: 1,
@@ -104,6 +106,11 @@ class InvoiceCreateMode extends Component {
     })}
   }
 
+  handleSavingInvoice = () => {
+    this.props.postInvoice({customer_id: this.state.choosenCustomer.id, discount: +this.state.discount, total: +this.state.total})
+    this.props.fetchInvoices()
+  }
+
 
 
   render() {
@@ -127,17 +134,17 @@ class InvoiceCreateMode extends Component {
           >
             <InputLabel htmlFor="customer-name">Select Name</InputLabel>
             <Select
-              value={this.state.customerName}
+              value={this.state.choosenCustomer}
               onChange={this.handleChange}
               inputProps={{
-                name: 'customerName',
+                name: 'choosenCustomer',
                 id: 'customer-name',
               }}
             >
               {
                 customers
                   ? customers.map(customer => (
-                    <MenuItem key={customer.id} value={customer.name}>{customer.name}</MenuItem>
+                    <MenuItem key={customer.id} value={customer}>{customer.name}</MenuItem>
 
                   ))
                   : null
@@ -222,7 +229,7 @@ class InvoiceCreateMode extends Component {
               </TableBody>
             </Table>
 
-            <ColorButtonGreen variant="contained" color="secondary" className={classes.button}>
+            <ColorButtonGreen variant="contained" color="secondary" className={classes.button} onClick={this.handleSavingInvoice}>
               Save Invoice
             </ColorButtonGreen>
 
@@ -265,6 +272,12 @@ const mapStateToProps =  state => {
   }
 }
 
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({
+    postInvoice,
+    fetchInvoices
+  }, dispatch);
 
 
-export default withStyles(styles)(connect(mapStateToProps)(InvoiceCreateMode));
+
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(InvoiceCreateMode));

@@ -61,7 +61,8 @@ class CommonContent extends Component {
 
 
 
-    const invoicesRows  =   invoices.map(invoice => (
+    const invoicesRows  =  invoices
+      ? invoices.map(invoice => (
         <StyledTableRow key={invoice.id} >
           <StyledTableCell component="th" scope="row">{invoice.id}</StyledTableCell>
           <StyledTableCell>
@@ -83,6 +84,7 @@ class CommonContent extends Component {
         </StyledTableRow>
 
       ))
+      : null
 
     if(isLoading && isCustomerLoading)  {
       return <Spinner />
