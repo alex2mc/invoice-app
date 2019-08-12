@@ -42,7 +42,7 @@ class Products extends Component {
 
     const productsRows = products
       ? products.map(product => (
-        <MenuItem id={product.id} value={product.name}>{product.name}</MenuItem>
+        <MenuItem id={product.id} key={product.id} value={product.name}>{product.name}</MenuItem>
       ))
       : null
 
