@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-import {makeStyles, withStyles} from '@material-ui/core/styles';
+import { withStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -8,21 +8,22 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Button from "@material-ui/core/Button";
-import { green } from "@material-ui/core/colors";
-
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-
-
 import TextField from '@material-ui/core/TextField';
-import Customers from "./Customers";
-import Products from "./Products";
+import MenuItem from "@material-ui/core/MenuItem";
+
+import ColorButtonGreen from '../../UI/Buttons/ColorButtonGreen'
+import Spinner from '../../UI/Spinner/Spinner'
+
+import { connect } from 'react-redux';
+import {bindActionCreators} from "redux";
+import {fetchInvoices, postInvoice} from "../../../store/actions/invoices";
 
 
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
   wrapper: {
     padding: theme.spacing(2),
   },
@@ -70,96 +71,142 @@ const useStyles = makeStyles(theme => ({
     width: 50,
   },
 
-}));
-
-function ccyFormat(num) {
-  return `${num.toFixed(2)}`;
-}
-
-function priceRow(qty, unit) {
-  return qty * unit;
-}
-
-function createRow(desc, qty, unit) {
-  const price = priceRow(qty, unit);
-  return { desc, qty, unit, price };
-}
-
-function subtotal(items) {
-  return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
-}
-
-const rows = [
-  createRow('Paperclips (Box)', 1, 2),
-  createRow('Paper (Case)', 10, 3),
-  createRow('Waste Basket', 2, 2),
-];
-
-const Discount = 15;
-
-const invoiceSubtotal = subtotal(rows);
-const invoiceDiscount = (Discount * invoiceSubtotal) / 100;
-const invoiceTotal = invoiceSubtotal - invoiceDiscount;
+});
 
 
-
-
-export default function InvoiceCreateMode() {
-  const classes = useStyles();
-
-  const ColorButtonGreen = withStyles(theme => ({
-    root: {
-      color: theme.palette.getContrastText(green[500]),
-      backgroundColor: green[500],
-      '&:hover': {
-        backgroundColor: green[700],
-      },
-    },
-  }))(Button);
-
-  const [values, setValues] = React.useState({
-    customerName: '',
-    productName: ' ',
-  });
-
-  function handleChange(event) {
-    setValues(oldValues => ({
-      ...oldValues,
-      [event.target.name]: event.target.value,
-    }));
+class InvoiceCreateMode extends Component {
+  state = {
+    choosenCustomer: '',
+    choosenProduct: '',
+    discount: 0,
+    quantity: 1,
+    total: ''
   }
 
-  return (
-    <Paper className={classes.wrapper}>
-      <Typography variant="subtitle2" gutterBottom className={classes.tableHeader}>Invoice id</Typography>
+  handleChange = e => {
+    const {name, value} = e.target
+    this.setState(state => {
+      return {
+        ...state,
+        [name]: value
+      }
+    }, makeAfterSetState)
 
-            <Customers />
+    function makeAfterSetState() {
+    const invoiceSubtotal = this.state.quantity * this.state.choosenProduct.price;
 
-      <div style={{display: "flex"}}>
-        <Paper className={classes.root}>
+    const invoiceDiscount = (this.state.discount * invoiceSubtotal) / 100;
+    const invoiceTotal = invoiceSubtotal - invoiceDiscount;
 
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <TableCell>Products</TableCell>
-                <TableCell align="right">Q-ty</TableCell>
-                <TableCell align="right">Price ($)</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
+    this.setState(state => {
+      return  {
+        ...state,
+      total: invoiceTotal.toFixed(2)
+    }
+    })}
+  }
 
-                <TableRow >
+  handleSavingInvoice = async () => {
+     this.props.postInvoice({customer_id: this.state.choosenCustomer.id, discount: +this.state.discount, total: +this.state.total})
+     await this.props.fetchInvoices()
+    this.props.history.push("/invoices")
+    
+  }
+
+
+
+  render() {
+    const {classes, isProductsLoading, isCustomersLoading, customers, products} = this.props;
+    // console.log(this.props)
+    // console.log(this.state)
+
+    if (isProductsLoading && isCustomersLoading) {
+      return <Spinner />
+    }
+
+    return (
+      <Paper className={classes.wrapper}>
+        <Typography variant="subtitle2" gutterBottom className={classes.tableHeader}>Invoice id</Typography>
+
+        <form
+          className={classes.rootForm}
+          autoComplete="off">
+          <FormControl
+            className={classes.formControl}
+          >
+            <InputLabel htmlFor="customer-name">Select Name</InputLabel>
+            <Select
+              value={this.state.choosenCustomer}
+              onChange={this.handleChange}
+              inputProps={{
+                name: 'choosenCustomer',
+                id: 'customer-name',
+              }}
+            >
+              {
+                customers
+                  ? customers.map(customer => (
+                    <MenuItem key={customer.id} value={customer}>{customer.name}</MenuItem>
+
+                  ))
+                  : null
+              }
+            </Select>
+          </FormControl>
+        </form>
+
+        <div style={{display: "flex"}}>
+          <Paper className={classes.root}>
+
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Products</TableCell>
+                  <TableCell align="right">Q-ty</TableCell>
+                  <TableCell align="right">Price ($)</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+
+                <TableRow>
                   <TableCell>
 
-                    <Products />
+                    <form
+                      className={classes.rootForm}
+                      autoComplete="off">
+                      <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="product-name">Add Product</InputLabel>
+                        <Select
+                          value={this.state.choosenProduct}
+                          onChange={this.handleChange}
+                          inputProps={{
+                            name: 'choosenProduct',
+                            id: 'product-name',
+                          }}
+                        >
+                          {
+                            products
+                              ? products.map(product => (
+                                <MenuItem id={product.id} key={product.id} value={product} >{product.name}</MenuItem>
+                              ))
+                              : null
+                          }
+                        </Select>
+                      </FormControl>
+
+                    </form>
 
                   </TableCell>
                   <TableCell align="right">
-                    <form className={classes.container} noValidate>
+                    <form
+                      className={classes.container}
+                      noValidate>
                       <TextField
                         id="quantity"
                         type="number"
-                        defaultValue="1"
+                        name="quantity"
+                        value={this.state.quantity}
+                        onChange={this.handleChange}
                         className={classes.textField}
                         InputLabelProps={{
                           shrink: true,
@@ -171,44 +218,68 @@ export default function InvoiceCreateMode() {
                     </form>
                   </TableCell>
                   <TableCell align="right">
-                    price
-                    {/*{ccyFormat(row.price)}*/}
+                    {this.state.choosenProduct.price}
                   </TableCell>
                 </TableRow>
 
 
-              <TableRow>
-                <TableCell  />
-                <TableCell colSpan={1}>Total</TableCell>
-                <TableCell align="right" >{ccyFormat(invoiceTotal)}</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-          <ColorButtonGreen variant="contained" color="secondary" className={classes.button}>Save Invoice</ColorButtonGreen>
-        </Paper>
+                <TableRow>
+                  <TableCell/>
+                  <TableCell colSpan={1}>Total</TableCell>
+                  <TableCell align="right">{this.state.total}</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+
+            <ColorButtonGreen variant="contained" color="secondary" className={classes.button} onClick={this.handleSavingInvoice}>
+              Save Invoice
+            </ColorButtonGreen>
+
+          </Paper>
 
 
-
-        <Paper className={classes.rootRight}>
-          <Typography variant="h6" align="center" gutterBottom className={classes.tableHeader}>Discount (%)</Typography>
-          <Typography variant="h4" align="center" gutterBottom className={classes.tableHeader}>
-            <form className={classes.container} noValidate>
-              <TextField
-                id="discount"
-                type="number"
-                defaultValue="1"
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                inputProps={{
-                  step: 1, // 5 min
-                }}
-              />
-            </form>
-          </Typography>
-        </Paper>
-      </div>
-    </Paper>
-  );
+          <Paper className={classes.rootRight}>
+            <Typography variant="h6" align="center" gutterBottom className={classes.tableHeader}>Discount (%)</Typography>
+            <Typography variant="h4" align="center" gutterBottom className={classes.tableHeader}>
+              <form className={classes.container} noValidate>
+                <TextField
+                  id="discount"
+                  type="number"
+                  name="discount"
+                  value={this.state.discount}
+                  className={classes.textField}
+                  onChange={this.handleChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{
+                    step: 1, // 5 min
+                  }}
+                />
+              </form>
+            </Typography>
+          </Paper>
+        </div>
+      </Paper>
+    )
+  }
 }
+
+const mapStateToProps =  state => {
+  return {
+    products: state.product.products,
+    isProductsLoading: state.product.isLoading,
+    customers: state.customer.customers,
+    isCustomersLoading: state.customer.isLoading
+  }
+}
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({
+    postInvoice,
+    fetchInvoices
+  }, dispatch);
+
+
+
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(InvoiceCreateMode));
