@@ -11,11 +11,14 @@ import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-import TextField from '@material-ui/core/TextField';
+// import TextField from '@material-ui/core/TextField';
 import MenuItem from "@material-ui/core/MenuItem";
 
 import ColorButtonGreen from '../../UI/Buttons/ColorButtonGreen'
 import Spinner from '../../UI/Spinner/Spinner'
+
+import { reduxForm, Field } from 'redux-form'
+import { SelectField, TextField} from 'redux-form-material-ui'
 
 import { connect } from 'react-redux';
 import {bindActionCreators} from "redux";
@@ -128,30 +131,34 @@ class InvoiceCreateMode extends Component {
       <Paper className={classes.wrapper}>
         <Typography variant="subtitle2" gutterBottom className={classes.tableHeader}>Invoice id</Typography>
 
-        <form
-          className={classes.rootForm}
-          autoComplete="off">
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="customer-name">Select Name</InputLabel>
-            <Select
+        <form>
+
+        <div className={classes.rootForm}>
+          {/*<FormControl className={classes.formControl}>*/}
+            {/*<InputLabel htmlFor="customer-name">Select Name</InputLabel>*/}
+            <Field
+              name="customerName"
               value={this.state.choosenCustomer}
+              component={SelectField}
               onChange={this.handleChange}
-              inputProps={{
-                name: 'choosenCustomer',
-                id: 'customer-name',
-              }}
+              hintText="Select Name"
+              // inputProps={{
+              //   name: 'choosenCustomer',
+              //   id: 'customer-name',
+              // }}
             >
               {
                 customers
                   ? customers.map(customer => (
-                    <MenuItem key={customer.id} value={customer}>{customer.name}</MenuItem>
+                    <MenuItem key={customer.id} value={customer} primaryText={customer.name}/>
+                    // <MenuItem key={customer.id} value={customer} >{customer.name}</MenuItem>
 
                   ))
                   : null
               }
-            </Select>
-          </FormControl>
-        </form>
+            </Field>
+          {/*</FormControl>*/}
+        </div>
 
         <div style={{display: "flex"}}>
           <Paper className={classes.root}>
@@ -169,7 +176,7 @@ class InvoiceCreateMode extends Component {
                 <TableRow>
                   <TableCell>
 
-                    <form
+                    <div
                       className={classes.rootForm}
                       autoComplete="off">
                       <FormControl className={classes.formControl}>
@@ -192,17 +199,18 @@ class InvoiceCreateMode extends Component {
                         </Select>
                       </FormControl>
 
-                    </form>
+                    </div>
 
                   </TableCell>
                   <TableCell align="right">
-                    <form
+                    <div
                       className={classes.container}
                       noValidate>
                       <TextField
                         id="quantity"
                         type="number"
                         name="quantity"
+                        // component={TextField}
                         value={this.state.quantity}
                         onChange={this.handleChange}
                         className={classes.textField}
@@ -213,7 +221,7 @@ class InvoiceCreateMode extends Component {
                           step: 1, // 5 min
                         }}
                       />
-                    </form>
+                    </div>
                   </TableCell>
                   <TableCell align="right">
                     {this.state.choosenProduct.price}
@@ -239,7 +247,7 @@ class InvoiceCreateMode extends Component {
           <Paper className={classes.rootRight}>
             <Typography variant="h6" align="center" gutterBottom className={classes.tableHeader}>Discount (%)</Typography>
             <Typography variant="h4" align="center" gutterBottom className={classes.tableHeader}>
-              <form className={classes.container} noValidate>
+              <div className={classes.container} noValidate>
                 <TextField
                   id="discount"
                   type="number"
@@ -254,10 +262,12 @@ class InvoiceCreateMode extends Component {
                     step: 1, // 5 min
                   }}
                 />
-              </form>
+              </div>
             </Typography>
           </Paper>
         </div>
+
+        </form>
       </Paper>
     )
   }
@@ -278,6 +288,9 @@ const mapDispatchToProps = dispatch =>
     fetchInvoices
   }, dispatch);
 
+InvoiceCreateMode = reduxForm({
+  form: 'createInvoice'
+})(InvoiceCreateMode);
 
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(InvoiceCreateMode));
