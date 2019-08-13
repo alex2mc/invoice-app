@@ -4,11 +4,15 @@ import {
   FETCH_INVOICES_FAILURE,
   POST_INVOICE,
   POST_INVOICE_SUCCESS,
-  POST_INVOICE_FAILURE
+  POST_INVOICE_FAILURE,
+  GET_INVOICES_LIST,
+  GET_INVOICES_LIST_SUCCESS,
+  GET_INVOICES_LIST_FAILURE
 } from '../actions/invoices';
 
 const initialState = {
   invoices: [],
+  invoicesList: [],
   isLoading: false,
   error: false
 };
@@ -49,6 +53,25 @@ export default function invoicesReducer(state = initialState, action) {
       };
     case POST_INVOICE_FAILURE:
       return {
+        error: action.payload
+      };
+
+    case GET_INVOICES_LIST:
+      return {
+        ...state,
+        isLoading: true,
+        error: null
+      };
+    case GET_INVOICES_LIST_SUCCESS:
+      return {
+        invoicesList: [...action.payload],
+        isLoading: false,
+        error: null
+      };
+    case GET_INVOICES_LIST_FAILURE:
+      return {
+        invoicesList: [],
+        isLoading: false,
         error: action.payload
       };
 

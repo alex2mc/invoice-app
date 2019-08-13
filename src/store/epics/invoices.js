@@ -14,7 +14,10 @@ import {
   fetchInvoicesFailure,
   POST_INVOICE,
   postInvoiceSuccess,
-  postInvoiceFailure
+  postInvoiceFailure,
+  GET_INVOICES_LIST,
+  getInvoicesListSuccess,
+  getInvoicesListFailure
 } from "../actions/invoices";
 
 
@@ -53,4 +56,24 @@ export function postInvoiceEpic(action$) {
           .map(response => postInvoiceSuccess(response))
           .catch(error => Observable.of(postInvoiceFailure(error)))
       })
+}
+
+export function getInvoicesListEpic(action$) {
+  return action$
+    .ofType(GET_INVOICES_LIST)
+    .switchMap((id) => {
+      // console.log(id.id)
+      return ajax
+
+        .getJSON(`https://api.invoice-app.2muchcoffee.com/api/invoices/${id.id}/items`)
+        .map(invoices => invoices.map(invoice => ({
+          id: invoice._id,
+          invoice_id: invoice.invoice_id,
+          product_id: invoice.product_id,
+          quantity: invoice.product_id,
+        })))
+    })
+    .map(invoices => getInvoicesListSuccess(invoices))
+
+    .catch(error => Observable.of(getInvoicesListFailure(error.message)))
 }

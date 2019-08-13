@@ -15,7 +15,7 @@ import EditMode from "./components/Invoices/Modes/EditMode";
 export default function router() {
   return (
     <>
-      <Route exact path='/viewmode/:customerId' component={ViewMode} />
+      <Route exact path='/viewmode/:invoiceId' component={ViewMode} />
       <Route exact path='/editmode' component={EditMode} />
 
       <Route exact path='/' component={MainPage} />

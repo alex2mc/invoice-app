@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchInvoices } from '../../store/actions/invoices';
+import { fetchInvoices, getInvoicesList } from '../../store/actions/invoices';
 
 import Spinner from '../UI/Spinner/Spinner';
 import Button from "@material-ui/core/Button";
@@ -49,6 +49,11 @@ class CommonContent extends Component {
     this.props.fetchInvoices();
   }
 
+  handleClick = (id) => {
+
+    this.props.getInvoicesList(id)
+  }
+
   render() {
 
     // console.log(this.props)
@@ -78,8 +83,8 @@ class CommonContent extends Component {
           <StyledTableCell>{invoice.discount}</StyledTableCell>
           <StyledTableCell>{invoice.total}</StyledTableCell>
           <StyledTableCell>
-            <Link to={`/viewmode/${invoice.customer}`}>
-              <Button variant="contained" color="primary" > View </Button>
+            <Link to={`/viewmode/${invoice.id}`}>
+              <Button variant="contained" color="primary" onClick={() => this.handleClick(invoice.id)}> View </Button>
             </Link>
             {this.props.buttons}
 
@@ -130,6 +135,7 @@ const mapStateToProps =  state => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
     fetchInvoices,
+    getInvoicesList
   }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommonContent);

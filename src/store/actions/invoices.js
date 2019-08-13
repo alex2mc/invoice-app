@@ -4,6 +4,9 @@ export const FETCH_INVOICES_FAILURE = 'FETCH_INVOICES_FAILURE';
 export const POST_INVOICE = 'POST_INVOICE';
 export const POST_INVOICE_SUCCESS = 'POST_INVOICE_SUCCESS';
 export const POST_INVOICE_FAILURE = 'POST_INVOICE_FAILURE';
+export const GET_INVOICES_LIST = 'GET_INVOICES_LIST';
+export const GET_INVOICES_LIST_SUCCESS = 'GET_INVOICES_LIST_SUCCESS';
+export const GET_INVOICES_LIST_FAILURE = 'GET_INVOICES_LIST_FAILURE';
 
 
 export const fetchInvoices = () => ({
@@ -32,5 +35,20 @@ export const postInvoiceSuccess = (invoices) => ({
 
 export const postInvoiceFailure = (error) => ({
   type: POST_INVOICE_FAILURE,
+  payload: error
+});
+
+export const getInvoicesList = (id) => ({
+  type: GET_INVOICES_LIST,
+  id: id
+});
+
+export const getInvoicesListSuccess = (invoices) => ({
+  type: GET_INVOICES_LIST_SUCCESS,
+  payload: invoices
+});
+
+export const getInvoicesListFailure = (error) => ({
+  type: GET_INVOICES_LIST_FAILURE,
   payload: error
 });
