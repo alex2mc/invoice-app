@@ -5,6 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
 import { Link } from 'react-router-dom';
+import {connect} from 'react-redux';
 
 
 
@@ -12,6 +13,9 @@ import { Link } from 'react-router-dom';
 
 class NavTabs extends Component {
   render () {
+    const { invoices } = this.props;
+
+    const invoicesAmount = invoices.length
 
     const toolbarStyles = {
       display: 'flex',
@@ -33,7 +37,7 @@ class NavTabs extends Component {
               <Typography variant="h6" color="textPrimary"> Customers</Typography>
             </Link>
             <Link to="/invoices">
-              <Typography variant="h6" color="textPrimary"> Invoices</Typography>
+              <Typography variant="h6" color="textPrimary"> Invoices ({invoicesAmount})</Typography>
             </Link>
             <Link to="/newinvoice">
               <Typography variant="h6" color="textPrimary"> + New Invoice</Typography>
@@ -45,5 +49,10 @@ class NavTabs extends Component {
     );
   }
 }
+const mapStateToProps =  state => {
+  return {
+    invoices: state.invoice.invoices,
+  }
+}
 
-export default NavTabs;
+export default connect(mapStateToProps)(NavTabs);
