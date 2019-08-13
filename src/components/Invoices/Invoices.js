@@ -1,9 +1,10 @@
 import React from 'react';
 
 import Content from '../MainPage/CommonContent';
-import Button from "@material-ui/core/Button";
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { orange, red, green } from '@material-ui/core/colors';
+import ColorButtonGreen from "../UI/Buttons/ColorButtonGreen";
+import ColorButtonRed from "../UI/Buttons/ColorButtonRed";
+import ColorButtonYellow from "../UI/Buttons/ColorButtonYellow";
+import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 
 import { Link } from 'react-router-dom';
@@ -55,37 +56,6 @@ export default function Invoices() {
   const handleClose = () => {
     setOpen(false);
   };
-
-  const ColorButtonYellow = withStyles(theme => ({
-    root: {
-      color: theme.palette.getContrastText(red[500]),
-      backgroundColor: orange[500],
-      '&:hover': {
-        backgroundColor: orange[700],
-      },
-    },
-  }))(Button);
-
-  const ColorButtonRed = withStyles(theme => ({
-    root: {
-      color: theme.palette.getContrastText(red[500]),
-      backgroundColor: red[500],
-      '&:hover': {
-        backgroundColor: red[700],
-      },
-    },
-  }))(Button);
-
-  const ColorButtonGreen = withStyles(theme => ({
-    root: {
-      color: theme.palette.getContrastText(red[500]),
-      backgroundColor: green[500],
-      '&:hover': {
-        backgroundColor: green[700],
-      },
-    },
-  }))(Button);
-
 
 
 

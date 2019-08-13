@@ -14,7 +14,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from "@material-ui/core/MenuItem";
 
-import ColorButtonGreen from '../../UI/Buttons/Button'
+import ColorButtonGreen from '../../UI/Buttons/ColorButtonGreen'
 import Spinner from '../../UI/Spinner/Spinner'
 
 import { connect } from 'react-redux';
