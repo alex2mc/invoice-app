@@ -131,9 +131,7 @@ class InvoiceCreateMode extends Component {
         <form
           className={classes.rootForm}
           autoComplete="off">
-          <FormControl
-            className={classes.formControl}
-          >
+          <FormControl className={classes.formControl}>
             <InputLabel htmlFor="customer-name">Select Name</InputLabel>
             <Select
               value={this.state.choosenCustomer}
