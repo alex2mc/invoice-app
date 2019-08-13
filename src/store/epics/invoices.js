@@ -85,10 +85,10 @@ export function deleteInvoiceEpic(action$) {
   return action$
     .ofType(DELETE_INVOICE)
     .switchMap((id) => {
-      // console.log(id.id)
+      console.log(id)
       return ajax
 
-        .delete(`https://api.invoice-app.2muchcoffee.com/api/invoices/${id.id}/items`)
+        .delete(`https://api.invoice-app.2muchcoffee.com/api/invoices/${id.id}`)
         // .map(invoicesList => invoicesList.map(invoiceList => ({
         //   id: invoiceList._id,
         //   invoice_id: invoiceList.invoice_id,

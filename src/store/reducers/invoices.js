@@ -91,7 +91,7 @@ export default function invoicesReducer(state = initialState, action) {
     case DELETE_INVOICE_SUCCESS:
       return {
         ...state,
-        invoices: [...action.payload],
+        // invoices: [...action.payload],
         isLoading: false,
         error: null
       };

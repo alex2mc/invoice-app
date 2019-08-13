@@ -1,58 +1,35 @@
 import React, { Component } from 'react';
 
-import { withStyles } from '@material-ui/core/styles';
+
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
+
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchInvoices, getInvoicesList } from '../../store/actions/invoices';
+import { fetchInvoices, getInvoicesList, deleteInvoice } from '../../store/actions/invoices';
 
 import Spinner from '../UI/Spinner/Spinner';
-import Button from "@material-ui/core/Button";
 
-import { Link } from 'react-router-dom';
+import Invoice from "../Invoices/Invoice";
+import StyledTableCell from "../UI/Table/StyledTableCell";
 
 
 
-const StyledTableCell = withStyles(theme => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  body: {
-    fontSize: 14,
-  },
-}))(TableCell);
 
-const StyledTableRow = withStyles(theme => ({
-  root: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.background.default,
-    },
-  },
-}))(TableRow);
 
 
 
 
 class CommonContent extends Component {
-  state = {
-
-  }
 
   componentDidMount() {
     this.props.fetchInvoices();
   }
 
-  handleClick = (id) => {
-
-    this.props.getInvoicesList(id)
-  }
 
   render() {
 
@@ -71,30 +48,7 @@ class CommonContent extends Component {
 
     const invoicesRows  =  invoices
       ? invoices.map(invoice => (
-        <StyledTableRow key={invoice.id} >
-          <StyledTableCell component="th" scope="row">{invoice.id}</StyledTableCell>
-          <StyledTableCell>
-
-            {customers &&
-              (customers.find(customer => customer.id === invoice.customer ) || { name: 'Unnamed' }).name
-            }
-
-          </StyledTableCell>
-          <StyledTableCell>{invoice.discount}</StyledTableCell>
-          <StyledTableCell>{invoice.total}</StyledTableCell>
-          <StyledTableCell>
-            <Link to={`/viewmode/${invoice.id}`}>
-              <Button variant="contained" color="primary"
-                      // onClick={() => this.handleClick(invoice.id)}
-              > View </Button>
-            </Link>
-            {this.props.buttons}
-
-          </StyledTableCell>
-
-        </StyledTableRow>
-
-      ))
+        <Invoice key={invoice.id} customers={customers} {...invoice} /> ))
       : null
 
     if(isLoading && isCustomerLoading)  {
@@ -117,7 +71,6 @@ class CommonContent extends Component {
 
             {invoicesRows}
 
-
           </TableBody>
         </Table>
       </Paper>
@@ -137,7 +90,8 @@ const mapStateToProps =  state => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
     fetchInvoices,
-    getInvoicesList
+    getInvoicesList,
+    deleteInvoice
   }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommonContent);
