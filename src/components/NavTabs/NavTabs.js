@@ -4,7 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
 
 
@@ -39,9 +39,14 @@ class NavTabs extends Component {
             <Link to="/invoices">
               <Typography variant="h6" color="textPrimary"> Invoices ({invoicesAmount})</Typography>
             </Link>
-            <Link to="/newinvoice">
-              <Typography variant="h6" color="textPrimary"> + New Invoice</Typography>
-            </Link>
+            {
+              this.props.location.pathname !== "/newinvoice"
+                ?
+                <Link to="/newinvoice">
+                  <Typography variant="h6" color="textPrimary"> + New Invoice</Typography>
+                </Link>
+                : null
+            }
           </Toolbar>
         </AppBar>
 
@@ -55,4 +60,4 @@ const mapStateToProps =  state => {
   }
 }
 
-export default connect(mapStateToProps)(NavTabs);
+export default connect(mapStateToProps)(withRouter(NavTabs));
