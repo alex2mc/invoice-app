@@ -7,6 +7,9 @@ export const POST_INVOICE_FAILURE = 'POST_INVOICE_FAILURE';
 export const GET_INVOICES_LIST = 'GET_INVOICES_LIST';
 export const GET_INVOICES_LIST_SUCCESS = 'GET_INVOICES_LIST_SUCCESS';
 export const GET_INVOICES_LIST_FAILURE = 'GET_INVOICES_LIST_FAILURE';
+export const DELETE_INVOICE = 'DELETE_INVOICE';
+export const DELETE_INVOICE_SUCCESS = 'DELETE_INVOICE_SUCCESS';
+export const DELETE_INVOICE_FAILURE = 'DELETE_INVOICE_FAILURE';
 
 
 export const fetchInvoices = () => ({
@@ -50,5 +53,21 @@ export const getInvoicesListSuccess = (invoices) => ({
 
 export const getInvoicesListFailure = (error) => ({
   type: GET_INVOICES_LIST_FAILURE,
+  payload: error
+});
+
+
+export const deleteInvoice = (id) => ({
+  type: DELETE_INVOICE,
+  id: id
+});
+
+export const deleteInvoiceSuccess = (invoices) => ({
+  type: DELETE_INVOICE_SUCCESS,
+  payload: invoices
+});
+
+export const deleteInvoiceFailure = (error) => ({
+  type: DELETE_INVOICE_FAILURE,
   payload: error
 });
