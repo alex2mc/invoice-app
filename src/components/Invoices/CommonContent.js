@@ -14,7 +14,7 @@ import { fetchInvoices, getInvoicesList, deleteInvoice } from '../../store/actio
 
 import Spinner from '../UI/Spinner/Spinner';
 
-import Invoice from "../Invoices/Invoice";
+import Invoice from "./Invoice";
 import StyledTableCell from "../UI/Table/StyledTableCell";
 
 
@@ -78,7 +78,7 @@ class CommonContent extends Component {
   }
 }
 
-const mapStateToProps =  state => {
+const mapStateToProps = state => {
   return {
     invoices: state.invoice.invoices,
     customers: state.customer.customers,

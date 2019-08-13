@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import ColorButtonRed from "../UI/Buttons/ColorButtonRed";
 import Modal from "@material-ui/core/Modal";
@@ -13,12 +13,12 @@ import {deleteInvoice} from '../../store/actions/invoices';
 
 import StyledTableCell from "../UI/Table/StyledTableCell";
 import StyledTableRow from "../UI/Table/StyledTableRow";
+import ColorButtonYellow from "../UI/Buttons/ColorButtonYellow";
 
 
 
 
 class Invoice extends Component {
-
   state = {
     isOpen: false
   }
@@ -38,7 +38,8 @@ class Invoice extends Component {
 
   render() {
     const {id, discount, total, customers} = this.props
-    // console.log(this.props)
+
+    console.log(this.props)
     return (
 
       <StyledTableRow>
@@ -53,11 +54,24 @@ class Invoice extends Component {
         <StyledTableCell>{discount}</StyledTableCell>
         <StyledTableCell>{total}</StyledTableCell>
         <StyledTableCell>
+
           <Link to={`/viewmode/${id}`}>
             <Button variant="contained" color="primary"> View </Button>
           </Link>
-          {this.props.buttons}
-          <ColorButtonRed variant="contained" color="secondary" onClick={this.handleOpen}> Delete </ColorButtonRed>
+
+
+          {
+            this.props.location.pathname === "/invoices"
+              ?
+              <>
+                <Link to={`/editmode`}>
+                  <ColorButtonYellow variant="contained" color="secondary"> Edit </ColorButtonYellow>
+                </Link>
+
+                <ColorButtonRed variant="contained" color="secondary" onClick={this.handleOpen}> Delete </ColorButtonRed>
+              </>
+              : null
+          }
 
           <Modal
             aria-labelledby="simple-modal-title"
@@ -96,4 +110,4 @@ const mapDispatchToProps = dispatch =>
     deleteInvoice
   }, dispatch);
 
-export default connect(null,mapDispatchToProps)(Invoice);
+export default connect(null,mapDispatchToProps)(withRouter(Invoice));

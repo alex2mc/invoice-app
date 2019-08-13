@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Content from './CommonContent';
+import Content from '../Invoices/CommonContent';
 
 
 

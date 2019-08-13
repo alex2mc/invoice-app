@@ -1,11 +1,11 @@
 import React from 'react';
 
-import Content from '../MainPage/CommonContent';
-import ColorButtonYellow from "../UI/Buttons/ColorButtonYellow";
+import Content from './CommonContent';
+// import ColorButtonYellow from "../UI/Buttons/ColorButtonYellow";
 // import { makeStyles } from '@material-ui/core/styles';
 
 
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 
 // function rand() {
@@ -58,15 +58,6 @@ export default function Invoices() {
 
 
   return (
-    <Content buttons={
-      <>
-        <Link to={`/editmode`}>
-          <ColorButtonYellow variant="contained" color="secondary"> Edit </ColorButtonYellow>
-        </Link>
-
-
-      </>
-    }
-    />
+    <Content   />
   );
 }
