@@ -28,12 +28,14 @@ export default function invoicesReducer(state = initialState, action) {
       };
     case FETCH_INVOICES_SUCCESS:
       return {
+        ...state,
         invoices: [...action.payload],
         isLoading: false,
         error: null
       };
     case FETCH_INVOICES_FAILURE:
       return {
+        ...state,
         invoices: [],
         isLoading: false,
         error: action.payload
@@ -64,12 +66,14 @@ export default function invoicesReducer(state = initialState, action) {
       };
     case GET_INVOICES_LIST_SUCCESS:
       return {
+        ...state,
         invoicesList: [...action.payload],
         isLoading: false,
         error: null
       };
     case GET_INVOICES_LIST_FAILURE:
       return {
+        ...state,
         invoicesList: [],
         isLoading: false,
         error: action.payload

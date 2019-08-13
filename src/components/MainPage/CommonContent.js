@@ -84,7 +84,9 @@ class CommonContent extends Component {
           <StyledTableCell>{invoice.total}</StyledTableCell>
           <StyledTableCell>
             <Link to={`/viewmode/${invoice.id}`}>
-              <Button variant="contained" color="primary" onClick={() => this.handleClick(invoice.id)}> View </Button>
+              <Button variant="contained" color="primary"
+                      // onClick={() => this.handleClick(invoice.id)}
+              > View </Button>
             </Link>
             {this.props.buttons}
 

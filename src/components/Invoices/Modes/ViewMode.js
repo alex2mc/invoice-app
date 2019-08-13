@@ -44,33 +44,49 @@ const styles = theme => ({
 
 class ViewMode extends Component {
 
-  // componentDidMount() {
-  //   this.props.getInvoicesList(this.props.match.params.invoiceId)
-  // }
+  componentDidMount() {
+    this.props.getInvoicesList(this.props.match.params.invoiceId)
+  }
 
 
   render () {
-    const { classes, customers, isCustomersLoading, invoices, products } = this.props;
+    const { classes, customers, invoices, products, invoicesList } = this.props;
 
-    // const neededCustomer = customers &&
-    //   customers.find(customer => this.props.match.params.invoiceId === customer.id)
+    const neededList = invoicesList &&
+      invoicesList.find(invoiceList => this.props.match.params.invoiceId === invoiceList.invoice_id)
 
-    // const neededInvoice = invoices &&
-    //   invoices.find(invoice => neededCustomer.id === invoice.customer)
-    //
-    console.log(this.props)
-    // console.log(this.props.match.params.invoiceId)
+    const neededProduct = neededList
+      ? products &&  products.find(product => neededList.product_id === product.id)
+      : null
 
-    // if(isCustomersLoading || !neededCustomer ) {
-    //   return <Spinner />
-    // }
+    const neededInvoice = invoices &&
+      invoices.find(invoice => this.props.match.params.invoiceId  === invoice.id)
 
+    const neededCustomer = neededInvoice
+      ? customers &&
+        customers.find(customer => neededInvoice.customer === customer.id)
+      : null
+
+
+
+
+
+    if(!neededList  || !neededProduct || !neededInvoice || !neededCustomer) {
+      return <Spinner />
+    }
+
+    const invoiceSubtotal = neededList.quantity * neededProduct.price;
+
+    const invoiceDiscount = (neededInvoice.discount * invoiceSubtotal) / 100;
+    const invoiceTotal = invoiceSubtotal - invoiceDiscount;
+
+    // console.log(invoiceTotal)
     return (
       <Paper className={classes.wrapper}>
         <Typography variant="subtitle2" gutterBottom className={classes.tableHeader}>Invoice id</Typography>
         <Link to="/customers">
           <Typography variant="h6" gutterBottom className={classes.tableHeader}>
-            {/*{neededCustomer.name}*/}
+            {neededCustomer.name}
           </Typography>
         </Link>
         <div style={{display: "flex"}}>
@@ -87,9 +103,9 @@ class ViewMode extends Component {
               <TableBody>
 
                   <TableRow >
-                    <TableCell>fffffffffff</TableCell>
-                    <TableCell align="right">ffffffffffff</TableCell>
-                    <TableCell align="right">fffffffffff</TableCell>
+                    <TableCell>{neededProduct.name}</TableCell>
+                    <TableCell align="right">{neededList.quantity}</TableCell>
+                    <TableCell align="right">{neededProduct.price}</TableCell>
                   </TableRow>
 
 
@@ -97,7 +113,7 @@ class ViewMode extends Component {
                   <TableCell/>
                   <TableCell colSpan={1}>Total</TableCell>
                   <TableCell align="right">
-                    {/*{neededInvoice.total}*/}
+                    {invoiceTotal.toFixed(2)}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -109,7 +125,7 @@ class ViewMode extends Component {
               Discount (%)
             </Typography>
             <Typography variant="h4" align="center" gutterBottom className={classes.tableHeader}>
-              {/*{neededInvoice.discount}*/}
+              {neededInvoice.discount}
             </Typography>
           </Paper>
         </div>

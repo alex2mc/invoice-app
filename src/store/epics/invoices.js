@@ -66,11 +66,11 @@ export function getInvoicesListEpic(action$) {
       return ajax
 
         .getJSON(`https://api.invoice-app.2muchcoffee.com/api/invoices/${id.id}/items`)
-        .map(invoices => invoices.map(invoice => ({
-          id: invoice._id,
-          invoice_id: invoice.invoice_id,
-          product_id: invoice.product_id,
-          quantity: invoice.product_id,
+        .map(invoicesList => invoicesList.map(invoiceList => ({
+          id: invoiceList._id,
+          invoice_id: invoiceList.invoice_id,
+          product_id: invoiceList.product_id,
+          quantity: invoiceList.quantity,
         })))
     })
     .map(invoices => getInvoicesListSuccess(invoices))
