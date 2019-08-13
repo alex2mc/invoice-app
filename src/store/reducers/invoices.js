@@ -7,7 +7,10 @@ import {
   POST_INVOICE_FAILURE,
   GET_INVOICES_LIST,
   GET_INVOICES_LIST_SUCCESS,
-  GET_INVOICES_LIST_FAILURE
+  GET_INVOICES_LIST_FAILURE,
+  DELETE_INVOICE,
+  DELETE_INVOICE_SUCCESS,
+  DELETE_INVOICE_FAILURE
 } from '../actions/invoices';
 
 const initialState = {
@@ -75,6 +78,27 @@ export default function invoicesReducer(state = initialState, action) {
       return {
         ...state,
         invoicesList: [],
+        isLoading: false,
+        error: action.payload
+      };
+
+      case DELETE_INVOICE:
+      return {
+        ...state,
+        isLoading: true,
+        error: null
+      };
+    case DELETE_INVOICE_SUCCESS:
+      return {
+        ...state,
+        invoices: [...action.payload],
+        isLoading: false,
+        error: null
+      };
+    case DELETE_INVOICE_FAILURE:
+      return {
+        ...state,
+        invoices: [],
         isLoading: false,
         error: action.payload
       };
