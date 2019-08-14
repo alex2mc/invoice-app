@@ -163,6 +163,8 @@ class EditForm extends Component {
       const neededProduct = products && neededList &&
         products.find(product => neededList.product_id === product.id);
 
+
+
       return {
         ...state,
         customerName: neededCustomer,
@@ -208,8 +210,8 @@ class EditForm extends Component {
 
   render () {
     const {pristine, submitting, classes, customers, products, invalid } = this.props;
-    // console.log(this.state);
-
+    console.log(this.state);
+console.log(this.props);
 
     if(!this.state.productName ) {
       return <Spinner />

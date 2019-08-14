@@ -26,6 +26,11 @@ const styles = theme => ({
     padding: theme.spacing(2, 4, 4),
   },
   buttons: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap'
+  },
+  modalButtons: {
     marginTop: theme.spacing(2),
     display: 'flex',
     justifyContent: 'center'
@@ -42,7 +47,8 @@ const styles = theme => ({
     transition: '0.3s',
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
+
 });
 
 
@@ -85,7 +91,7 @@ class Invoice extends Component {
         </StyledTableCell>
         <StyledTableCell>{discount}</StyledTableCell>
         <StyledTableCell>{total}</StyledTableCell>
-        <StyledTableCell>
+        <StyledTableCell className={classes.buttons}>
 
           <Link to={`/viewmode/${id}`}>
             <Button variant="contained" color="primary"> View </Button>
@@ -115,7 +121,7 @@ class Invoice extends Component {
             <div className={classes.paper}>
               Are you sure you want to delete an invoice?
 
-              <div className={classes.buttons}>
+              <div className={classes.modalButtons}>
                 <ColorButtonGreen variant="contained" color="secondary" onClick={() => this.handleDelete(id)}>
                   Yes
                 </ColorButtonGreen>
