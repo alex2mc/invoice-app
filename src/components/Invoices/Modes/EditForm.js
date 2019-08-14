@@ -15,6 +15,7 @@ import Divider from '@material-ui/core/Divider';
 import Typography from "@material-ui/core/Typography";
 
 import ColorButtonGreen from "../../UI/Buttons/ColorButtonGreen";
+import Spinner from '../../UI/Spinner/Spinner';
 
 import asyncValidate from './asyncValidate'
 import validate from './validate'
@@ -142,6 +143,38 @@ class EditForm extends Component {
     this.props.getInvoicesList(this.props.match.params.invoiceId)
   }
 
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    const {invoicesList, invoices, customers, products} = this.props;
+
+
+    this.setState(state => {
+      const neededList = invoicesList &&
+        invoicesList.find(invoiceList => this.props.match.params.invoiceId === invoiceList.invoice_id);
+
+      const neededInvoice = invoices &&
+        invoices.find(invoice => this.props.match.params.invoiceId === invoice.id);
+
+
+      const neededCustomer = customers && neededInvoice
+        ? customers.find(customer => neededInvoice.customer === customer.id)
+        : null;
+
+      const neededProduct = products && neededList &&
+        products.find(product => neededList.product_id === product.id);
+
+      return {
+        ...state,
+        customerName: neededCustomer,
+        productName: neededProduct,
+        discount: neededInvoice,
+        // quantity: 0,
+        // total: ''
+      }
+    })
+
+  }
+
   handleChange = e => {
     const {name, value} = e.target
     this.setState(state => {
@@ -154,7 +187,7 @@ class EditForm extends Component {
     function makeAfterSetState() {
       const invoiceSubtotal = this.state.quantity * this.state.productName.price;
 
-      const invoiceDiscount = (this.state.discount * invoiceSubtotal) / 100;
+      const invoiceDiscount = (this.state.discount.discount * invoiceSubtotal) / 100;
       const invoiceTotal = invoiceSubtotal - invoiceDiscount;
 
       this.setState(state => {
@@ -167,22 +200,21 @@ class EditForm extends Component {
 
   handleSavingInvoice = async (e) => {
     e.preventDefault();
-    // this.props.handleSubmit()
-    this.props.postInvoice({customer_id: this.state.customerName.id, discount: +this.state.discount, total: +this.state.total})
-    await this.props.fetchInvoices()
-    this.props.history.push("/invoices")
+    this.props.editInvoice(this.props.match.params.invoiceId, {customer_id: this.state.customerName.id, discount: +this.state.discount, total: +this.state.total})
+
 
   };
 
 
   render () {
-    const {pristine, submitting, classes, customers, products, invalid, invoicesList} = this.props;
-    console.log(this.props)
+    const {pristine, submitting, classes, customers, products, invalid } = this.props;
+    // console.log(this.state);
 
-    const neededList = invoicesList &&
-      invoicesList.find(invoiceList => this.props.match.params.invoiceId === invoiceList.invoice_id)
 
-    console.log(neededList)
+    if(!this.state.productName ) {
+      return <Spinner />
+    }
+
     return (
       <form onSubmit={this.handleSavingInvoice}>
 
@@ -298,7 +330,7 @@ class EditForm extends Component {
         {/*BUTTON*/}
         <div className={classes.button}>
           <ColorButtonGreen type="submit" disabled={invalid || submitting || pristine} onClick={this.handleSavingInvoice}>
-            SAVE INVOICE
+            save changes
           </ColorButtonGreen>
         </div>
       </form>

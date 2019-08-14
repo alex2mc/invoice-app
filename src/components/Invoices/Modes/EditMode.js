@@ -9,7 +9,7 @@ import Spinner from '../../UI/Spinner/Spinner'
 
 import { connect } from 'react-redux';
 import {bindActionCreators} from "redux";
-import {fetchInvoices, postInvoice, getInvoicesList } from "../../../store/actions/invoices";
+import {fetchInvoices, editInvoice, getInvoicesList } from "../../../store/actions/invoices";
 
 import EditForm from './EditForm';
 
@@ -72,7 +72,7 @@ class InvoiceCreateMode extends Component {
 
 
   render() {
-    const {classes, isProductsLoading, isCustomersLoading, customers, products, postInvoice, fetchInvoices, invoicesList, getInvoicesList} = this.props;
+    const {classes, isProductsLoading, isCustomersLoading, customers, products, postInvoice, fetchInvoices, invoicesList, getInvoicesList, invoices, editInvoice } = this.props;
     // console.log(this.props)
     // console.log(this.state)
 
@@ -84,7 +84,16 @@ class InvoiceCreateMode extends Component {
       <Paper className={classes.wrapper}>
         <Typography variant="subtitle2" gutterBottom className={classes.tableHeader}>Invoice id</Typography>
 
-        <EditForm customers={customers} products={products} postInvoice={postInvoice} fetchInvoices={fetchInvoices} invoicesList={invoicesList} getInvoicesList={getInvoicesList}/>
+        <EditForm
+          customers={customers}
+          products={products}
+          postInvoice={postInvoice}
+          fetchInvoices={fetchInvoices}
+          invoicesList={invoicesList}
+          getInvoicesList={getInvoicesList}
+          invoices={invoices}
+          editInvoice={editInvoice}
+        />
       </Paper>
     )
   }
@@ -96,13 +105,14 @@ const mapStateToProps =  state => {
     isProductsLoading: state.product.isLoading,
     customers: state.customer.customers,
     isCustomersLoading: state.customer.isLoading,
-    invoicesList: state.invoice.invoicesList
+    invoicesList: state.invoice.invoicesList,
+    invoices: state.invoice.invoices
   }
 }
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
-    postInvoice,
+    editInvoice,
     fetchInvoices,
     getInvoicesList
   }, dispatch);
