@@ -8,9 +8,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
+// import FormControl from '@material-ui/core/FormControl';
+// import Select from '@material-ui/core/Select';
+// import InputLabel from '@material-ui/core/InputLabel';
 // import TextField from '@material-ui/core/TextField';
 import MenuItem from "@material-ui/core/MenuItem";
 
@@ -18,7 +18,9 @@ import ColorButtonGreen from '../../UI/Buttons/ColorButtonGreen'
 import Spinner from '../../UI/Spinner/Spinner'
 
 import { reduxForm, Field } from 'redux-form'
-import { SelectField, TextField} from 'redux-form-material-ui'
+// import { SelectField, TextField} from 'redux-form-material-ui'
+import { Select, TextField } from 'redux-form-material-ui'
+// import Select from 'redux-form-material-ui/lib/Select';
 
 import { connect } from 'react-redux';
 import {bindActionCreators} from "redux";
@@ -75,6 +77,14 @@ const styles = theme => ({
   },
 
 });
+
+// const required = value => (value == null ? 'Required' : undefined);
+// const email = value =>
+//   (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
+//     ? 'Invalid email'
+//     : undefined);
+// const tooBigDiscount = value => (value > 50 && value < 0 ? 'Discount is only from 0 to 50' : undefined);
+
 
 
 class InvoiceCreateMode extends Component {
@@ -138,9 +148,9 @@ class InvoiceCreateMode extends Component {
             {/*<InputLabel htmlFor="customer-name">Select Name</InputLabel>*/}
             <Field
               name="customerName"
-              value={this.state.choosenCustomer}
-              component={SelectField}
-              onChange={this.handleChange}
+              // value={this.state.choosenCustomer}
+              component={Select}
+              // onChange={this.handleChange}
               hintText="Select Name"
               // inputProps={{
               //   name: 'choosenCustomer',
@@ -150,7 +160,7 @@ class InvoiceCreateMode extends Component {
               {
                 customers
                   ? customers.map(customer => (
-                    <MenuItem key={customer.id} value={customer} primaryText={customer.name}/>
+                    <MenuItem key={customer.id} value={customer.name} primaryText={customer.name}/>
                     // <MenuItem key={customer.id} value={customer} >{customer.name}</MenuItem>
 
                   ))
@@ -178,26 +188,30 @@ class InvoiceCreateMode extends Component {
 
                     <div
                       className={classes.rootForm}
-                      autoComplete="off">
-                      <FormControl className={classes.formControl}>
-                        <InputLabel htmlFor="product-name">Add Product</InputLabel>
-                        <Select
-                          value={this.state.choosenProduct}
-                          onChange={this.handleChange}
-                          inputProps={{
-                            name: 'choosenProduct',
-                            id: 'product-name',
-                          }}
+                      // autoComplete="off"
+                    >
+                      {/*<FormControl className={classes.formControl}>*/}
+                        {/*<InputLabel htmlFor="product-name">Add Product</InputLabel>*/}
+                        <Field
+                          // value={this.state.choosenProduct}
+                          name="product-name"
+                          component={Select}
+                          hintText="Add Product"
+                          // onChange={this.handleChange}
+                          // inputProps={{
+                          //   name: 'choosenProduct',
+                          //   id: 'product-name',
+                          // }}
                         >
                           {
                             products
                               ? products.map(product => (
-                                <MenuItem id={product.id} key={product.id} value={product} >{product.name}</MenuItem>
+                                <MenuItem key={product.id} value={product.name} primaryText={product.name} />
                               ))
                               : null
                           }
-                        </Select>
-                      </FormControl>
+                        </Field>
+                      {/*</FormControl>*/}
 
                     </div>
 
@@ -205,21 +219,23 @@ class InvoiceCreateMode extends Component {
                   <TableCell align="right">
                     <div
                       className={classes.container}
-                      noValidate>
-                      <TextField
-                        id="quantity"
-                        type="number"
+                      // noValidate
+                    >
+                      <Field
+                        // id="quantity"
+                        // type="number"
                         name="quantity"
-                        // component={TextField}
-                        value={this.state.quantity}
-                        onChange={this.handleChange}
-                        className={classes.textField}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        inputProps={{
-                          step: 1, // 5 min
-                        }}
+                        component={TextField}
+                        hintText="1"
+                        // value={this.state.quantity}
+                        // onChange={this.handleChange}
+                        // className={classes.textField}
+                        // InputLabelProps={{
+                        //   shrink: true,
+                        // }}
+                        // inputProps={{
+                        //   step: 1, // 5 min
+                        // }}
                       />
                     </div>
                   </TableCell>
@@ -247,20 +263,21 @@ class InvoiceCreateMode extends Component {
           <Paper className={classes.rootRight}>
             <Typography variant="h6" align="center" gutterBottom className={classes.tableHeader}>Discount (%)</Typography>
             <Typography variant="h4" align="center" gutterBottom className={classes.tableHeader}>
-              <div className={classes.container} noValidate>
-                <TextField
-                  id="discount"
-                  type="number"
+              <div className={classes.container}>
+                <Field
+                  // id="discount"
+                  // type="number"
                   name="discount"
-                  value={this.state.discount}
-                  className={classes.textField}
-                  onChange={this.handleChange}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  inputProps={{
-                    step: 1, // 5 min
-                  }}
+                  component={TextField}
+                  // value={this.state.discount}
+                  // className={classes.textField}
+                  // onChange={this.handleChange}
+                  // InputLabelProps={{
+                  //   shrink: true,
+                  // }}
+                  // inputProps={{
+                  //   step: 1, // 5 min
+                  // }}
                 />
               </div>
             </Typography>
