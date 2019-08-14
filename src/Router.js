@@ -8,7 +8,7 @@ import Products from './components/Products/Products';
 import Customers from './components/Customers/Customers';
 import Invoices from './components/Invoices/Invoices';
 // import CreateInvoice from './components/Invoices/Modes/CreateMode';
-// import CreateInvoice from './components/Invoices/Modes/CreateMode2';
+import CreateInvoice from './components/Invoices/Modes/CreateModeMain';
 import EditMode from "./components/Invoices/Modes/EditMode";
 
 
@@ -23,7 +23,7 @@ export default function router() {
       <Route exact path='/products' component={Products} />
       <Route exact path='/customers' component={Customers} />
       <Route exact path='/invoices' component={Invoices} />
-      {/*<Route exact path='/newinvoice' component={CreateInvoice} />*/}
+      <Route exact path='/newinvoice' component={CreateInvoice} />
     </>
   );
 }
