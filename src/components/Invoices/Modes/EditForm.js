@@ -149,8 +149,8 @@ class EditForm extends Component {
 
 
     this.setState(state => {
-      const neededList = invoicesList &&
-        invoicesList.find(invoiceList => this.props.match.params.invoiceId === invoiceList.invoice_id);
+      // const neededList = invoicesList &&
+      //   invoicesList.find(invoiceList => this.props.match.params.invoiceId === invoiceList.invoice_id);
 
       const neededInvoice = invoices &&
         invoices.find(invoice => this.props.match.params.invoiceId === invoice.id);
@@ -160,15 +160,15 @@ class EditForm extends Component {
         ? customers.find(customer => neededInvoice.customer === customer.id)
         : null;
 
-      const neededProduct = products && neededList &&
-        products.find(product => neededList.product_id === product.id);
+      const neededProducts = products && invoicesList &&
+        products.filter(products => invoicesList.find(inv => inv.product_id === products.id));
 
-
+        console.log('neededProducts', neededProducts);
 
       return {
         ...state,
         customerName: neededCustomer,
-        productName: neededProduct,
+        productName: neededProducts,
         discount: neededInvoice,
         // quantity: 0,
         // total: ''
@@ -210,8 +210,9 @@ class EditForm extends Component {
 
   render () {
     const {pristine, submitting, classes, customers, products, invalid } = this.props;
-    console.log(this.state);
-console.log(this.props);
+    // console.log(this.state);
+console.log(this.props.invoicesList);
+console.log(this.props.match.params.invoiceId)
 
     if(!this.state.productName ) {
       return <Spinner />
@@ -259,7 +260,7 @@ console.log(this.props);
                     <Field
                       className={classes.formControl}
                       name="productName"
-                      value={this.state.productName}
+                      value={this.state.productName.name}
                       component={renderSelectFieldProduct}
                       onChange={this.handleChange}
                       label="Add Product"
