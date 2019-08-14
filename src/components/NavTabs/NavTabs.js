@@ -25,7 +25,7 @@ class NavTabs extends Component {
 
     return (
       <div>
-        <AppBar position="static">
+        <AppBar position="static" >
           <Toolbar variant="dense" style={toolbarStyles}>
             <Link to="/">
               <Typography variant="h6" color="textPrimary"> Logo</Typography>

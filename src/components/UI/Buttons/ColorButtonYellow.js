@@ -5,9 +5,9 @@ import Button from "@material-ui/core/Button";
 const ColorButtonYellow = withStyles(theme => ({
   root: {
     color: theme.palette.getContrastText(red[500]),
-    backgroundColor: orange[500],
+    backgroundColor: orange[300],
     '&:hover': {
-      backgroundColor: orange[700],
+      backgroundColor: orange[600],
     },
   },
 }))(Button);
