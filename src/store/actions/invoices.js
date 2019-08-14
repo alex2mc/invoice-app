@@ -10,6 +10,10 @@ export const GET_INVOICES_LIST_FAILURE = 'GET_INVOICES_LIST_FAILURE';
 export const DELETE_INVOICE = 'DELETE_INVOICE';
 export const DELETE_INVOICE_SUCCESS = 'DELETE_INVOICE_SUCCESS';
 export const DELETE_INVOICE_FAILURE = 'DELETE_INVOICE_FAILURE';
+export const EDIT_INVOICE = 'EDIT_INVOICE';
+export const EDIT_INVOICE_SUCCESS = 'EDIT_INVOICE_SUCCESS';
+export const EDIT_INVOICE_FAILURE = 'EDIT_INVOICE_FAILURE';
+
 
 
 export const fetchInvoices = () => ({
@@ -69,5 +73,21 @@ export const deleteInvoiceSuccess = (invoices) => ({
 
 export const deleteInvoiceFailure = (error) => ({
   type: DELETE_INVOICE_FAILURE,
+  payload: error
+});
+
+
+export const editInvoice = (id) => ({
+  type: EDIT_INVOICE,
+  id: id
+});
+
+export const editInvoiceSuccess = (invoices) => ({
+  type: EDIT_INVOICE_SUCCESS,
+  payload: invoices
+});
+
+export const editInvoiceFailure = (error) => ({
+  type: EDIT_INVOICE_FAILURE,
   payload: error
 });
