@@ -20,7 +20,10 @@ import {
   getInvoicesListFailure,
   DELETE_INVOICE,
   deleteInvoiceSuccess,
-  deleteInvoiceFailure
+  deleteInvoiceFailure,
+  EDIT_INVOICE,
+  editInvoiceSuccess,
+  editInvoiceFailure
 } from "../actions/invoices";
 
 
@@ -99,4 +102,20 @@ export function deleteInvoiceEpic(action$) {
     .map(invoices => deleteInvoiceSuccess(invoices))
 
     .catch(error => Observable.of(deleteInvoiceFailure(error.message)))
+}
+
+export function editInvoiceEpic(action$) {
+  return action$
+    .ofType(EDIT_INVOICE)
+    .mergeMap((id, action) => {
+      console.log(id)
+      return ajax
+        .put(
+          `https://api.invoice-app.2muchcoffee.com/api/invoices/${id.id}`,
+          JSON.stringify(action.payload),
+          {'Content-Type': 'application/json'})
+    })
+    .map(invoices => editInvoiceSuccess(invoices))
+
+    .catch(error => Observable.of(editInvoiceFailure(error.message)))
 }

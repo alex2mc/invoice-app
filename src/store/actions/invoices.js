@@ -77,9 +77,10 @@ export const deleteInvoiceFailure = (error) => ({
 });
 
 
-export const editInvoice = (id) => ({
+export const editInvoice = (id, payload) => ({
   type: EDIT_INVOICE,
-  id: id
+  id: id,
+  payload: payload
 });
 
 export const editInvoiceSuccess = (invoices) => ({
