@@ -8,7 +8,7 @@ import Products from './components/Products/Products';
 import Customers from './components/Customers/Customers';
 import Invoices from './components/Invoices/Invoices';
 // import CreateInvoice from './components/Invoices/Modes/CreateMode';
-import CreateInvoice from './components/Invoices/Modes/CreateModeMain';
+import CreateInvoice from './components/Invoices/Modes/CreateMode';
 import EditMode from "./components/Invoices/Modes/EditMode";
 
 
