@@ -2,19 +2,17 @@ import React, {Component} from 'react';
 import {Link, withRouter} from "react-router-dom";
 import { withStyles} from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button";
+import StyledTableCell from "../UI/Table/StyledTableCell";
+import StyledTableRow from "../UI/Table/StyledTableRow";
+import ColorButtonYellow from "../UI/Buttons/ColorButtonYellow";
+
 import ColorButtonRed from "../UI/Buttons/ColorButtonRed";
 import Modal from "@material-ui/core/Modal";
 import ColorButtonGreen from "../UI/Buttons/ColorButtonGreen";
 
-
-
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {deleteInvoice} from '../../store/actions/invoices';
-
-import StyledTableCell from "../UI/Table/StyledTableCell";
-import StyledTableRow from "../UI/Table/StyledTableRow";
-import ColorButtonYellow from "../UI/Buttons/ColorButtonYellow";
+import { deleteInvoice, fetchInvoices } from '../../store/actions/invoices';
 
 
 
@@ -53,23 +51,25 @@ const styles = theme => ({
 class Invoice extends Component {
   state = {
     isOpen: false
-  }
+  };
 
   handleOpen = () => {
     this.setState({isOpen: true})
-  }
+  };
 
   handleClose = () => {
     this.setState({isOpen: false})
-  }
+  };
 
-  handleDelete = id => {
-    this.props.deleteInvoice(id)
+  handleDelete = async (id) => {
+    this.props.deleteInvoice(id);
     this.setState({isOpen: false})
-  }
+    await this.props.fetchInvoices();
+
+  };
 
   render() {
-    const {id, discount, total, customers, classes} = this.props
+    const {id, discount, total, customers, classes} = this.props;
 
     // console.log(this.props)
     return (
@@ -96,7 +96,7 @@ class Invoice extends Component {
             this.props.location.pathname === "/invoices"
               ?
               <>
-                <Link to={`/editmode`}>
+                <Link to={`/editmode/${id}`}>
                   <ColorButtonYellow variant="contained" color="secondary"> Edit </ColorButtonYellow>
                 </Link>
 
@@ -136,7 +136,8 @@ class Invoice extends Component {
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
-    deleteInvoice
+    deleteInvoice,
+    fetchInvoices
   }, dispatch);
 
 export default (withStyles(styles)(connect(null,mapDispatchToProps)(withRouter(Invoice))))
