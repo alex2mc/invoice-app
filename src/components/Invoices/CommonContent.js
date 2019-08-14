@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 
-
+import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
@@ -19,7 +18,18 @@ import StyledTableCell from "../UI/Table/StyledTableCell";
 
 
 
-
+const styles = theme => ({
+  root: {
+    width: '95%',
+    marginTop: theme.spacing(3),
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    overflowX: 'auto',
+  },
+  table: {
+    minWidth: 700,
+  },
+});
 
 
 
@@ -40,7 +50,8 @@ class CommonContent extends Component {
       isCustomerLoading,
       // error,
       invoices,
-      customers
+      customers,
+      classes
     } = this.props;
 
 
@@ -56,8 +67,8 @@ class CommonContent extends Component {
     }
 
     return (
-      <Paper>
-        <Table>
+      <Paper className={classes.root}>
+        <Table className={classes.table}>
           <TableHead>
             <TableRow>
               <StyledTableCell>Invoiсe ID</StyledTableCell>
@@ -94,4 +105,4 @@ const mapDispatchToProps = dispatch =>
     deleteInvoice
   }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(CommonContent);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CommonContent));
