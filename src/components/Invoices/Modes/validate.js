@@ -6,9 +6,6 @@ const validate = values => {
   if (!values.productName) {
     errors.productName = 'Required'
   }
-  if (!values.discount) {
-    errors.discount = 'Required'
-  }
   if (values.discount > 50 || values.discount < 0) {
     errors.discount = 'Discount is only from 0 to 50'
   }
