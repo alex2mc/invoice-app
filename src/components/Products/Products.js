@@ -35,6 +35,19 @@ const StyledTableRow = withStyles(theme => ({
   },
 }))(TableRow);
 
+const styles = theme => ({
+  root: {
+    width: '95%',
+    marginTop: theme.spacing(3),
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    overflowX: 'auto',
+  },
+  table: {
+    minWidth: 700,
+  },
+});
+
 
 
 
@@ -47,6 +60,7 @@ class Products extends Component {
   render () {
 
     const {
+      classes,
       isLoading,
       // error,
       products
@@ -65,8 +79,8 @@ class Products extends Component {
     }
 
     return (
-      <Paper >
-        <Table >
+      <Paper className={classes.root}>
+        <Table className={classes.table}>
           <TableHead>
             <TableRow>
               <StyledTableCell >Product Name</StyledTableCell>
@@ -97,4 +111,4 @@ const mapDispatchToProps = dispatch =>
     fetchProducts
   }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Products);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Products));
