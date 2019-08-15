@@ -69,9 +69,9 @@ class Invoice extends Component {
 
   handleDelete = async (id) => {
     this.props.deleteInvoice(id);
-    this.setState({isOpen: false})
+    this.setState({isOpen: false});
     await this.props.fetchInvoices();
-
+    this.props.history.push("/invoices")
   };
 
   render() {

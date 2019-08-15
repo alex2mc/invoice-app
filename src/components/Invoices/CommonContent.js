@@ -75,7 +75,7 @@ class CommonContent extends Component {
               <StyledTableCell>Customer Name</StyledTableCell>
               <StyledTableCell>Discount (%)</StyledTableCell>
               <StyledTableCell>Total</StyledTableCell>
-              <StyledTableCell>Actions</StyledTableCell>
+              <StyledTableCell align="center">Actions</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
