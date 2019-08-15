@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import {bindActionCreators} from "redux";
-import { getInvoicesList } from "../../../store/actions/invoices";
+import { getInvoicesList } from "../../../store/invoices/actions";
 import {connect} from "react-redux";
 
 import Spinner from '../../UI/Spinner/Spinner'
@@ -138,11 +138,11 @@ const mapStateToProps =  state => {
   return {
     products: state.products.products,
     isProductsLoading: state.products.isLoading,
-    invoices: state.invoice.invoices,
-    isInvoicesLoading: state.invoice.isLoading,
+    invoices: state.invoices.invoices,
+    isInvoicesLoading: state.invoices.isLoading,
     customers: state.customers.customers,
     isCustomersLoading: state.customers.isLoading,
-    invoicesList: state.invoice.invoicesList
+    invoicesList: state.invoices.invoicesList
   }
 }
 

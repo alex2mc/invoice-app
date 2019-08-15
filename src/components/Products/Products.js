@@ -54,7 +54,7 @@ const styles = theme => ({
 class Products extends Component {
 
   componentDidMount() {
-    this.props.fetchProducts();
+    // this.props.fetchProducts();
   }
 
   render () {

@@ -12,7 +12,7 @@ import ColorButtonGreen from "../UI/Buttons/ColorButtonGreen";
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { deleteInvoice, fetchInvoices } from '../../store/actions/invoices';
+import { deleteInvoice, fetchInvoices } from '../../store/invoices/actions';
 
 
 

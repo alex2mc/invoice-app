@@ -9,7 +9,7 @@ import Spinner from '../../UI/Spinner/Spinner'
 
 import { connect } from 'react-redux';
 import {bindActionCreators} from "redux";
-import {fetchInvoices, editInvoice, getInvoicesList } from "../../../store/actions/invoices";
+import {fetchInvoices, editInvoice, getInvoicesList } from "../../../store/invoices/actions";
 
 import EditForm from './EditForm';
 
@@ -105,8 +105,8 @@ const mapStateToProps =  state => {
     isProductsLoading: state.products.isLoading,
     customers: state.customers.customers,
     isCustomersLoading: state.customers.isLoading,
-    invoicesList: state.invoice.invoicesList,
-    invoices: state.invoice.invoices
+    invoicesList: state.invoices.invoicesList,
+    invoices: state.invoices.invoices
   }
 }
 

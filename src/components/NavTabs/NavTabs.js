@@ -59,7 +59,7 @@ class NavTabs extends Component {
 }
 const mapStateToProps =  state => {
   return {
-    invoices: state.invoice.invoices,
+    invoices: state.invoices.invoices,
   }
 }
 

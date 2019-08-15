@@ -9,7 +9,7 @@ import Spinner from '../../UI/Spinner/Spinner'
 
 import { connect } from 'react-redux';
 import {bindActionCreators} from "redux";
-import {fetchInvoices, postInvoice} from "../../../store/actions/invoices";
+import {fetchInvoices, postInvoice} from "../../../store/invoices/actions";
 
 import Form from './Form';
 

@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchInvoices, getInvoicesList, deleteInvoice } from '../../store/actions/invoices';
+import { fetchInvoices, getInvoicesList, deleteInvoice } from '../../store/invoices/actions';
 
 import Spinner from '../UI/Spinner/Spinner';
 
@@ -91,9 +91,9 @@ class CommonContent extends Component {
 
 const mapStateToProps = state => {
   return {
-    invoices: state.invoice.invoices,
+    invoices: state.invoices.invoices,
     customers: state.customers.customers,
-    isLoading: state.invoice.isLoading,
+    isLoading: state.invoices.isLoading,
     isCustomerLoading: state.customers.isLoading
   }
 }
