@@ -37,7 +37,7 @@ const styles = theme => ({
 class CommonContent extends Component {
 
   componentDidMount() {
-    this.props.fetchInvoices();
+    // this.props.fetchInvoices();
   }
 
 

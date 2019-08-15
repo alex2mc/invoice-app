@@ -89,7 +89,7 @@ class Invoice extends Component {
           }
 
         </StyledTableCell>
-        <StyledTableCell>{discount}</StyledTableCell>
+        <StyledTableCell>{discount ? discount : 0}</StyledTableCell>
         <StyledTableCell>{total}</StyledTableCell>
         <StyledTableCell className={classes.buttons}>
 

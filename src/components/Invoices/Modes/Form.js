@@ -174,7 +174,7 @@ class CreateForm extends Component {
 
  render () {
    const {pristine, submitting, classes, customers, products, invalid,} = this.props;
-   console.log(this.state);
+   // console.log(this.state);
    return (
      <form onSubmit={this.handleSavingInvoice}>
 
