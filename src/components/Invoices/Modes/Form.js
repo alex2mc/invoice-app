@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
-import { Field, reduxForm } from 'redux-form'
+import React, { Component } from 'react';
+import { Field, reduxForm } from 'redux-form';
 
-import TextField from '@material-ui/core/TextField'
-import FormControl from '@material-ui/core/FormControl'
-import Select from '@material-ui/core/Select'
-import InputLabel from '@material-ui/core/InputLabel'
-import FormHelperText from '@material-ui/core/FormHelperText'
+import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import MenuItem from "@material-ui/core/MenuItem";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -16,12 +16,12 @@ import Typography from "@material-ui/core/Typography";
 
 import ColorButtonGreen from "../../UI/Buttons/ColorButtonGreen";
 
-import asyncValidate from './asyncValidate'
-import validate from './validate'
+import asyncValidate from './asyncValidate';
+import validate from './validate';
 
 import {withStyles} from "@material-ui/core";
 
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
 
 
 const styles = theme => ({
@@ -52,7 +52,7 @@ const styles = theme => ({
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(2),
   }
-})
+});
 
 
 const renderTextField = ({
@@ -135,6 +135,7 @@ class CreateForm extends Component {
     productName: '',
     discount: 0,
     quantity: 0,
+    subtotal: '',
     total: ''
   };
 
@@ -156,6 +157,7 @@ class CreateForm extends Component {
       this.setState(state => {
         return  {
           ...state,
+          subtotal: invoiceSubtotal.toFixed(2),
           total: invoiceTotal.toFixed(2)
         }
       })}
@@ -164,16 +166,15 @@ class CreateForm extends Component {
   handleSavingInvoice = async (e) => {
     e.preventDefault();
     // this.props.handleSubmit()
-    this.props.postInvoice({customer_id: this.state.customerName.id, discount: +this.state.discount, total: +this.state.total})
-    await this.props.fetchInvoices()
+    this.props.postInvoice({customer_id: this.state.customerName.id, discount: +this.state.discount, total: +this.state.total});
+    await this.props.fetchInvoices();
     this.props.history.push("/invoices")
-
   };
 
 
  render () {
    const {pristine, submitting, classes, customers, products, invalid,} = this.props;
-   console.log(this.state)
+   console.log(this.state);
    return (
      <form onSubmit={this.handleSavingInvoice}>
 
@@ -251,14 +252,17 @@ class CreateForm extends Component {
            </ListItemText>
 
            <ListItemText >
-             {this.state.productName.price}
+
+             {isNaN(this.state.subtotal) ? null : this.state.subtotal }
            </ListItemText>
          </ListItem>
          <Divider />
 
          <ListItem>
            <ListItemText >Total</ListItemText>
-           <ListItemText >{this.state.total}</ListItemText>
+           <ListItemText >
+             {isNaN(this.state.total) ? null : this.state.total}
+           </ListItemText>
          </ListItem>
         </List>
 
@@ -295,7 +299,7 @@ class CreateForm extends Component {
      </form>
    )
  }
-};
+}
 
 export default reduxForm({
   form: 'CreateForm', // a unique identifier for this form
