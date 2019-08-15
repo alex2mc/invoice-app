@@ -12,6 +12,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchCustomers } from '../../store/customers/actions';
 
+import { getCustomersState } from '../../store/customers/selectors';
+
 import Spinner from '../UI/Spinner/Spinner';
 
 
@@ -101,7 +103,7 @@ class Customers extends Component {
 
 const mapStateToProps =  state => {
   return {
-    customers: state.customers.customers,
+    customers: getCustomersState(state),
     isLoading: state.customers.isLoading
   }
 }
