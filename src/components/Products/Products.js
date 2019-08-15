@@ -14,6 +14,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchProducts } from '../../store/products/actions';
 
+import { getProductsState } from '../../store/products/selectors';
+
 
 
 
@@ -101,7 +103,7 @@ class Products extends Component {
 
 const mapStateToProps =  state => {
   return {
-    products: state.products.products,
+    products: getProductsState(state),
     isLoading: state.products.isLoading
   }
 }
