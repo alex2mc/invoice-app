@@ -1,36 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-// import App from './TestApp';
 import * as serviceWorker from './serviceWorker';
 
-import { createStore, applyMiddleware,  compose, combineReducers } from 'redux';
-import { createEpicMiddleware } from 'redux-observable';
 import { Provider } from 'react-redux';
-
-import customersReducer from './store/customers/reducers';
-import productsReducer from './store/products/reducers';
-import invoicesReducer from './store/invoices/reducers';
-import { reducer as formReducer } from 'redux-form'
-import { rootEpic } from './store/index';
+import store from './store/index';
 
 import {createMuiTheme} from "@material-ui/core";
 import { ThemeProvider } from '@material-ui/styles';
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const epicMiddleware = createEpicMiddleware();
 
-const rootReducer = combineReducers({
-  products: productsReducer,
-  customers: customersReducer,
-  invoices: invoicesReducer,
-  form: formReducer
-});
 
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(epicMiddleware)));
-
-epicMiddleware.run(rootEpic);
 
 
 const theme = createMuiTheme({
