@@ -12,7 +12,7 @@ import Spinner from '../UI/Spinner/Spinner';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchProducts } from '../../store/actions/products';
+import { fetchProducts } from '../../store/products/actions';
 
 
 
@@ -101,8 +101,8 @@ class Products extends Component {
 
 const mapStateToProps =  state => {
   return {
-    products: state.product.products,
-    isLoading: state.product.isLoading
+    products: state.products.products,
+    isLoading: state.products.isLoading
   }
 }
 

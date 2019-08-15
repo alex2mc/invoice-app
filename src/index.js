@@ -9,7 +9,7 @@ import { createEpicMiddleware } from 'redux-observable';
 import { Provider } from 'react-redux';
 
 import customersReducer from './store/customers/reducers';
-import productsReducer from './store/reducers/products';
+import productsReducer from './store/products/reducers';
 import invoicesReducer from './store/reducers/invoices';
 import { reducer as formReducer } from 'redux-form'
 import { rootEpic } from './store/index';
@@ -22,7 +22,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const epicMiddleware = createEpicMiddleware();
 
 const rootReducer = combineReducers({
-  product: productsReducer,
+  products: productsReducer,
   customers: customersReducer,
   invoice: invoicesReducer,
   form: formReducer

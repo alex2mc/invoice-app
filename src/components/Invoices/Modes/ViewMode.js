@@ -136,8 +136,8 @@ class ViewMode extends Component {
 
 const mapStateToProps =  state => {
   return {
-    products: state.product.products,
-    isProductsLoading: state.product.isLoading,
+    products: state.products.products,
+    isProductsLoading: state.products.isLoading,
     invoices: state.invoice.invoices,
     isInvoicesLoading: state.invoice.isLoading,
     customers: state.customers.customers,

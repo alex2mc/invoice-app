@@ -92,8 +92,8 @@ class InvoiceCreateMode extends Component {
 
 const mapStateToProps =  state => {
   return {
-    products: state.product.products,
-    isProductsLoading: state.product.isLoading,
+    products: state.products.products,
+    isProductsLoading: state.products.isLoading,
     customers: state.customers.customers,
     isCustomersLoading: state.customers.isLoading
   }

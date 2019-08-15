@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux';
 
 
 import './App.css';
-import {fetchProducts} from "./store/actions/products";
+import {fetchProducts} from "./store/products/actions";
 import { fetchCustomers } from './store/customers/actions';
 import { fetchInvoices} from './store/actions/invoices';
 
