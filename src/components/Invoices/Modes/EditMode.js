@@ -103,8 +103,8 @@ const mapStateToProps =  state => {
   return {
     products: state.product.products,
     isProductsLoading: state.product.isLoading,
-    customers: state.customer.customers,
-    isCustomersLoading: state.customer.isLoading,
+    customers: state.customers.customers,
+    isCustomersLoading: state.customers.isLoading,
     invoicesList: state.invoice.invoicesList,
     invoices: state.invoice.invoices
   }

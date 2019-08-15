@@ -8,11 +8,11 @@ import { createStore, applyMiddleware,  compose, combineReducers } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
 import { Provider } from 'react-redux';
 
-import customersReducer from './store/reducers/customers';
+import customersReducer from './store/customers/reducers';
 import productsReducer from './store/reducers/products';
 import invoicesReducer from './store/reducers/invoices';
 import { reducer as formReducer } from 'redux-form'
-import { rootEpic } from './store/epics/index';
+import { rootEpic } from './store/index';
 
 import {createMuiTheme} from "@material-ui/core";
 import { ThemeProvider } from '@material-ui/styles';
@@ -23,7 +23,7 @@ const epicMiddleware = createEpicMiddleware();
 
 const rootReducer = combineReducers({
   product: productsReducer,
-  customer: customersReducer,
+  customers: customersReducer,
   invoice: invoicesReducer,
   form: formReducer
 });

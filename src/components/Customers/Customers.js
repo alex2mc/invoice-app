@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchCustomers } from '../../store/actions/customers';
+import { fetchCustomers } from '../../store/customers/actions';
 
 import Spinner from '../UI/Spinner/Spinner';
 
@@ -101,8 +101,8 @@ class Customers extends Component {
 
 const mapStateToProps =  state => {
   return {
-    customers: state.customer.customers,
-    isLoading: state.customer.isLoading
+    customers: state.customers.customers,
+    isLoading: state.customers.isLoading
   }
 }
 
