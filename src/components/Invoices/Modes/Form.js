@@ -167,7 +167,7 @@ class CreateForm extends Component {
     e.preventDefault();
     // this.props.handleSubmit()
     this.props.postInvoice({customer_id: this.state.customerName.id, discount: +this.state.discount, total: +this.state.total});
-    await this.props.fetchInvoices();
+    this.props.fetchInvoices();
     this.props.history.push("/invoices")
   };
 
@@ -212,47 +212,46 @@ class CreateForm extends Component {
 
          <ListItem>
            <ListItemText>
-       {/*PRODUCT NAME*/}
-       <div>
-         <Field
-           className={classes.formControl}
-           name="productName"
-           value={this.state.productName}
-           component={renderSelectFieldProduct}
-           onChange={this.handleChange}
-           label="Add Product"
-         >
-           {
-             products
-               ? products.map(product => (
-                 <MenuItem key={product.id} value={product}>{product.name}</MenuItem>
-               ))
-               : null
-           }
-         </Field>
-       </div>
+              {/*PRODUCT NAME*/}
+             <div>
+               <Field
+                 className={classes.formControl}
+                 name="productName"
+                 value={this.state.productName}
+                 component={renderSelectFieldProduct}
+                 onChange={this.handleChange}
+                 label="Add Product"
+               >
+                 {
+                   products
+                     ? products.map(product => (
+                       <MenuItem key={product.id} value={product}>{product.name}</MenuItem>
+                     ))
+                     : null
+                 }
+               </Field>
+             </div>
+             </ListItemText>
+
+           <ListItemText >
+             {/*QUANTITY*/}
+             <div>
+               <Field
+                 name="quantity"
+                 className={classes.numberFormControl}
+                 component={renderTextField}
+                 label="0"
+                 type='number'
+                 onChange={this.handleChange}
+                 value={this.state.quantity}
+                 inputProps={{
+                   step: 1, // 5 min
+                 }}
+               />
+             </div>
            </ListItemText>
 
            <ListItemText >
-       {/*QUANTITY*/}
-       <div>
-         <Field
-           name="quantity"
-           className={classes.numberFormControl}
-           component={renderTextField}
-           label="0"
-           type='number'
-           onChange={this.handleChange}
-           value={this.state.quantity}
-           inputProps={{
-             step: 1, // 5 min
-           }}
-         />
-       </div>
-           </ListItemText>
-
-           <ListItemText >
-
              {isNaN(this.state.subtotal) ? null : this.state.subtotal }
            </ListItemText>
          </ListItem>
