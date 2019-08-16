@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchCustomers } from '../../store/customers/actions';
+import { getCustomers } from '../../store/customers/actions';
 
 import { getCustomersState } from '../../store/customers/selectors';
 
@@ -54,7 +54,7 @@ const styles = theme => ({
 class Customers extends Component {
 
   componentDidMount() {
-    this.props.fetchCustomers();
+    this.props.getCustomers();
   }
 
   render () {
@@ -110,7 +110,7 @@ const mapStateToProps =  state => {
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
-    fetchCustomers
+    getCustomers
   }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Customers));

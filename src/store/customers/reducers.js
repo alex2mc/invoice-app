@@ -1,7 +1,7 @@
 import {
-  FETCH_CUSTOMERS,
-  FETCH_CUSTOMERS_SUCCESS,
-  FETCH_CUSTOMERS_FAILURE
+  GET_CUSTOMERS,
+  GET_CUSTOMERS_SUCCEEDED,
+  GET_CUSTOMERS_FAIL
 } from './actions';
 
 const initialState = {
@@ -13,24 +13,39 @@ const initialState = {
 export default function customersReducer(state = initialState, action) {
   switch (action.type) {
 
-    case FETCH_CUSTOMERS:
+
+
+
+    case GET_CUSTOMERS_SUCCEEDED: {
+      // const { hasNext, hasPrevious, next, previous } = action.payload;
+
       return {
         ...state,
-        isLoading: true,
-        error: null
+        // next,
+        // previous,
+        // hasNext,
+        // hasPrevious,
       };
-    case FETCH_CUSTOMERS_SUCCESS:
-      return {
-        customers: [...action.payload],
-        isLoading: false,
-        error: null
-      };
-    case FETCH_CUSTOMERS_FAILURE:
-      return {
-        customers: [],
-        isLoading: false,
-        error: action.payload
-      };
+    }
+
+    // case GET_CUSTOMERS:
+    //   return {
+    //     ...state,
+    //     isLoading: true,
+    //     error: null
+    //   };
+    // case GET_CUSTOMERS_SUCCEEDED:
+    //   return {
+    //     customers: [...action.payload],
+    //     isLoading: false,
+    //     error: null
+    //   };
+    // case GET_CUSTOMERS_FAIL:
+    //   return {
+    //     customers: [],
+    //     isLoading: false,
+    //     error: action.payload
+    //   };
 
     default:
       return state;

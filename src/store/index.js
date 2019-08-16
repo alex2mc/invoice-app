@@ -1,6 +1,6 @@
-import { fetchCustomersEpic } from './customers/epics';
+import { getCustomersEpic } from './customers/epics';
 import { fetchProductsEpic } from './products/epics';
-import { fetchInvoicesEpic, postInvoiceEpic, getInvoicesListEpic, deleteInvoiceEpic, editInvoiceEpic } from './invoices/epics';
+import { fetchInvoicesEpic, postInvoiceEpic, getInvoicesListEpic, deleteInvoiceEpic, editInvoiceEpic, } from './invoices/epics';
 
 
 import productsReducer from "./products/reducers";
@@ -13,23 +13,33 @@ import { combineEpics, createEpicMiddleware } from 'redux-observable';
 
 import { composeWithDevTools } from 'redux-devtools-extension';
 
+import {
+  // ActionTypeUnion as OffersRequestActionTypeUnion,
+  epics as customersRequestsEpics,
+  reducer as customersRequestsReducer,
+} from './customers-requests';
+
 
 
 export const rootReducer = combineReducers({
   products: productsReducer,
   customers: customersReducer,
+  customersRequests: customersRequestsReducer,
   invoices: invoicesReducer,
   form: formReducer
 });
 
+export const RootState =  rootReducer;
+
 const rootEpic = combineEpics(
-  fetchCustomersEpic,
+  ...customersRequestsEpics,
+  // getCustomersEpic,
   fetchProductsEpic,
   fetchInvoicesEpic,
   postInvoiceEpic,
   getInvoicesListEpic,
   deleteInvoiceEpic,
-  editInvoiceEpic
+  editInvoiceEpic,
 );
 
 const epicMiddleware = createEpicMiddleware();

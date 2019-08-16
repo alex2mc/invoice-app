@@ -1,17 +1,35 @@
-export const FETCH_CUSTOMERS = 'FETCH_CUSTOMERS';
-export const FETCH_CUSTOMERS_SUCCESS = 'FETCH_CUSTOMERS_SUCCESS';
-export const FETCH_CUSTOMERS_FAILURE = 'FETCH_CUSTOMERS_FAILURE';
+export const GET_CUSTOMERS = 'GET_CUSTOMERS';
+export const GET_CUSTOMERS_SUCCEEDED = 'GET_CUSTOMERS_SUCCEEDED';
+export const GET_CUSTOMERS_FAIL = 'GET_CUSTOMERS_FAIL';
+export const GET_CURRENT_CUSTOMER = 'GET_CURRENT_CUSTOMER';
+export const GET_CURRENT_CUSTOMER_SUCCEEDED = 'GET_CURRENT_CUSTOMER_SUCCEEDED';
+export const GET_CURRENT_CUSTOMER_FAIL = 'GET_CURRENT_CUSTOMER_FAIL';
 
-export const fetchCustomers = () => ({
-  type: FETCH_CUSTOMERS,
+export const getCustomers = () => ({
+  type: GET_CUSTOMERS,
 });
 
-export const fetchCustomersSuccess = (customers) => ({
-  type: FETCH_CUSTOMERS_SUCCESS,
+export const getCustomersSucceeded = (customers) => ({
+  type: GET_CUSTOMERS_SUCCEEDED,
   payload: customers
 });
 
-export const fetchCustomersFailure = (error) => ({
-  type: FETCH_CUSTOMERS_FAILURE,
+export const getCustomersFail = (error) => ({
+  type: GET_CUSTOMERS_FAIL,
+  payload: error
+});
+
+export const getCurrentCustomer = (payload) => ({
+  type: GET_CURRENT_CUSTOMER,
+  payload: payload
+});
+
+export const getCurrentuCstomerSucceeded = (customers) => ({
+  type: GET_CURRENT_CUSTOMER_SUCCEEDED,
+  payload: customers
+});
+
+export const getCurrentCustomerFail = (error) => ({
+  type: GET_CURRENT_CUSTOMER_FAIL,
   payload: error
 });

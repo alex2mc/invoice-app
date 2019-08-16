@@ -5,6 +5,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/ignoreElements';
 
 import { ajax } from 'rxjs/observable/dom/ajax';
 
@@ -23,7 +24,7 @@ import {
   deleteInvoiceFailure,
   EDIT_INVOICE,
   editInvoiceSuccess,
-  editInvoiceFailure
+  editInvoiceFailure,
 } from "./actions";
 
 
@@ -88,7 +89,7 @@ export function deleteInvoiceEpic(action$) {
   return action$
     .ofType(DELETE_INVOICE)
     .switchMap((id) => {
-      console.log(id)
+      // console.log(id)
       return ajax
 
         .delete(`https://api.invoice-app.2muchcoffee.com/api/invoices/${id.id}`)
