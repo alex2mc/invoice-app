@@ -92,3 +92,10 @@ export const getCustomersRequestFail = transferActionEpicFactory(
 //
 //     .catch(error => Observable.of(fetchCustomersFailure(error.message)))
 // }
+
+export const epics = [
+  getCustomersRequest,
+  getCustomersRequestSuccess,
+  getCustomersRequestFail,
+
+];

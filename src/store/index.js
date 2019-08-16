@@ -13,8 +13,9 @@ import { combineEpics, createEpicMiddleware } from 'redux-observable';
 
 import { composeWithDevTools } from 'redux-devtools-extension';
 
+import { epics as CustomersEpics } from './customers/epics';
+
 import {
-  // ActionTypeUnion as OffersRequestActionTypeUnion,
   epics as customersRequestsEpics,
   reducer as customersRequestsReducer,
 } from './customers-requests';
@@ -32,8 +33,8 @@ export const rootReducer = combineReducers({
 export const RootState =  rootReducer;
 
 const rootEpic = combineEpics(
+  ...CustomersEpics,
   ...customersRequestsEpics,
-  // getCustomersEpic,
   fetchProductsEpic,
   fetchInvoicesEpic,
   postInvoiceEpic,
