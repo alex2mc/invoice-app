@@ -1,4 +1,4 @@
-import { Observable, of, pipe } from 'rxjs';
+import { of, pipe } from 'rxjs';
 import { catchError, concatMap, filter, map, mergeMap, switchMap, takeUntil } from 'rxjs/operators';
 
 // interface Action<TType extends string = string> {

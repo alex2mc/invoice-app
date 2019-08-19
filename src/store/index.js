@@ -1,4 +1,3 @@
-import { getCustomersEpic } from './customers/epics';
 import { fetchProductsEpic } from './products/epics';
 import { fetchInvoicesEpic, postInvoiceEpic, getInvoicesListEpic, deleteInvoiceEpic, editInvoiceEpic, } from './invoices/epics';
 

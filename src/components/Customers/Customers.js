@@ -58,7 +58,7 @@ class Customers extends Component {
   }
 
   render () {
-
+    // console.log(this.props)
 
     const {
       isLoading,
@@ -68,7 +68,7 @@ class Customers extends Component {
     } = this.props;
 
     const customersRows = customers.map(customer => (
-      <StyledTableRow key={customer.id}>
+      <StyledTableRow key={customer._id}>
         <StyledTableCell component="th" scope="row">{customer.name}</StyledTableCell>
         <StyledTableCell >{customer.address}</StyledTableCell>
         <StyledTableCell >{customer.phone}</StyledTableCell>

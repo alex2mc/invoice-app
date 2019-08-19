@@ -1,28 +1,19 @@
-import {
-  // Epic,
-  ofType }
-  from 'redux-observable';
-// import { Observable } from 'rxjs';
+import { ofType } from 'redux-observable';
 
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 
-import {
-  // filter,
-  // ignoreElements,
-  map } from 'rxjs/operators';
-
-// import { ajax } from 'rxjs/observable/dom/ajax';
+import { map } from 'rxjs/operators';
 
 import { transferActionEpicFactory } from '../utils/transfer-action';
 import { Actions as CustomersRequestActions, ActionTypes as OffersRequestsActionTypes } from '../customers-requests';
 
 import {
-  GET_CURRENT_CUSTOMER,
-  getCurrentuCstomerSucceeded,
-  getCurrentCustomerFail,
+  // GET_CURRENT_CUSTOMER,
+  // getCurrentCustomerSucceeded,
+  // getCurrentCustomerFail,
   GET_CUSTOMERS,
   getCustomersSucceeded,
   getCustomersFail
@@ -31,25 +22,25 @@ import {
 
 // const url = 'https://api.invoice-app.2muchcoffee.com/api/customers';
 
-export const getCurrentCustomerRequest = (action$) =>
-  action$.pipe(
-    ofType(GET_CURRENT_CUSTOMER),
-    map(({ type, payload }) =>
-      CustomersRequestActions.getCustomer.action(payload, type),
-    ),
-  );
+// export const getCurrentCustomerRequest = (action$) =>
+//   action$.pipe(
+//     ofType(GET_CURRENT_CUSTOMER),
+//     map(({ type, payload }) =>
+//       CustomersRequestActions.getCustomer.action(payload, type),
+//     ),
+//   );
 
-export const getCurrentOfferRequestSuccess = transferActionEpicFactory(
-  OffersRequestsActionTypes.getCustomerActionTypes.ACTION_SUCCEEDED,
-  getCurrentuCstomerSucceeded,
-  GET_CURRENT_CUSTOMER,
-);
+// export const getCurrentOfferRequestSuccess = transferActionEpicFactory(
+//   OffersRequestsActionTypes.getCustomerActionTypes.ACTION_SUCCEEDED,
+//   getCurrentuCstomerSucceeded,
+//   GET_CURRENT_CUSTOMER,
+// );
 
-export const getCurrentOfferRequestFail = transferActionEpicFactory(
-  OffersRequestsActionTypes.getCustomerActionTypes.ACTION_FAILED,
-  getCurrentCustomerFail,
-  GET_CURRENT_CUSTOMER,
-);
+// export const getCurrentOfferRequestFail = transferActionEpicFactory(
+//   OffersRequestsActionTypes.getCustomerActionTypes.ACTION_FAILED,
+//   getCurrentCustomerFail,
+//   GET_CURRENT_CUSTOMER,
+// );
 
 
 export const getCustomersRequest = (action$) =>
@@ -72,26 +63,6 @@ export const getCustomersRequestFail = transferActionEpicFactory(
   GET_CUSTOMERS,
 );
 
-
-// export function fetchCustomersEpic(action$) {
-//
-//   return action$
-//     .ofType(FETCH_CUSTOMERS)
-//     .switchMap(() => {
-//
-//       return ajax
-//         .getJSON(url)
-//         .map(customers => customers.map(customer => ({
-//           id: customer._id,
-//           name: customer.name,
-//           address: customer.address,
-//           phone: customer.phone,
-//         })))
-//     })
-//     .map(customers => fetchCustomersSuccess(customers))
-//
-//     .catch(error => Observable.of(fetchCustomersFailure(error.message)))
-// }
 
 export const epics = [
   getCustomersRequest,

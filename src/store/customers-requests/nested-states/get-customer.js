@@ -1,7 +1,7 @@
-import { Epic } from 'redux-observable';
+// import { Epic } from 'redux-observable';
 // import { Action } from 'typesafe-actions';
 
-import { Observable } from 'rxjs';
+// import { Observable } from 'rxjs';
 
 // import { Offer } from '../../../shared/interfaces/offer';
 
