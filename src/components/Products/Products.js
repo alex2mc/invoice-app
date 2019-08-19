@@ -12,7 +12,7 @@ import Spinner from '../UI/Spinner/Spinner';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchProducts } from '../../store/products/actions';
+import { getProducts } from '../../store/products/actions';
 
 import { getProductsState } from '../../store/products/selectors';
 
@@ -70,7 +70,7 @@ class Products extends Component {
 
 
     const productsRows =  products.map(product => (
-        <StyledTableRow key={product.id}>
+        <StyledTableRow key={product._id}>
           <StyledTableCell component="th" scope="row">{product.name}</StyledTableCell>
           <StyledTableCell >{product.price}</StyledTableCell>
         </StyledTableRow>
@@ -110,7 +110,7 @@ const mapStateToProps =  state => {
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
-    fetchProducts
+    getProducts
   }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Products));
