@@ -39,9 +39,15 @@ class InvoicesRequestsService {
 
 
   getInvoiceItems(id) {
-    console.log(id);
+    // debugger
+    // console.log(id);
     return ajax
       .getJSON(`${url}/${id}/items`)
+  }
+
+  getInvoice(id) {
+    return ajax
+      .getJSON(`${url}/${id}`)
   }
 
 }

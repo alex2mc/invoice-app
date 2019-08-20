@@ -16,6 +16,11 @@ export const DELETE_INVOICE = 'DELETE_INVOICE';
 export const DELETE_INVOICE_SUCCEEDED = 'DELETE_INVOICE_SUCCEEDED';
 export const DELETE_INVOICE_FAIL = 'DELETE_INVOICE_FAIL';
 
+
+export const GET_INVOICE = 'GET_INVOICE';
+export const GET_INVOICE_SUCCEEDED = 'GET_INVOICE_SUCCEEDED';
+export const GET_INVOICE_FAIL = 'GET_INVOICE_FAIL';
+
 export const GET_INVOICE_ITEMS = 'GET_INVOICE_ITEMS';
 export const GET_INVOICE_ITEMS_SUCCEEDED = 'GET_INVOICE_ITEMS_SUCCEEDED';
 export const GET_INVOICE_ITEMS_FAIL = 'GET_INVOICE_ITEMS_FAIL';
@@ -97,23 +102,34 @@ export const deleteInvoiceFail = (error) => ({
 
 
 
-// export const getInvoiceItems = (id) =>  ({
-//   type: GET_INVOICE_ITEMS,
-//   id: id
-// });
-
-export const getInvoiceItems = (id) => () => ({
+export const getInvoiceItems = (id) => ({
   type: GET_INVOICE_ITEMS,
   id: id
 });
 
-export const getInvoiceItemsSucceeded = (invoices) => ({
+export const getInvoiceItemsSucceeded = (invoiceList) => ({
   type: GET_INVOICE_ITEMS_SUCCEEDED,
-  payload: invoices
+  payload: invoiceList
 });
 
 export const getInvoiceItemsFail = (error) => ({
   type: GET_INVOICE_ITEMS_FAIL,
+  payload: error
+});
+
+
+export const getInvoice = (id) => ({
+  type: GET_INVOICE,
+  id: id
+});
+
+export const getInvoiceSucceeded = (invoiceList) => ({
+  type: GET_INVOICE_SUCCEEDED,
+  payload: invoiceList
+});
+
+export const getInvoiceFail = (error) => ({
+  type: GET_INVOICE_FAIL,
   payload: error
 });
 

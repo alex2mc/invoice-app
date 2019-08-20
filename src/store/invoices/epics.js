@@ -23,7 +23,10 @@ import {
   deleteInvoiceFail,
   GET_INVOICE_ITEMS,
   getInvoiceItemsSucceeded,
-  getInvoiceItemsFail
+  getInvoiceItemsFail,
+  GET_INVOICE,
+  getInvoiceSucceeded,
+  getInvoiceFail
   // POST_INVOICE_SUCCEEDED
 } from "./actions";
 
@@ -123,7 +126,7 @@ export const getInvoiceItemsRequest = (action$) =>
     ofType(GET_INVOICE_ITEMS),
     map((id) => {
       // debugger
-      InvoicesRequestActions.getInvoiceItems.action(id.id)},
+      return InvoicesRequestActions.getInvoiceItems.action(id.id)},
     ),
   );
 
@@ -137,6 +140,26 @@ export const getInvoiceItemsRequestFail = transferActionEpicFactory(
   InvoicesRequestsActionTypes.getInvoiceItemsActionTypes.ACTION_FAILED,
   getInvoiceItemsFail,
   GET_INVOICE_ITEMS,
+);
+
+export const getInvoiceRequest = (action$) =>
+  action$.pipe(
+    ofType(GET_INVOICE),
+    map((id) => {
+      // debugger
+      return InvoicesRequestActions.getInvoice.action(id.id)},
+    ),
+  );
+
+export const getInvoiceRequestSuccess = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.getInvoiceActionTypes.ACTION_SUCCEEDED,
+  getInvoiceSucceeded,
+  GET_INVOICE);
+
+export const getInvoiceRequestFail = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.getInvoiceActionTypes.ACTION_FAILED,
+  getInvoiceFail,
+  GET_INVOICE,
 );
 
 
@@ -154,6 +177,9 @@ export const epics = [
   getInvoiceItemsRequest,
   getInvoiceItemsRequestSuccess,
   getInvoiceItemsRequestFail,
+  getInvoiceRequest,
+  getInvoiceRequestSuccess,
+  getInvoiceRequestFail
 ];
 
 

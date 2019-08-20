@@ -6,7 +6,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import productsReducer from "./products/reducers";
 import customersReducer from "./customers/reducers";
 import invoicesReducer from "./invoices/reducers";
-import {reducer as formReducer} from "redux-form";
+import { reducer as formReducer } from "redux-form";
 
 import { epics as customersEpics } from './customers/epics';
 import { epics as productsEpics } from './products/epics';

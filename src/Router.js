@@ -1,13 +1,12 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 
-// import ViewMode from './components/Invoices/Modes/ViewMode'
 import MainPage from './components/MainPage/MainPage'
-
 import Products from './components/Products/Products';
 import Customers from './components/Customers/Customers';
 import Invoices from './components/Invoices/Invoices';
 import CreateMode from './components/Invoices/Modes/CreateMode';
+import ViewMode from './components/Invoices/Modes/ViewMode'
 // import EditMode from "./components/Invoices/Modes/EditMode";
 
 
@@ -15,7 +14,7 @@ import CreateMode from './components/Invoices/Modes/CreateMode';
 export default function router() {
   return (
     <>
-      {/*<Route exact path='/viewmode/:invoiceId' component={ViewMode} />*/}
+      <Route exact path='/viewmode/:invoiceId' component={ViewMode} />
       {/*<Route exact path='/editmode/:invoiceId' component={EditMode} />*/}
 
       <Route exact path='/' component={MainPage} />

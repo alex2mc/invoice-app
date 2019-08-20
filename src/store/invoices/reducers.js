@@ -5,6 +5,7 @@ import {
 const initialState = {
   invoices: [],
   invoiceItems: [],
+  invoice: {},
   isLoading: false,
   error: false
 };
@@ -38,10 +39,21 @@ export default function invoicesReducer(state = initialState, action) {
     }
 
     case "GET_INVOICE_ITEMS_REQUEST_SUCCEEDED": {
-      console.log(action);
+      // console.log(action);
       return {
         ...state,
         invoiceItems: [...action.payload]
+      };
+    }
+
+    case "GET_INVOICE_REQUEST_SUCCEEDED": {
+      // console.log(action)
+      return {
+        ...state,
+        invoice: {
+          ...state.invoice,
+          invoice: action.payload
+        }
       };
     }
 

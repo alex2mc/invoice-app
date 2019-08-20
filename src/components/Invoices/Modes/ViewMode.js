@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import { withStyles} from '@material-ui/core/styles';
+import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -7,13 +7,13 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import {bindActionCreators} from "redux";
-import { getInvoiceItems } from "../../../store/invoices/actions";
-import {connect} from "react-redux";
+import { bindActionCreators } from "redux";
+import { getInvoiceItems, getInvoice } from "../../../store/invoices/actions";
+import { connect } from "react-redux";
 
-// import Spinner from '../../UI/Spinner/Spinner'
+
 import { Link } from 'react-router-dom'
-
+// import Spinner from '../../UI/Spinner/Spinner'
 
 const styles = theme => ({
   wrapper: {
@@ -45,14 +45,17 @@ const styles = theme => ({
 class ViewMode extends Component {
 
   componentDidMount() {
+
     this.props.getInvoiceItems(this.props.match.params.invoiceId);
+    this.props.getInvoice(this.props.match.params.invoiceId);
   }
 
 
   render () {
-    const { classes, customers, invoices, products, invoicesList } = this.props;
+    const { classes, customers, invoice, products, invoiceItems } = this.props;
 
-    console.log(this.props)
+    console.log(invoiceItems);
+    console.log(invoice);
 
     // const neededList = invoicesList &&
     //   invoicesList.find(invoiceList => this.props.match.params.invoiceId === invoiceList.invoice_id)
@@ -85,7 +88,7 @@ class ViewMode extends Component {
     // console.log(invoiceTotal)
     return (
       <Paper className={classes.wrapper}>
-        <Typography variant="subtitle2" gutterBottom className={classes.tableHeader}>Invoice id</Typography>
+        <Typography variant="subtitle2" gutterBottom className={classes.tableHeader}>{invoice._id}</Typography>
         <Link to="/customers">
           <Typography variant="h6" gutterBottom className={classes.tableHeader}>
             {/*{neededCustomer.name}*/}
@@ -146,17 +149,18 @@ const mapStateToProps =  state => {
   return {
     products: state.products.products,
     isProductsLoading: state.products.isLoading,
-    invoices: state.invoices.invoices,
+    invoice: state.invoices.invoice,
     isInvoicesLoading: state.invoices.isLoading,
     customers: state.customers.customers,
     isCustomersLoading: state.customers.isLoading,
-    invoicesList: state.invoices.invoicesList
+    invoiceItems: state.invoices.invoiceItems
   }
 };
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
-    getInvoiceItems
+    getInvoiceItems,
+    getInvoice
   }, dispatch);
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ViewMode));
