@@ -12,7 +12,7 @@ import ColorButtonGreen from "../UI/Buttons/ColorButtonGreen";
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { deleteInvoice, fetchInvoices } from '../../store/invoices/actions';
+import {  getInvoices } from '../../store/invoices/actions';
 
 
 
@@ -68,7 +68,7 @@ class Invoice extends Component {
   };
 
   handleDelete = async (id) => {
-    this.props.deleteInvoice(id);
+    // this.props.deleteInvoice(id);
     this.setState({isOpen: false});
     await this.props.fetchInvoices();
     this.props.history.push("/invoices")
@@ -106,7 +106,7 @@ class Invoice extends Component {
                   <ColorButtonYellow variant="contained" color="secondary"> Edit </ColorButtonYellow>
                 </Link>
 
-                <ColorButtonRed variant="contained" color="secondary" onClick={this.handleOpen}> Delete </ColorButtonRed>
+                {/*<ColorButtonRed variant="contained" color="secondary" onClick={this.handleOpen}> Delete </ColorButtonRed>*/}
               </>
               : null
           }
@@ -142,8 +142,8 @@ class Invoice extends Component {
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
-    deleteInvoice,
-    fetchInvoices
+    // deleteInvoice,
+  getInvoices
   }, dispatch);
 
 export default (withStyles(styles)(connect(null,mapDispatchToProps)(withRouter(Invoice))))

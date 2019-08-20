@@ -9,7 +9,10 @@ import Paper from '@material-ui/core/Paper';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchInvoices, getInvoicesList, deleteInvoice } from '../../store/invoices/actions';
+import { getInvoices } from '../../store/invoices/actions';
+
+import { getInvoicesState } from '../../store/invoices/selectors';
+import { getCustomersState } from '../../store/customers/selectors';
 
 import Spinner from '../UI/Spinner/Spinner';
 
@@ -59,8 +62,8 @@ class CommonContent extends Component {
 
     const invoicesRows  =  invoices
       ? invoices.map(invoice => (
-        <Invoice key={invoice.id} customers={customers} {...invoice} /> ))
-      : null
+        <Invoice key={invoice._id} customers={customers} id={invoice._id} {...invoice} /> ))
+      : null;
 
     if(isLoading && isCustomerLoading)  {
       return <Spinner />
@@ -91,8 +94,8 @@ class CommonContent extends Component {
 
 const mapStateToProps = state => {
   return {
-    invoices: state.invoices.invoices,
-    customers: state.customers.customers,
+    invoices: getInvoicesState(state),
+    customers: getCustomersState(state),
     isLoading: state.invoices.isLoading,
     isCustomerLoading: state.customers.isLoading
   }
@@ -100,9 +103,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
-    fetchInvoices,
-    getInvoicesList,
-    deleteInvoice
+    getInvoices
   }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(CommonContent));

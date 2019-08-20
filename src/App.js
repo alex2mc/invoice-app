@@ -12,16 +12,16 @@ import { bindActionCreators } from 'redux';
 import './App.css';
 import { getProducts } from './store/products/actions';
 import { getCustomers } from './store/customers/actions';
-// import { fetchInvoices} from './store/invoices/actions';
+import { getInvoices } from './store/invoices/actions';
 
 
 
 class App extends Component {
 
  componentDidMount() {
-   this.props.getCustomers()
-   this.props.getProducts()
-   // this.props.fetchInvoices()
+   this.props.getCustomers();
+   this.props.getProducts();
+   this.props.getInvoices()
  }
 
   render () {
@@ -40,7 +40,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators({
     getCustomers,
     getProducts,
-    // fetchInvoices
+    getInvoices
   }, dispatch);
 
 

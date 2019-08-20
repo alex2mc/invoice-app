@@ -8,7 +8,7 @@ import 'rxjs/add/operator/catch';
 import { map } from 'rxjs/operators';
 
 import { transferActionEpicFactory } from '../utils/transfer-action';
-import { Actions as CustomersRequestActions, ActionTypes as OffersRequestsActionTypes } from '../customers-requests';
+import { Actions as CustomersRequestActions, ActionTypes as CustomersRequestsActionTypes } from '../customers-requests';
 
 import {
   // GET_CURRENT_CUSTOMER,
@@ -52,13 +52,13 @@ export const getCustomersRequest = (action$) =>
   );
 
 export const getCustomersRequestSuccess = transferActionEpicFactory(
-  OffersRequestsActionTypes.getCustomersActionTypes.ACTION_SUCCEEDED,
+  CustomersRequestsActionTypes.getCustomersActionTypes.ACTION_SUCCEEDED,
   getCustomersSucceeded,
   GET_CUSTOMERS,
 );
 
 export const getCustomersRequestFail = transferActionEpicFactory(
-  OffersRequestsActionTypes.getCustomersActionTypes.ACTION_FAILED,
+  CustomersRequestsActionTypes.getCustomersActionTypes.ACTION_FAILED,
   getCustomersFail,
   GET_CUSTOMERS,
 );
