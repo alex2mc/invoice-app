@@ -22,6 +22,7 @@ import validate from './validate';
 import {withStyles} from "@material-ui/core";
 
 import { withRouter } from 'react-router-dom';
+import {getInvoices} from "../../../store/invoices/actions";
 
 
 const styles = theme => ({
@@ -166,9 +167,10 @@ class CreateForm extends Component {
   handleSavingInvoice = async (e) => {
     e.preventDefault();
     // this.props.handleSubmit()
-    this.props.postInvoice({customer_id: this.state.customerName.id, discount: +this.state.discount, total: +this.state.total});
-    this.props.fetchInvoices();
-    this.props.history.push("/invoices")
+    this.props.postInvoice({customer_id: this.state.customerName._id, discount: +this.state.discount, total: +this.state.total, product_id: this.state.productName._id, quantity: +this.state.quantity});
+    // this.props.postInvoiceItems({product_id: this.state.productName._id, quantity: +this.state.quantity});
+    // this.props.getInvoices();
+    // this.props.history.push("/invoices")
   };
 
 
@@ -191,7 +193,7 @@ class CreateForm extends Component {
            {
              customers
                ? customers.map(customer => (
-                 <MenuItem key={customer.id} value={customer}>{customer.name}</MenuItem>
+                 <MenuItem key={customer._id} value={customer}>{customer.name}</MenuItem>
                ))
                : null
            }
@@ -225,7 +227,7 @@ class CreateForm extends Component {
                  {
                    products
                      ? products.map(product => (
-                       <MenuItem key={product.id} value={product}>{product.name}</MenuItem>
+                       <MenuItem key={product._id} value={product}>{product.name}</MenuItem>
                      ))
                      : null
                  }

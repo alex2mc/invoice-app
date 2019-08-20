@@ -3,9 +3,14 @@ export const GET_INVOICES_SUCCEEDED = 'GET_INVOICES_SUCCEEDED';
 export const GET_INVOICES_FAIL = 'GET_INVOICES_FAIL';
 
 
-// export const POST_INVOICE = 'POST_INVOICE';
-// export const POST_INVOICE_SUCCESS = 'POST_INVOICE_SUCCESS';
-// export const POST_INVOICE_FAILURE = 'POST_INVOICE_FAILURE';
+export const POST_INVOICE = 'POST_INVOICE';
+export const POST_INVOICE_SUCCEEDED = 'POST_INVOICE_SUCCEEDED';
+export const POST_INVOICE_FAIL = 'POST_INVOICE_FAIL';
+
+export const POST_INVOICE_ITEMS = 'POST_INVOICE_ITEMS';
+export const POST_INVOICE_ITEMS_SUCCEEDED = 'POST_INVOICE_ITEMS_SUCCEEDED';
+export const POST_INVOICE_ITEMS_FAIL = 'POST_INVOICE_ITEMS_FAIL';
+
 // export const GET_INVOICES_LIST = 'GET_INVOICES_LIST';
 // export const GET_INVOICES_LIST_SUCCESS = 'GET_INVOICES_LIST_SUCCESS';
 // export const GET_INVOICES_LIST_FAILURE = 'GET_INVOICES_LIST_FAILURE';
@@ -35,20 +40,38 @@ export const getInvoicesFail = (error) => ({
 
 
 
-// export const postInvoice = (payload) => ({
-//   type: POST_INVOICE,
-//   payload: payload
-// });
-//
-// export const postInvoiceSuccess = (invoices) => ({
-//   type: POST_INVOICE_SUCCESS,
-//   payload: invoices
-// });
-//
-// export const postInvoiceFailure = (error) => ({
-//   type: POST_INVOICE_FAILURE,
-//   payload: error
-// });
+export const postInvoice = (payload) => ({
+  type: POST_INVOICE,
+  payload: payload
+});
+
+export const postInvoiceSucceeded = (invoices) => ({
+  type: POST_INVOICE_SUCCEEDED,
+  payload: invoices
+});
+
+export const postInvoiceFail = (error) => ({
+  type: POST_INVOICE_FAIL,
+  payload: error
+});
+
+
+export const postInvoiceItems = (payload) => ({
+  type: POST_INVOICE_ITEMS,
+  payload: payload
+});
+
+export const postInvoiceItemsSucceeded = (invoices) => ({
+  type: POST_INVOICE_ITEMS_SUCCEEDED,
+  payload: invoices
+});
+
+export const postInvoiceItemsFail = (error) => ({
+  type: POST_INVOICE_ITEMS_FAIL,
+  payload: error
+});
+
+
 //
 // export const getInvoicesList = (id) => ({
 //   type: GET_INVOICES_LIST,

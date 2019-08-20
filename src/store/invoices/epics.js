@@ -14,7 +14,11 @@ import { Actions as InvoicesRequestActions, ActionTypes as InvoicesRequestsActio
 import {
   GET_INVOICES,
   getInvoicesSucceeded,
-  getInvoicesFail
+  getInvoicesFail,
+  POST_INVOICE,
+  postInvoiceSucceeded,
+  postInvoiceFail,
+  POST_INVOICE_SUCCEEDED
 } from "./actions";
 
 
@@ -40,10 +44,58 @@ export const getInvoicesRequestFail = transferActionEpicFactory(
 );
 
 
+
+export const postInvoiceRequest = (action$) =>
+  action$.pipe(
+    ofType(POST_INVOICE),
+    map(
+      (invoice) => {
+        // console.log(invoice)
+        return InvoicesRequestActions.postInvoice.action(invoice);
+      },
+    ),
+  );
+
+export const postInvoiceRequestSuccess = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.postInvoiceActionTypes.ACTION_SUCCEEDED,
+  postInvoiceSucceeded,
+  POST_INVOICE,
+);
+
+export const postInvoiceRequestFail = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.postInvoiceActionTypes.ACTION_FAILED,
+  postInvoiceFail,
+  POST_INVOICE,
+);
+
+export const continueOnPostInvoiceSuccess = (action$) =>
+  action$.pipe(
+    ofType("POST_INVOICE_REQUEST_SUCCEEDED"),
+    map(
+      (response) => {
+        // console.log(JSON.parse(response.payload.request.body));
+        const product_id = JSON.parse(response.payload.request.body).product_id;
+        const quantity = JSON.parse(response.payload.request.body).quantity;
+        const invoice_id = response.payload.response._id;
+
+        const payload = {invoice_id, product_id, quantity}
+        console.log(product_id)
+        console.log(quantity)
+        // debugger
+      return InvoicesRequestActions.postInvoiceItems.action(payload)
+      },
+      ),
+  );
+
+
 export const epics = [
   getInvoicesRequest,
   getInvoicesRequestSuccess,
   getInvoicesRequestFail,
+  postInvoiceRequest,
+  postInvoiceRequestSuccess,
+  postInvoiceRequestFail,
+  continueOnPostInvoiceSuccess,
 
 ];
 

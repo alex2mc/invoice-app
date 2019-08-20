@@ -9,9 +9,9 @@ import Spinner from '../../UI/Spinner/Spinner'
 
 import { connect } from 'react-redux';
 import {bindActionCreators} from "redux";
-import {fetchInvoices, postInvoice} from "../../../store/invoices/actions";
+import { getInvoices, postInvoice, postInvoiceItems } from "../../../store/invoices/actions";
 
-import Form from './Form';
+import Form from './CreateForm';
 
 
 
@@ -72,7 +72,7 @@ class InvoiceCreateMode extends Component {
 
 
   render() {
-    const {classes, isProductsLoading, isCustomersLoading, customers, products, postInvoice, fetchInvoices} = this.props;
+    const {classes, isProductsLoading, isCustomersLoading, customers, products, getInvoices, postInvoice, postInvoiceItems } = this.props;
     // console.log(this.props)
     // console.log(this.state)
 
@@ -84,7 +84,12 @@ class InvoiceCreateMode extends Component {
       <Paper className={classes.wrapper}>
         <Typography variant="subtitle2" gutterBottom className={classes.tableHeader}>Invoice id</Typography>
 
-        <Form customers={customers} products={products} postInvoice={postInvoice} fetchInvoices={fetchInvoices}/>
+        <Form
+          customers={customers}
+          products={products}
+          postInvoice={postInvoice}
+          postInvoiceItems={postInvoiceItems}
+          getInvoices={getInvoices}/>
       </Paper>
     )
   }
@@ -101,8 +106,9 @@ const mapStateToProps =  state => {
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
+    getInvoices,
     postInvoice,
-    fetchInvoices
+    postInvoiceItems
   }, dispatch);
 
 

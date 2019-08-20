@@ -85,7 +85,7 @@ class Invoice extends Component {
         <StyledTableCell>
 
           {customers &&
-          (customers.find(customer => customer.id === this.props.customer ) || { name: 'Unnamed' }).name
+          (customers.find(customer => customer._id === this.props.customer_id ) || { name: 'Unnamed' }).name
           }
 
         </StyledTableCell>
