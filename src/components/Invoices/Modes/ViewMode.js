@@ -8,10 +8,10 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import {bindActionCreators} from "redux";
-import { getInvoicesList } from "../../../store/invoices/actions";
+import { getInvoiceItems } from "../../../store/invoices/actions";
 import {connect} from "react-redux";
 
-import Spinner from '../../UI/Spinner/Spinner'
+// import Spinner from '../../UI/Spinner/Spinner'
 import { Link } from 'react-router-dom'
 
 
@@ -45,40 +45,42 @@ const styles = theme => ({
 class ViewMode extends Component {
 
   componentDidMount() {
-    this.props.getInvoicesList(this.props.match.params.invoiceId)
+    this.props.getInvoiceItems(this.props.match.params.invoiceId);
   }
 
 
   render () {
     const { classes, customers, invoices, products, invoicesList } = this.props;
 
-    const neededList = invoicesList &&
-      invoicesList.find(invoiceList => this.props.match.params.invoiceId === invoiceList.invoice_id)
+    console.log(this.props)
 
-    const neededProduct = neededList
-      ? products &&  products.find(product => neededList.product_id === product.id)
-      : null
+    // const neededList = invoicesList &&
+    //   invoicesList.find(invoiceList => this.props.match.params.invoiceId === invoiceList.invoice_id)
+    //
+    // const neededProduct = neededList
+    //   ? products &&  products.find(product => neededList.product_id === product.id)
+    //   : null
+    //
+    // const neededInvoice = invoices &&
+    //   invoices.find(invoice => this.props.match.params.invoiceId  === invoice.id)
+    //
+    // const neededCustomer = neededInvoice
+    //   ? customers &&
+    //     customers.find(customer => neededInvoice.customer === customer.id)
+    //   : null
 
-    const neededInvoice = invoices &&
-      invoices.find(invoice => this.props.match.params.invoiceId  === invoice.id)
-
-    const neededCustomer = neededInvoice
-      ? customers &&
-        customers.find(customer => neededInvoice.customer === customer.id)
-      : null
 
 
 
+    //
+    // if(!neededList  || !neededProduct || !neededInvoice || !neededCustomer) {
+    //   return <Spinner />
+    // }
 
-
-    if(!neededList  || !neededProduct || !neededInvoice || !neededCustomer) {
-      return <Spinner />
-    }
-
-    const invoiceSubtotal = neededList.quantity * neededProduct.price;
-
-    const invoiceDiscount = (neededInvoice.discount * invoiceSubtotal) / 100;
-    const invoiceTotal = invoiceSubtotal - invoiceDiscount;
+    // const invoiceSubtotal = neededList.quantity * neededProduct.price;
+    //
+    // const invoiceDiscount = (neededInvoice.discount * invoiceSubtotal) / 100;
+    // const invoiceTotal = invoiceSubtotal - invoiceDiscount;
 
     // console.log(invoiceTotal)
     return (
@@ -86,7 +88,7 @@ class ViewMode extends Component {
         <Typography variant="subtitle2" gutterBottom className={classes.tableHeader}>Invoice id</Typography>
         <Link to="/customers">
           <Typography variant="h6" gutterBottom className={classes.tableHeader}>
-            {neededCustomer.name}
+            {/*{neededCustomer.name}*/}
           </Typography>
         </Link>
         <div style={{display: "flex"}}>
@@ -103,9 +105,15 @@ class ViewMode extends Component {
               <TableBody>
 
                   <TableRow >
-                    <TableCell>{neededProduct.name}</TableCell>
-                    <TableCell align="right">{neededList.quantity}</TableCell>
-                    <TableCell align="right">{neededProduct.price}</TableCell>
+                    <TableCell>
+                      {/*{neededProduct.name}*/}
+                    </TableCell>
+                    <TableCell align="right">
+                      {/*{neededList.quantity}*/}
+                    </TableCell>
+                    <TableCell align="right">
+                      {/*{neededProduct.price}*/}
+                    </TableCell>
                   </TableRow>
 
 
@@ -113,7 +121,7 @@ class ViewMode extends Component {
                   <TableCell/>
                   <TableCell colSpan={1}>Total</TableCell>
                   <TableCell align="right">
-                    {invoiceTotal.toFixed(2)}
+                    {/*{invoiceTotal.toFixed(2)}*/}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -125,7 +133,7 @@ class ViewMode extends Component {
               Discount (%)
             </Typography>
             <Typography variant="h4" align="center" gutterBottom className={classes.tableHeader}>
-              {neededInvoice.discount}
+              {/*{neededInvoice.discount}*/}
             </Typography>
           </Paper>
         </div>
@@ -144,11 +152,11 @@ const mapStateToProps =  state => {
     isCustomersLoading: state.customers.isLoading,
     invoicesList: state.invoices.invoicesList
   }
-}
+};
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
-    getInvoicesList
+    getInvoiceItems
   }, dispatch);
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ViewMode));

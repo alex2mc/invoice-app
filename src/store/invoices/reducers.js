@@ -37,6 +37,14 @@ export default function invoicesReducer(state = initialState, action) {
       };
     }
 
+    case "GET_INVOICE_ITEMS_REQUEST_SUCCEEDED": {
+      console.log(action);
+      return {
+        ...state,
+        invoiceItems: [...action.payload]
+      };
+    }
+
     // case FETCH_INVOICES:
     //   return {
     //     ...state,

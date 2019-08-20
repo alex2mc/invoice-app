@@ -16,6 +16,10 @@ export const DELETE_INVOICE = 'DELETE_INVOICE';
 export const DELETE_INVOICE_SUCCEEDED = 'DELETE_INVOICE_SUCCEEDED';
 export const DELETE_INVOICE_FAIL = 'DELETE_INVOICE_FAIL';
 
+export const GET_INVOICE_ITEMS = 'GET_INVOICE_ITEMS';
+export const GET_INVOICE_ITEMS_SUCCEEDED = 'GET_INVOICE_ITEMS_SUCCEEDED';
+export const GET_INVOICE_ITEMS_FAIL = 'GET_INVOICE_ITEMS_FAIL';
+
 // export const GET_INVOICES_LIST = 'GET_INVOICES_LIST';
 // export const GET_INVOICES_LIST_SUCCESS = 'GET_INVOICES_LIST_SUCCESS';
 // export const GET_INVOICES_LIST_FAILURE = 'GET_INVOICES_LIST_FAILURE';
@@ -93,7 +97,29 @@ export const deleteInvoiceFail = (error) => ({
 
 
 
-//
+// export const getInvoiceItems = (id) =>  ({
+//   type: GET_INVOICE_ITEMS,
+//   id: id
+// });
+
+export const getInvoiceItems = (id) => () => ({
+  type: GET_INVOICE_ITEMS,
+  id: id
+});
+
+export const getInvoiceItemsSucceeded = (invoices) => ({
+  type: GET_INVOICE_ITEMS_SUCCEEDED,
+  payload: invoices
+});
+
+export const getInvoiceItemsFail = (error) => ({
+  type: GET_INVOICE_ITEMS_FAIL,
+  payload: error
+});
+
+
+
+
 // export const getInvoicesList = (id) => ({
 //   type: GET_INVOICES_LIST,
 //   id: id

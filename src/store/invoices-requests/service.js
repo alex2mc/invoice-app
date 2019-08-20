@@ -37,6 +37,13 @@ class InvoicesRequestsService {
        .delete(`${url}/${id}`)
   }
 
+
+  getInvoiceItems(id) {
+    console.log(id);
+    return ajax
+      .getJSON(`${url}/${id}/items`)
+  }
+
 }
 
 
