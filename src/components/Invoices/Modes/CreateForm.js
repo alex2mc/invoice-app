@@ -22,7 +22,7 @@ import validate from './validate';
 import {withStyles} from "@material-ui/core";
 
 import { withRouter } from 'react-router-dom';
-import {getInvoices} from "../../../store/invoices/actions";
+// import {getInvoices} from "../../../store/invoices/actions";
 
 
 const styles = theme => ({

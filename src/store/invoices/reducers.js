@@ -5,7 +5,7 @@ import {
 const initialState = {
   invoices: [],
   invoiceItems: [],
-  invoice: {},
+  invoice: null,
   isLoading: false,
   error: false
 };

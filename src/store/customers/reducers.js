@@ -6,6 +6,7 @@ import {
 
 const initialState = {
   customers: [],
+  customer: null,
   isLoading: false,
   error: false
 };
@@ -20,6 +21,17 @@ export default function customersReducer(state = initialState, action) {
       return {
         ...state,
         customers: [...action.payload]
+      };
+    }
+
+    case "GET_CUSTOMER_REQUEST_SUCCEEDED": {
+      // console.log(action)
+      return {
+        ...state,
+        customer: {
+          ...state.customer,
+          customer: action.payload
+        } 
       };
     }
 
