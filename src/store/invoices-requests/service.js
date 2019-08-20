@@ -32,6 +32,11 @@ class InvoicesRequestsService {
       )
   }
 
+  deleteInvoice(id) {
+    return ajax
+       .delete(`${url}/${id}`)
+  }
+
 }
 
 
