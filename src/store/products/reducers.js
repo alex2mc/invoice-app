@@ -1,11 +1,12 @@
 
 const initialState = {
   products: [],
+  product: null,
   isLoading: false,
   error: false
 };
 
-export default function customersReducer(state = initialState, action) {
+export default function productsReducer(state = initialState, action) {
 
   switch (action.type) {
 
@@ -16,6 +17,18 @@ export default function customersReducer(state = initialState, action) {
         products: [...action.payload]
       };
     }
+
+    case "GET_PRODUCT_REQUEST_SUCCEEDED": {
+      // console.log(action)
+      return {
+        ...state,
+        product: {
+          ...state.product,
+          product: action.payload
+        } 
+      };
+    }
+
 
 
     default:

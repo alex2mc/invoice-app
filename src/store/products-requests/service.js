@@ -9,10 +9,15 @@ class ProductsRequestsService {
 
   getProducts(input){
   
-      return ajax
-        .getJSON(url)
+    return ajax
+      .getJSON(url)
+  }
 
-}
+  getProduct(id) {
+    return ajax
+    .getJSON(`${url}/${id}`)
+  }
+
 }
 
 

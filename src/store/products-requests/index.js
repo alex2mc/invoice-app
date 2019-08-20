@@ -1,6 +1,11 @@
 import { combineReducers } from 'redux';
 
-
+import {
+  Actions as getProduct,
+  ActionTypes as getProductActionTypes,
+  epic as getProductEpic,
+  reducer as getProductReducer,
+} from './nested-states/get-product';
 
 import {
   Actions as getProducts,
@@ -11,19 +16,23 @@ import {
 
 
 export const Actions = {
-    getProducts,
+  getProduct,
+  getProducts,
 };
 
 export const ActionTypes = {
-    getProductsActionTypes,
+  getProductActionTypes,
+  getProductsActionTypes,
 };
 
 export const reducer = combineReducers({
-    getProducts: getProductsReducer,
+  getProduct: getProductReducer,
+  getProducts: getProductsReducer,
 });
 
 export const epics = [
-    getProductsEpic,
+  getProductEpic,
+  getProductsEpic,
 ];
 
 export const State = reducer;

@@ -10,6 +10,7 @@ import { map } from 'rxjs/operators';
 import { transferActionEpicFactory } from '../utils/transfer-action';
 import { Actions as InvoicesRequestActions, ActionTypes as InvoicesRequestsActionTypes } from '../invoices-requests';
 import { Actions as CustomersRequestActions } from '../customers-requests/index';
+import { Actions as ProductsRequestActions } from '../products-requests/index';
 
 
 import {
@@ -168,12 +169,19 @@ export const continueOnGetInvoiceSuccess = (action$) =>
     ofType("GET_INVOICE_REQUEST_SUCCEEDED"),
     map(
       (response) => {
-
-        const id = response.payload.customer_id
-       
-        console.log(response.payload.customer_id)
-        // debugger
+      const id = response.payload.customer_id
       return CustomersRequestActions.getCustomer.action(id)
+      },
+      ),
+  );
+
+export const continueOnGetInvoiceItemsSuccess = (action$) =>
+  action$.pipe(
+    ofType("GET_INVOICE_ITEMS_REQUEST_SUCCEEDED"),
+    map(
+      (response) => {       
+        console.log(response.payload)
+      return ProductsRequestActions.getProduct.action()
       },
       ),
   );
@@ -196,7 +204,8 @@ export const epics = [
   getInvoiceRequest,
   getInvoiceRequestSuccess,
   getInvoiceRequestFail,
-  continueOnGetInvoiceSuccess
+  continueOnGetInvoiceSuccess,
+  // continueOnGetInvoiceItemsSuccess
 ];
 
 
