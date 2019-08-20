@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Content from '../Invoices/CommonContent';
+import Invoices from '../Invoices/Invoices';
 
 
 
@@ -8,6 +8,6 @@ import Content from '../Invoices/CommonContent';
 export default function MainPage() {
 
   return (
-    <Content />
+    <Invoices />
   );
 }
