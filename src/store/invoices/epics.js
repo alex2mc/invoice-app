@@ -92,10 +92,7 @@ export const continueOnPostInvoiceSuccess = (action$) =>
         const quantity = JSON.parse(response.payload.request.body).quantity;
         const invoice_id = response.payload.response._id;
 
-        const payload = {invoice_id, product_id, quantity}
-        console.log(product_id)
-        console.log(quantity)
-        // debugger
+        const payload = {invoice_id, product_id, quantity};
       return InvoicesRequestActions.postInvoiceItems.action(payload)
       },
       ),
@@ -136,6 +133,16 @@ export const deleteInvoiceRequestFail = transferActionEpicFactory(
   deleteInvoiceFail,
   DELETE_INVOICE,
 );
+
+export const continueOnDeleteInvoiceSuccess = (action$) =>
+  action$.pipe(
+    ofType("DELETE_INVOICE_REQUEST_SUCCEEDED"),
+    map(
+      () => {
+        return InvoicesRequestActions.getInvoices.action();
+      }
+    )
+  );
 
 
 export const getInvoiceItemsRequest = (action$) =>
@@ -184,7 +191,7 @@ export const continueOnGetInvoiceSuccess = (action$) =>
     ofType("GET_INVOICE_REQUEST_SUCCEEDED"),
     map(
       (response) => {
-      const id = response.payload.customer_id
+      const id = response.payload.customer_id;
       return CustomersRequestActions.getCustomer.action(id)
       },
       ),
@@ -195,7 +202,7 @@ export const continueOnGetInvoiceItemsSuccess = (action$) =>
     ofType("GET_INVOICE_ITEMS_REQUEST_SUCCEEDED"),
     map(
       (response) => {       
-        console.log(response.payload)
+        console.log(response.payload);
       return ProductsRequestActions.getProduct.action()
       },
       ),
@@ -220,7 +227,8 @@ export const epics = [
   getInvoiceRequestSuccess,
   getInvoiceRequestFail,
   continueOnGetInvoiceSuccess,
-  continueOnPostInvoiceItemsSuccess
+  continueOnPostInvoiceItemsSuccess,
+  continueOnDeleteInvoiceSuccess
   // continueOnGetInvoiceItemsSuccess
 ];
 
