@@ -13,7 +13,7 @@ import { getInvoice, getInvoiceItems } from "../../../store/invoices/actions";
 import EditForm from './EditForm';
 
 import { getCustomersState } from '../../../store/customers/selectors';
-// import { initialize } from 'redux-form';
+import { getInvoiceState } from '../../../store/invoices/selectors';
 
 
 const styles = theme => ({
@@ -126,7 +126,7 @@ const mapStateToProps =  state => {
     customer: state.customers.customer,
     customers: getCustomersState(state),
     invoiceItems: state.invoices.invoiceItems,
-    invoice: state.invoices.invoice
+    invoice: getInvoiceState(state)
   }
 };
 

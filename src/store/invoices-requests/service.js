@@ -50,7 +50,7 @@ class InvoicesRequestsService {
       .getJSON(`${url}/${id}`)
   }
 
-  getInvoice(payload) {
+  updateInvoice(payload) {
     return ajax
       .put(
         `${url}/${payload.invoice_id}`,

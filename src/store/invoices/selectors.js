@@ -8,3 +8,10 @@ export const getInvoicesState = createSelector(
   [ getInvoices ],
   (invoices) => invoices
 );
+
+const getInvoice = (state) => state.invoices.invoice;
+// reselect function
+export const getInvoiceState = createSelector(
+  [ getInvoice ],
+  (invoice) => invoice
+);

@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom'
 import Spinner from '../../UI/Spinner/Spinner'
 
 import { getProductsState } from '../../../store/products/selectors';
+import { getInvoiceState } from '../../../store/invoices/selectors';
 
 
 const styles = theme => ({
@@ -138,7 +139,7 @@ class ViewMode extends Component {
 const mapStateToProps =  state => {
   return {
     products: getProductsState(state),
-    invoice: state.invoices.invoice,
+    invoice: getInvoiceState(state),
     customer: state.customers.customer,
     invoiceItems: state.invoices.invoiceItems
   }
