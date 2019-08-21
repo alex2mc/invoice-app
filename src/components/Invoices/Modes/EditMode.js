@@ -13,7 +13,7 @@ import { getInvoice, getInvoiceItems } from "../../../store/invoices/actions";
 import EditForm from './EditForm';
 
 import { getCustomersState, getCustomerState } from '../../../store/customers/selectors';
-import { getInvoiceState } from '../../../store/invoices/selectors';
+import { getInvoiceState, getInvoiceItemsState } from '../../../store/invoices/selectors';
 import { getProductsState } from '../../../store/products/selectors';
 
 
@@ -125,7 +125,7 @@ const mapStateToProps =  state => {
     products: getProductsState(state),
     customer: getCustomerState(state),
     customers: getCustomersState(state),
-    invoiceItems: state.invoices.invoiceItems,
+    invoiceItems: getInvoiceItemsState(state),
     invoice: getInvoiceState(state)
   }
 };

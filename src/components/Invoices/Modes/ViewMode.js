@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom'
 import Spinner from '../../UI/Spinner/Spinner'
 
 import { getProductsState } from '../../../store/products/selectors';
-import { getInvoiceState } from '../../../store/invoices/selectors';
+import { getInvoiceState, getInvoiceItemsState } from '../../../store/invoices/selectors';
 import { getCustomerState } from '../../../store/customers/selectors';
 
 
@@ -142,7 +142,7 @@ const mapStateToProps =  state => {
     products: getProductsState(state),
     invoice: getInvoiceState(state),
     customer: getCustomerState(state),
-    invoiceItems: state.invoices.invoiceItems
+    invoiceItems: getInvoiceItemsState(state)
   }
 };
 

@@ -15,3 +15,10 @@ export const getInvoiceState = createSelector(
   [ getInvoice ],
   (invoice) => invoice
 );
+
+const getInvoiceItems = (state) => state.invoices.invoiceItems;
+// reselect function
+export const getInvoiceItemsState = createSelector(
+  [ getInvoiceItems ],
+  (invoiceItems) => invoiceItems
+);
