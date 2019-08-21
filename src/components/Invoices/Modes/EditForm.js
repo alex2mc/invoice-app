@@ -24,7 +24,6 @@ import {withStyles} from "@material-ui/core";
 
 import { withRouter } from 'react-router-dom';
 
-import { initialize } from 'redux-form';
 
 
 
@@ -94,7 +93,7 @@ const renderSelectFieldCustomer = ({
 
                                    }) => (
   <FormControl error={touched && error}>
-    {/*<InputLabel htmlFor="customer-name">Select Name</InputLabel>*/}
+    <InputLabel htmlFor="customer-name">Select Name</InputLabel>
     <Select
       {...input}
       {...custom}
@@ -138,26 +137,26 @@ class EditForm extends Component {
   state = {
     customerName: null,
     productName: null,
-    discount: 0,
-    quantity: 0,
+    discount: null,
+    quantity: null,
     total: ''
   };
 
   componentDidMount() {
-    const { customer, invoiceItems } = this.props;
-    // this.props.getInvoiceItems(this.props.match.params.invoiceId);
-    // this.props.getInvoice(this.props.match.params.invoiceId);
-    // console.log(customer.customer._id );
-    this.props.initialize({discount: 10, quantity: 25, customerName: customer && customer.customer._id ? customer.customer._id : 'oooooo' })
+    const { customer,  invoiceItems, products, invoice} = this.props;
+
+    const product_name = invoiceItems.map(invoiceItem => (
+      products.find(product => invoiceItem.product_id === product._id).name));
+
+
+    // console.log(invoiceItems);
+    this.props.initialize({
+      discount: invoice.invoice.discount ? invoice.invoice.discount : 0,
+      quantity: invoiceItems.map(inv => inv.quantity),
+      customerName: customer.customer.name,
+      productName: product_name
+    })
   }
-
-  componentWillMount() {
-
-    // this.props.initialize({customerName: customer && customer.customer.name ? customer.customer.name : 'oooooo'})
-    // this.props.initialize({customerName: customer && customer.customer._id})
-
-  }
-
 
   // componentWillReceiveProps(nextProps, nextContext) {
   //   const {
@@ -221,7 +220,7 @@ class EditForm extends Component {
       })}
   };
 
-  handleSavingInvoice = async (e) => {
+  handleSavingInvoice =  (e) => {
     e.preventDefault();
     // this.props.editInvoice(this.props.match.params.invoiceId, {customer_id: this.state.customerName.id, discount: +this.state.discount, total: +this.state.total})
 
@@ -256,6 +255,7 @@ class EditForm extends Component {
           <p>Invoice ID:</p>
           {this.props.match.params.invoiceId}
         </Typography>
+        <Divider />
 
         {/*CUSTOMER NAME*/}
         {/*<p>{customer.customer.name} </p>*/}
@@ -272,7 +272,7 @@ class EditForm extends Component {
             {
               customers
                 ? customers.map(customer => (
-                  <MenuItem key={customer._id} customer_id={customer._id} name="customerName2" value={customer}>{customer.name}</MenuItem>
+                  <MenuItem key={customer._id} name="customerName2" value={customer.name}>{customer.name}</MenuItem>
                 ))
                 : null
             }
@@ -306,7 +306,7 @@ class EditForm extends Component {
                       {
                         products
                           ? products.map(product => (
-                            <MenuItem key={product._id} value={product}>{product.name}</MenuItem>
+                            <MenuItem key={product._id} name="productName2" value={product.name}>{product.name}</MenuItem>
                           ))
                           : null
                       }
@@ -321,7 +321,7 @@ class EditForm extends Component {
                       name="quantity"
                       className={classes.numberFormControl}
                       component={renderTextField}
-                      label="0"
+                      // label="0"
                       type='number'
                       onChange={this.handleChange}
                       value={this.state.quantity}
@@ -385,6 +385,5 @@ export default reduxForm({
   form: 'EditForm', // a unique identifier for this form
   validate,
   asyncValidate,
-  keepDirtyOnReinitialize: true,
-  enableReinitialize: true,
+
 })(withStyles(styles)(withRouter(EditForm)))

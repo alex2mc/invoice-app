@@ -13,7 +13,7 @@ import { getInvoice, getInvoiceItems } from "../../../store/invoices/actions";
 import EditForm from './EditForm';
 
 import { getCustomersState } from '../../../store/customers/selectors';
-import { initialize } from 'redux-form';
+// import { initialize } from 'redux-form';
 
 
 const styles = theme => ({
@@ -70,7 +70,7 @@ const styles = theme => ({
 
 class InvoiceCreateMode extends Component {
   componentDidMount() {
-    const { customer, invoiceItems } = this.props;
+    // const { customer, invoiceItems } = this.props;
     this.props.getInvoiceItems(this.props.match.params.invoiceId);
     this.props.getInvoice(this.props.match.params.invoiceId);
     // console.log(customer.customer._id );
@@ -87,7 +87,7 @@ class InvoiceCreateMode extends Component {
       products,
       postInvoice,
       invoiceItems,
-      invoices,
+      invoice,
       getInvoice,
       getInvoiceItems
     } = this.props;
@@ -101,17 +101,19 @@ class InvoiceCreateMode extends Component {
     return (
       <Paper className={classes.wrapper}>
 
-        {customer ? <EditForm
+        {customer ?
+          <EditForm
           customers={customers}
           customer={customer}
           products={products}
           postInvoice={postInvoice}
           invoiceItems={invoiceItems}
-          invoices={invoices}
+          invoice={invoice}
           getInvoice={getInvoice}
           getInvoiceItems={getInvoiceItems}
           // initialValues={{customer}}
-        /> :null}
+        />
+        :null}
       </Paper>
     )
   }
@@ -124,7 +126,7 @@ const mapStateToProps =  state => {
     customer: state.customers.customer,
     customers: getCustomersState(state),
     invoiceItems: state.invoices.invoiceItems,
-    invoices: state.invoices.invoices
+    invoice: state.invoices.invoice
   }
 };
 
