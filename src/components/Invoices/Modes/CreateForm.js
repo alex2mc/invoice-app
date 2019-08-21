@@ -14,15 +14,14 @@ import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import Typography from "@material-ui/core/Typography";
 
+import { withStyles } from "@material-ui/core";
+
 import ColorButtonGreen from "../../UI/Buttons/ColorButtonGreen";
 
 import asyncValidate from './asyncValidate';
 import validate from './validate';
 
-import {withStyles} from "@material-ui/core";
-
 import { withRouter } from 'react-router-dom';
-// import {getInvoices} from "../../../store/invoices/actions";
 
 
 const styles = theme => ({
@@ -166,11 +165,15 @@ class CreateForm extends Component {
 
   handleSavingInvoice = async (e) => {
     e.preventDefault();
-    // this.props.handleSubmit()
-    this.props.postInvoice({customer_id: this.state.customerName._id, discount: +this.state.discount, total: +this.state.total, product_id: this.state.productName._id, quantity: +this.state.quantity});
-    // this.props.postInvoiceItems({product_id: this.state.productName._id, quantity: +this.state.quantity});
-    // this.props.getInvoices();
-    // this.props.history.push("/invoices")
+
+    this.props.postInvoice({
+      customer_id: this.state.customerName._id,
+      discount: +this.state.discount,
+      total: +this.state.total,
+      product_id: this.state.productName._id,
+      quantity: +this.state.quantity});
+
+    this.props.history.push("/invoices")
   };
 
 
