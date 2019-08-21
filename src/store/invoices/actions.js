@@ -25,6 +25,10 @@ export const GET_INVOICE_ITEMS = 'GET_INVOICE_ITEMS';
 export const GET_INVOICE_ITEMS_SUCCEEDED = 'GET_INVOICE_ITEMS_SUCCEEDED';
 export const GET_INVOICE_ITEMS_FAIL = 'GET_INVOICE_ITEMS_FAIL';
 
+export const UPDATE_INVOICE = 'UPDATE_INVOICE';
+export const UPDATE_INVOICE_SUCCEEDED = 'UPDATE_INVOICE_SUCCEEDED';
+export const UPDATE_INVOICE_FAIL = 'UPDATE_INVOICE_FAIL';
+
 // export const GET_INVOICES_LIST = 'GET_INVOICES_LIST';
 // export const GET_INVOICES_LIST_SUCCESS = 'GET_INVOICES_LIST_SUCCESS';
 // export const GET_INVOICES_LIST_FAILURE = 'GET_INVOICES_LIST_FAILURE';
@@ -130,6 +134,21 @@ export const getInvoiceSucceeded = (invoiceList) => ({
 
 export const getInvoiceFail = (error) => ({
   type: GET_INVOICE_FAIL,
+  payload: error
+});
+
+export const updateInvoice = (payload) => ({
+  type: UPDATE_INVOICE,
+  payload: payload
+});
+
+export const updateInvoiceSucceeded = (invoices) => ({
+  type: UPDATE_INVOICE_SUCCEEDED,
+  payload: invoices
+});
+
+export const updateInvoiceFail = (error) => ({
+  type: UPDATE_INVOICE_FAIL,
   payload: error
 });
 

@@ -42,13 +42,21 @@ import {
   reducer as getInvoiceReducer,
 } from './nested-states/get-invoice';
 
+import {
+  Actions as updateInvoice,
+  ActionTypes as updateInvoiceActionTypes,
+  epic as updateInvoiceEpic,
+  reducer as updateInvoiceReducer,
+} from './nested-states/update-invoice';
+
 export const Actions = {
   getInvoices,
   postInvoice,
   postInvoiceItems,
   deleteInvoice,
   getInvoiceItems,
-  getInvoice
+  getInvoice,
+  updateInvoice
 };
 
 export const ActionTypes = {
@@ -57,7 +65,8 @@ export const ActionTypes = {
   postInvoiceItemsActionTypes,
   deleteInvoiceActionTypes,
   getInvoiceItemsActionTypes,
-  getInvoiceActionTypes
+  getInvoiceActionTypes,
+  updateInvoiceActionTypes
 };
 
 export const reducer = combineReducers({
@@ -66,7 +75,8 @@ export const reducer = combineReducers({
   postInvoiceItems: postInvoiceItemsReducer,
   deleteInvoiceItems: deleteInvoiceReducer,
   getInvoiceItems: getInvoiceItemsReducer,
-  getInvoice: getInvoiceReducer
+  getInvoice: getInvoiceReducer,
+  updateInvoice: updateInvoiceReducer
 });
 
 
@@ -76,7 +86,8 @@ export const epics = [
   postInvoiceItemsEpic,
   deleteInvoiceEpic,
   getInvoiceItemsEpic,
-  getInvoiceEpic
+  getInvoiceEpic,
+  updateInvoiceEpic
 ];
 
 export const State = reducer;

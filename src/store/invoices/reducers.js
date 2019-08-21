@@ -57,6 +57,17 @@ export default function invoicesReducer(state = initialState, action) {
       };
     }
 
+    case "UPDATE_INVOICE_REQUEST_SUCCEEDED": {
+      // console.log(action)
+      return {
+        ...state,
+        invoice: {
+          ...state.invoice,
+          invoice: action.payload
+        }
+      };
+    }
+
     // case FETCH_INVOICES:
     //   return {
     //     ...state,

@@ -31,7 +31,10 @@ import {
   getInvoiceItemsFail,
   GET_INVOICE,
   getInvoiceSucceeded,
-  getInvoiceFail
+  getInvoiceFail,
+  UPDATE_INVOICE,
+  updateInvoiceSucceeded,
+  updateInvoiceFail
   // POST_INVOICE_SUCCEEDED
 } from "./actions";
 
@@ -208,6 +211,36 @@ export const continueOnGetInvoiceItemsSuccess = (action$) =>
       ),
   );
 
+export const updateInvoiceRequest = (action$) =>
+  action$.pipe(
+    ofType(UPDATE_INVOICE),
+    map(
+      (response) => {
+        // console.log(JSON.parse(response.payload.request.body));
+        // const customer_id = JSON.parse(response.payload.request.body).customer_id;
+        // const discount = JSON.parse(response.payload.request.body).discount;
+        // const total = JSON.parse(response.payload.request.body).total;
+        // const invoice_id = response.payload.response._id;
+        //
+        // const payload = {invoice_id, customer_id, discount, total};
+        const payload = {response};
+        return InvoicesRequestActions.updateInvoice.action(payload)
+      },
+    ),
+  );
+
+export const updateInvoiceRequestSuccess = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.updateInvoiceActionTypes.ACTION_SUCCEEDED,
+  updateInvoiceSucceeded,
+  UPDATE_INVOICE,
+);
+
+export const updateInvoiceRequestFail = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.updateInvoiceActionTypes.ACTION_FAILED,
+  updateInvoiceFail,
+  UPDATE_INVOICE,
+);
+
 
 export const epics = [
   getInvoicesRequest,
@@ -228,94 +261,9 @@ export const epics = [
   getInvoiceRequestFail,
   continueOnGetInvoiceSuccess,
   continueOnPostInvoiceItemsSuccess,
-  continueOnDeleteInvoiceSuccess
+  continueOnDeleteInvoiceSuccess,
+  updateInvoiceRequest,
+  updateInvoiceRequestSuccess,
+  updateInvoiceRequestFail
   // continueOnGetInvoiceItemsSuccess
 ];
-
-
-
-
-// export function fetchInvoicesEpic(action$) {
-//   return action$
-//     .ofType(FETCH_INVOICES)
-//     .switchMap(() => {
-//
-//       return ajax
-//         .getJSON(url)
-//         .map(invoices => invoices.map(invoice => ({
-//           id: invoice._id,
-//           customer: invoice.customer_id,
-//           discount: invoice.discount,
-//           total: invoice.total,
-//         })))
-//     })
-//     .map(invoices => fetchInvoicesSuccess(invoices))
-//
-//     .catch(error => Observable.of(fetchInvoicesFailure(error.message)))
-// }
-//
-//
-// export function postInvoiceEpic(action$) {
-//   return action$
-//     .ofType(POST_INVOICE)
-//     .mergeMap(action => {
-//       return ajax
-//         .post(
-//           url,
-//           JSON.stringify(action.payload),
-//           {'Content-Type': 'application/json'}
-//         )
-//         .map(response => postInvoiceSuccess(response))
-//         .catch(error => Observable.of(postInvoiceFailure(error)))
-//     })
-// }
-//
-// export function getInvoicesListEpic(action$) {
-//   return action$
-//     .ofType(GET_INVOICES_LIST)
-//     .switchMap((id) => {
-//       // console.log(id.id)
-//       return ajax
-//
-//         .getJSON(`https://api.invoice-app.2muchcoffee.com/api/invoices/${id.id}/items`)
-//         .map(invoicesList => invoicesList.map(invoiceList => ({
-//           id: invoiceList._id,
-//           invoice_id: invoiceList.invoice_id,
-//           product_id: invoiceList.product_id,
-//           quantity: invoiceList.quantity,
-//         })))
-//     })
-//     .map(invoices => getInvoicesListSuccess(invoices))
-//
-//     .catch(error => Observable.of(getInvoicesListFailure(error.message)))
-// }
-//
-// export function deleteInvoiceEpic(action$) {
-//   return action$
-//     .ofType(DELETE_INVOICE)
-//     .switchMap((id) => {
-//       // console.log(id)
-//       return ajax
-//
-//         .delete(`https://api.invoice-app.2muchcoffee.com/api/invoices/${id.id}`)
-//     })
-//     .map(invoices => deleteInvoiceSuccess(invoices))
-//
-//     .catch(error => Observable.of(deleteInvoiceFailure(error.message)))
-// }
-//
-// export function editInvoiceEpic(action$) {
-//   return action$
-//     .ofType(EDIT_INVOICE)
-//     .mergeMap((id, action) => {
-//       console.log(id)
-//       return ajax
-//         .put(
-//           `https://api.invoice-app.2muchcoffee.com/api/invoices/${id.id}`,
-//           JSON.stringify(action.payload),
-//           {'Content-Type': 'application/json'})
-//     })
-//     .map(invoices => editInvoiceSuccess(invoices))
-//
-//     .catch(error => Observable.of(editInvoiceFailure(error.message)))
-// }

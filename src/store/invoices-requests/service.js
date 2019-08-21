@@ -50,6 +50,15 @@ class InvoicesRequestsService {
       .getJSON(`${url}/${id}`)
   }
 
+  getInvoice(payload) {
+    return ajax
+      .put(
+        `${url}/${payload.invoice_id}`,
+        JSON.stringify(payload),
+        {'Content-Type': 'application/json'}
+      )
+  }
+
 }
 
 
