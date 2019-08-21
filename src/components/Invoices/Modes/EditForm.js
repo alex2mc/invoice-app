@@ -94,7 +94,7 @@ const renderSelectFieldCustomer = ({
 
                                    }) => (
   <FormControl error={touched && error}>
-    <InputLabel htmlFor="customer-name">Select Name</InputLabel>
+    {/*<InputLabel htmlFor="customer-name">Select Name</InputLabel>*/}
     <Select
       {...input}
       {...custom}
@@ -136,55 +136,65 @@ const renderSelectFieldProduct = ({
 
 class EditForm extends Component {
   state = {
-    customerName: '',
-    productName: '',
+    customerName: null,
+    productName: null,
     discount: 0,
     quantity: 0,
     total: ''
   };
 
   componentDidMount() {
-    this.props.getInvoiceItems(this.props.match.params.invoiceId);
-    this.props.getInvoice(this.props.match.params.invoiceId);
+    const { customer, invoiceItems } = this.props;
+    // this.props.getInvoiceItems(this.props.match.params.invoiceId);
+    // this.props.getInvoice(this.props.match.params.invoiceId);
+    // console.log(customer.customer._id );
+    this.props.initialize({discount: 10, quantity: 25, customerName: customer && customer.customer._id ? customer.customer._id : 'oooooo' })
+  }
+
+  componentWillMount() {
+
+    // this.props.initialize({customerName: customer && customer.customer.name ? customer.customer.name : 'oooooo'})
+    // this.props.initialize({customerName: customer && customer.customer._id})
+
   }
 
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    const {
-      invoicesList,
-      invoices,
-      customers,
-      products
-    } = this.props;
-
-
-    this.setState(state => {
-      // const neededList = invoicesList &&
-      //   invoicesList.find(invoiceList => this.props.match.params.invoiceId === invoiceList.invoice_id);
-
-      const neededInvoice = invoices &&
-        invoices.find(invoice => this.props.match.params.invoiceId === invoice.id);
-
-
-      const neededCustomer = customers && neededInvoice
-        ? customers.find(customer => neededInvoice.customer === customer.id)
-        : null;
-
-      const neededProducts = products && invoicesList &&
-        products.filter(products => invoicesList.find(inv => inv.product_id === products.id));
-
-
-      return {
-        ...state,
-        customerName: neededCustomer,
-        productName: neededProducts,
-        discount: neededInvoice,
-        // quantity: 0,
-        // total: ''
-      }
-    })
-
-  }
+  // componentWillReceiveProps(nextProps, nextContext) {
+  //   const {
+  //     invoicesList,
+  //     invoices,
+  //     customers,
+  //     products
+  //   } = this.props;
+  //
+  //
+  //   this.setState(state => {
+  //     // const neededList = invoicesList &&
+  //     //   invoicesList.find(invoiceList => this.props.match.params.invoiceId === invoiceList.invoice_id);
+  //
+  //     const neededInvoice = invoices &&
+  //       invoices.find(invoice => this.props.match.params.invoiceId === invoice.id);
+  //
+  //
+  //     const neededCustomer = customers && neededInvoice
+  //       ? customers.find(customer => neededInvoice.customer === customer.id)
+  //       : null;
+  //
+  //     const neededProducts = products && invoicesList &&
+  //       products.filter(products => invoicesList.find(inv => inv.product_id === products.id));
+  //
+  //
+  //     return {
+  //       ...state,
+  //       customerName: neededCustomer,
+  //       productName: neededProducts,
+  //       discount: neededInvoice,
+  //       // quantity: 0,
+  //       // total: ''
+  //     }
+  //   })
+  //
+  // }
 
   handleChange = e => {
     const {name, value} = e.target;
@@ -220,6 +230,8 @@ class EditForm extends Component {
 
 
   render () {
+
+
     const {
       pristine,
       submitting,
@@ -231,7 +243,7 @@ class EditForm extends Component {
     } = this.props;
 
     // console.log(this.state);
-    console.log(this.props);
+    // console.log(customer && customer.customer._id ? customer.customer._id : 'oooooo');
 
     if(!customer || customer.name ) {
       return <Spinner />
@@ -246,12 +258,12 @@ class EditForm extends Component {
         </Typography>
 
         {/*CUSTOMER NAME*/}
-        <p>{customer.customer.name} </p>
+        {/*<p>{customer.customer.name} </p>*/}
         <div >
           <Field
             className={classes.formControl}
             name="customerName"
-            value={this.state.customerName}
+            // value={this.state.customerName}
 
             component={renderSelectFieldCustomer}
             onChange={this.handleChange}
@@ -260,7 +272,7 @@ class EditForm extends Component {
             {
               customers
                 ? customers.map(customer => (
-                  <MenuItem key={customer._id} value={customer}>{customer.name}</MenuItem>
+                  <MenuItem key={customer._id} customer_id={customer._id} name="customerName2" value={customer}>{customer.name}</MenuItem>
                 ))
                 : null
             }
@@ -344,7 +356,7 @@ class EditForm extends Component {
                 name="discount"
                 className={classes.numberFormControl}
                 component={renderTextField}
-                label="0"
+                // label="0"
                 type='number'
                 onChange={this.handleChange}
                 value={this.state.discount}
@@ -372,5 +384,7 @@ class EditForm extends Component {
 export default reduxForm({
   form: 'EditForm', // a unique identifier for this form
   validate,
-  asyncValidate
+  asyncValidate,
+  keepDirtyOnReinitialize: true,
+  enableReinitialize: true,
 })(withStyles(styles)(withRouter(EditForm)))
