@@ -11,9 +11,11 @@ import { bindActionCreators } from "redux";
 import { getInvoiceItems, getInvoice } from "../../../store/invoices/actions";
 import { connect } from "react-redux";
 
-
 import { Link } from 'react-router-dom'
 import Spinner from '../../UI/Spinner/Spinner'
+
+import { getProductsState } from '../../../store/products/selectors';
+
 
 const styles = theme => ({
   wrapper: {
@@ -45,56 +47,29 @@ const styles = theme => ({
 class ViewMode extends Component {
 
   componentDidMount() {
-
     this.props.getInvoiceItems(this.props.match.params.invoiceId);
     this.props.getInvoice(this.props.match.params.invoiceId);
   }
 
 
   render () {
-    const { classes, 
+    const {
+      classes,
       customer, 
       invoice, 
-      // products, 
+      products,
       invoiceItems } = this.props;
 
-    console.log("invoiceItems", invoiceItems);
-    console.log(invoice);
-    console.log(customer );
-
-    // const neededList = invoicesList &&
-    //   invoicesList.find(invoiceList => this.props.match.params.invoiceId === invoiceList.invoice_id)
-    //
-    // const neededProduct = neededList
-    //   ? products &&  products.find(product => neededList.product_id === product.id)
-    //   : null
-    //
-    // const neededInvoice = invoices &&
-    //   invoices.find(invoice => this.props.match.params.invoiceId  === invoice.id)
-    //
-    // const neededCustomer = neededInvoice
-    //   ? customers &&
-    //     customers.find(customer => neededInvoice.customer === customer.id)
-    //   : null
+    // console.log("invoiceItems", invoiceItems);
+    // console.log(invoice);
+    // console.log(customer );
 
 
 
-
-    //
-    // if(!neededList  || !neededProduct || !neededInvoice || !neededCustomer) {
-    //   return <Spinner />
-    // }
-
-    // const invoiceSubtotal = neededList.quantity * neededProduct.price;
-    //
-    // const invoiceDiscount = (neededInvoice.discount * invoiceSubtotal) / 100;
-    // const invoiceTotal = invoiceSubtotal - invoiceDiscount;
-
-    if(!invoice || !customer || !customer.customer) {
+    if(!invoice || !customer || !customer.customer || !products ) {
       return <Spinner />
     }
 
-    // console.log(invoiceTotal)
     return (
       <Paper className={classes.wrapper}>
         <Typography variant="subtitle2" gutterBottom className={classes.tableHeader}>
@@ -122,14 +97,13 @@ class ViewMode extends Component {
                   invoiceItems.map(invoiceItem => (
                     <TableRow key={invoiceItem._id}>
                       <TableCell>
-                        {/*{neededProduct.name}*/}
-
+                        {products.find(product => invoiceItem.product_id === product._id).name}
                       </TableCell>
                       <TableCell align="right">
                         {invoiceItem.quantity}
                       </TableCell>
                       <TableCell align="right">
-                        {/*{neededProduct.price}*/}
+                        {products.find(product => invoiceItem.product_id === product._id).price}
                       </TableCell>
                     </TableRow>
                   ))
@@ -152,7 +126,7 @@ class ViewMode extends Component {
               Discount (%)
             </Typography>
             <Typography variant="h4" align="center" gutterBottom className={classes.tableHeader}>
-              {invoice.invoice.discount}
+              {invoice.invoice.discount ? invoice.invoice.discount : 0}
             </Typography>
           </Paper>
         </div>
@@ -163,13 +137,9 @@ class ViewMode extends Component {
 
 const mapStateToProps =  state => {
   return {
-    product: state.products.product,
-    isProductsLoading: state.products.isLoading,
+    products: getProductsState(state),
     invoice: state.invoices.invoice,
-    isInvoicesLoading: state.invoices.isLoading,
-    customers: state.customers.customers,
     customer: state.customers.customer,
-    isCustomersLoading: state.customers.isLoading,
     invoiceItems: state.invoices.invoiceItems
   }
 };
