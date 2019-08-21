@@ -1,11 +1,18 @@
 import { createSelector } from 'reselect';
 // selector
-const getCustomers = (state) => state.customers.customers
+const getCustomers = (state) => state.customers.customers;
 // reselect function
 export const getCustomersState = createSelector(
   [ getCustomers ],
   (customers) => customers
-)
+);
+
+const getCustomer = (state) => state.customers.customer;
+// reselect function
+export const getCustomerState = createSelector(
+  [ getCustomer ],
+  (customer) => customer
+);
 
 
 

@@ -12,8 +12,9 @@ import { getInvoice, getInvoiceItems } from "../../../store/invoices/actions";
 
 import EditForm from './EditForm';
 
-import { getCustomersState } from '../../../store/customers/selectors';
+import { getCustomersState, getCustomerState } from '../../../store/customers/selectors';
 import { getInvoiceState } from '../../../store/invoices/selectors';
+import { getProductsState } from '../../../store/products/selectors';
 
 
 const styles = theme => ({
@@ -121,9 +122,8 @@ class InvoiceCreateMode extends Component {
 
 const mapStateToProps =  state => {
   return {
-    products: state.products.products,
-    isProductsLoading: state.products.isLoading,
-    customer: state.customers.customer,
+    products: getProductsState(state),
+    customer: getCustomerState(state),
     customers: getCustomersState(state),
     invoiceItems: state.invoices.invoiceItems,
     invoice: getInvoiceState(state)
