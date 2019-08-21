@@ -1,4 +1,5 @@
 import { ofType } from 'redux-observable';
+// import React from "react";
 
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
@@ -6,6 +7,8 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 
 import { map } from 'rxjs/operators';
+
+// import { Redirect } from 'react-router-dom';
 
 import { transferActionEpicFactory } from '../utils/transfer-action';
 import { Actions as InvoicesRequestActions, ActionTypes as InvoicesRequestsActionTypes } from '../invoices-requests';
@@ -96,6 +99,18 @@ export const continueOnPostInvoiceSuccess = (action$) =>
       return InvoicesRequestActions.postInvoiceItems.action(payload)
       },
       ),
+  );
+
+export const continueOnPostInvoiceItemsSuccess = (action$) =>
+  action$.pipe(
+    ofType("POST_INVOICE_ITEMS_REQUEST_SUCCEEDED"),
+    map(
+      () => {
+        // console.log("FETCHING");
+        {/*<Redirect to="/invoices"/>*/}
+        return InvoicesRequestActions.getInvoices.action();
+      }
+    )
   );
 
 
@@ -205,6 +220,7 @@ export const epics = [
   getInvoiceRequestSuccess,
   getInvoiceRequestFail,
   continueOnGetInvoiceSuccess,
+  continueOnPostInvoiceItemsSuccess
   // continueOnGetInvoiceItemsSuccess
 ];
 

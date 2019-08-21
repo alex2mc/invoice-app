@@ -58,9 +58,9 @@ class ViewMode extends Component {
       // products, 
       invoiceItems } = this.props;
 
-    console.log(invoiceItems);
+    console.log("invoiceItems", invoiceItems);
     console.log(invoice);
-    console.log(customer);
+    console.log(customer );
 
     // const neededList = invoicesList &&
     //   invoicesList.find(invoiceList => this.props.match.params.invoiceId === invoiceList.invoice_id)

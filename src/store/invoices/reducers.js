@@ -31,7 +31,7 @@ export default function invoicesReducer(state = initialState, action) {
     }
 
     case "POST_INVOICE_ITEMS_REQUEST_SUCCEEDED": {
-      console.log(action);
+      // console.log(action);
       return {
         ...state,
         // invoiceItems: [...action.payload],
