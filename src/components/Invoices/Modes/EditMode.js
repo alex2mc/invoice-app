@@ -3,15 +3,16 @@ import React, { Component } from 'react';
 import { withStyles} from '@material-ui/core/styles';
 
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 
 import Spinner from '../../UI/Spinner/Spinner'
 
 import { connect } from 'react-redux';
 import {bindActionCreators} from "redux";
-import {fetchInvoices, editInvoice, getInvoicesList } from "../../../store/invoices/actions";
+import { getInvoice, getInvoiceItems } from "../../../store/invoices/actions";
 
 import EditForm from './EditForm';
+
+import { getCustomersState } from '../../../store/customers/selectors';
 
 
 
@@ -72,7 +73,18 @@ class InvoiceCreateMode extends Component {
 
 
   render() {
-    const {classes, isProductsLoading, isCustomersLoading, customers, products, postInvoice, fetchInvoices, invoicesList, getInvoicesList, invoices, editInvoice } = this.props;
+    const {classes,
+      isProductsLoading,
+      isCustomersLoading,
+      customers,
+      customer,
+      products,
+      postInvoice,
+      invoicesList,
+      invoices,
+      getInvoice,
+      getInvoiceItems
+    } = this.props;
     // console.log(this.props)
     // console.log(this.state)
 
@@ -82,17 +94,17 @@ class InvoiceCreateMode extends Component {
 
     return (
       <Paper className={classes.wrapper}>
-        <Typography variant="subtitle2" gutterBottom className={classes.tableHeader}>Invoice id</Typography>
 
         <EditForm
           customers={customers}
+          customer={customer}
           products={products}
           postInvoice={postInvoice}
-          fetchInvoices={fetchInvoices}
           invoicesList={invoicesList}
-          getInvoicesList={getInvoicesList}
           invoices={invoices}
-          editInvoice={editInvoice}
+          getInvoice={getInvoice}
+          getInvoiceItems={getInvoiceItems}
+          // initialValues={{customer}}
         />
       </Paper>
     )
@@ -103,18 +115,18 @@ const mapStateToProps =  state => {
   return {
     products: state.products.products,
     isProductsLoading: state.products.isLoading,
-    customers: state.customers.customers,
+    customer: state.customers.customer,
+    customers: getCustomersState(state),
     isCustomersLoading: state.customers.isLoading,
     invoicesList: state.invoices.invoicesList,
     invoices: state.invoices.invoices
   }
-}
+};
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
-    editInvoice,
-    fetchInvoices,
-    getInvoicesList
+    getInvoice,
+    getInvoiceItems
   }, dispatch);
 
 

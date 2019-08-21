@@ -22,7 +22,10 @@ import validate from './validate'
 
 import {withStyles} from "@material-ui/core";
 
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
+
+import { initialize } from 'redux-form';
+
 
 
 const styles = theme => ({
@@ -53,7 +56,7 @@ const styles = theme => ({
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(2),
   }
-})
+});
 
 
 const renderTextField = ({
@@ -87,7 +90,8 @@ const renderSelectFieldCustomer = ({
                                      label,
                                      meta: { touched, error },
                                      children,
-                                     ...custom
+                                     ...custom,
+
                                    }) => (
   <FormControl error={touched && error}>
     <InputLabel htmlFor="customer-name">Select Name</InputLabel>
@@ -140,12 +144,18 @@ class EditForm extends Component {
   };
 
   componentDidMount() {
-    this.props.getInvoicesList(this.props.match.params.invoiceId)
+    this.props.getInvoiceItems(this.props.match.params.invoiceId);
+    this.props.getInvoice(this.props.match.params.invoiceId);
   }
 
 
   componentWillReceiveProps(nextProps, nextContext) {
-    const {invoicesList, invoices, customers, products} = this.props;
+    const {
+      invoicesList,
+      invoices,
+      customers,
+      products
+    } = this.props;
 
 
     this.setState(state => {
@@ -163,7 +173,6 @@ class EditForm extends Component {
       const neededProducts = products && invoicesList &&
         products.filter(products => invoicesList.find(inv => inv.product_id === products.id));
 
-        console.log('neededProducts', neededProducts);
 
       return {
         ...state,
@@ -178,13 +187,15 @@ class EditForm extends Component {
   }
 
   handleChange = e => {
-    const {name, value} = e.target
+    const {name, value} = e.target;
     this.setState(state => {
       return {
         ...state,
         [name]: value
       }
-    }, makeAfterSetState);
+    },
+      // makeAfterSetState
+    );
 
     function makeAfterSetState() {
       const invoiceSubtotal = this.state.quantity * this.state.productName.price;
@@ -202,31 +213,46 @@ class EditForm extends Component {
 
   handleSavingInvoice = async (e) => {
     e.preventDefault();
-    this.props.editInvoice(this.props.match.params.invoiceId, {customer_id: this.state.customerName.id, discount: +this.state.discount, total: +this.state.total})
+    // this.props.editInvoice(this.props.match.params.invoiceId, {customer_id: this.state.customerName.id, discount: +this.state.discount, total: +this.state.total})
 
 
   };
 
 
   render () {
-    const {pristine, submitting, classes, customers, products, invalid } = this.props;
-    // console.log(this.state);
-console.log(this.props.invoicesList);
-console.log(this.props.match.params.invoiceId)
+    const {
+      pristine,
+      submitting,
+      classes,
+      customer,
+      customers,
+      products,
+      invalid
+    } = this.props;
 
-    if(!this.state.productName ) {
+    // console.log(this.state);
+    console.log(this.props);
+
+    if(!customer || customer.name ) {
       return <Spinner />
     }
 
     return (
       <form onSubmit={this.handleSavingInvoice}>
 
+        <Typography variant="subtitle2" gutterBottom className={classes.tableHeader}>
+          <p>Invoice ID:</p>
+          {this.props.match.params.invoiceId}
+        </Typography>
+
         {/*CUSTOMER NAME*/}
+        <p>{customer.customer.name} </p>
         <div >
           <Field
             className={classes.formControl}
             name="customerName"
             value={this.state.customerName}
+
             component={renderSelectFieldCustomer}
             onChange={this.handleChange}
             label="Select Name"
@@ -234,7 +260,7 @@ console.log(this.props.match.params.invoiceId)
             {
               customers
                 ? customers.map(customer => (
-                  <MenuItem key={customer.id} value={customer}>{customer.name}</MenuItem>
+                  <MenuItem key={customer._id} value={customer}>{customer.name}</MenuItem>
                 ))
                 : null
             }
@@ -260,7 +286,7 @@ console.log(this.props.match.params.invoiceId)
                     <Field
                       className={classes.formControl}
                       name="productName"
-                      value={this.state.productName.name}
+                      // value={this.state.productName.name}
                       component={renderSelectFieldProduct}
                       onChange={this.handleChange}
                       label="Add Product"
@@ -268,7 +294,7 @@ console.log(this.props.match.params.invoiceId)
                       {
                         products
                           ? products.map(product => (
-                            <MenuItem key={product.id} value={product}>{product.name}</MenuItem>
+                            <MenuItem key={product._id} value={product}>{product.name}</MenuItem>
                           ))
                           : null
                       }
@@ -295,14 +321,16 @@ console.log(this.props.match.params.invoiceId)
                 </ListItemText>
 
                 <ListItemText >
-                  {this.state.productName.price}
+                  {/*{this.state.productName.price}*/}
                 </ListItemText>
               </ListItem>
               <Divider />
 
               <ListItem>
                 <ListItemText >Total</ListItemText>
-                <ListItemText >{this.state.total}</ListItemText>
+                <ListItemText >
+                  {/*{this.state.total}*/}
+                </ListItemText>
               </ListItem>
             </List>
 
