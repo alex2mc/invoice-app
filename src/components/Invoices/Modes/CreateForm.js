@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, FieldArray } from 'redux-form';
 
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
@@ -22,6 +22,7 @@ import asyncValidate from './asyncValidate';
 import validate from './validate';
 
 import { withRouter } from 'react-router-dom';
+import CreateFields from "./CreateFields";
 
 
 const styles = theme => ({
@@ -135,35 +136,35 @@ class CreateForm extends Component {
     productName: '',
     discount: 0,
     quantity: 0,
-    subtotal: '',
+    sum: '',
     total: ''
   };
 
   handleChange = e => {
-    const {name, value} = e.target
+    const {name, value} = e.target;
     this.setState(state => {
       return {
         ...state,
         [name]: value
       }
-    }, makeAfterSetState)
+    }, makeAfterSetState);
 
     function makeAfterSetState() {
-      const invoiceSubtotal = this.state.quantity * this.state.productName.price;
+      const invoiceSum = this.state.quantity * this.state.productName.price;
 
-      const invoiceDiscount = (this.state.discount * invoiceSubtotal) / 100;
-      const invoiceTotal = invoiceSubtotal - invoiceDiscount;
+      const invoiceDiscount = (this.state.discount * invoiceSum) / 100;
+      const invoiceTotal = invoiceSum - invoiceDiscount;
 
       this.setState(state => {
         return  {
           ...state,
-          subtotal: invoiceSubtotal.toFixed(2),
+          sum: invoiceSum.toFixed(2),
           total: invoiceTotal.toFixed(2)
         }
       })}
   };
 
-  handleSavingInvoice = async (e) => {
+  handleSavingInvoice = (e) => {
     e.preventDefault();
 
     this.props.postInvoice({
@@ -215,52 +216,62 @@ class CreateForm extends Component {
          </ListItem>
          <Divider />
 
-         <ListItem>
-           <ListItemText>
-              {/*PRODUCT NAME*/}
-             <div>
-               <Field
-                 className={classes.formControl}
-                 name="productName"
-                 value={this.state.productName}
-                 component={renderSelectFieldProduct}
-                 onChange={this.handleChange}
-                 label="Add Product"
-               >
-                 {
-                   products
-                     ? products.map(product => (
-                       <MenuItem key={product._id} value={product}>{product.name}</MenuItem>
-                     ))
-                     : null
-                 }
-               </Field>
-             </div>
-             </ListItemText>
+          <FieldArray
+            name="holidays"
+            component={CreateFields}
+            renderSelectFieldProduct={renderSelectFieldProduct}
+            renderTextField={renderTextField}
+            classes={classes}
+            products={products}
+            handleChange={this.handleChange}
+          />
 
-           <ListItemText >
-             {/*QUANTITY*/}
-             <div>
-               <Field
-                 name="quantity"
-                 className={classes.numberFormControl}
-                 component={renderTextField}
-                 label="0"
-                 type='number'
-                 onChange={this.handleChange}
-                 value={this.state.quantity}
-                 inputProps={{
-                   step: 1, // 5 min
-                 }}
-               />
-             </div>
-           </ListItemText>
+         {/*<ListItem>*/}
+         {/*  <ListItemText>*/}
+         {/*     /!*PRODUCT NAME*!/*/}
+         {/*    <div>*/}
+         {/*      <Field*/}
+         {/*        className={classes.formControl}*/}
+         {/*        name="productName"*/}
+         {/*        value={this.state.productName}*/}
+         {/*        component={renderSelectFieldProduct}*/}
+         {/*        onChange={this.handleChange}*/}
+         {/*        label="Add Product"*/}
+         {/*      >*/}
+         {/*        {*/}
+         {/*          products*/}
+         {/*            ? products.map(product => (*/}
+         {/*              <MenuItem key={product._id} value={product}>{product.name}</MenuItem>*/}
+         {/*            ))*/}
+         {/*            : null*/}
+         {/*        }*/}
+         {/*      </Field>*/}
+         {/*    </div>*/}
+         {/*    </ListItemText>*/}
 
-           <ListItemText >
-             {isNaN(this.state.subtotal) ? null : this.state.subtotal }
-           </ListItemText>
-         </ListItem>
-         <Divider />
+         {/*  <ListItemText >*/}
+         {/*    /!*QUANTITY*!/*/}
+         {/*    <div>*/}
+         {/*      <Field*/}
+         {/*        name="quantity"*/}
+         {/*        className={classes.numberFormControl}*/}
+         {/*        component={renderTextField}*/}
+         {/*        label="0"*/}
+         {/*        type='number'*/}
+         {/*        onChange={this.handleChange}*/}
+         {/*        value={this.state.quantity}*/}
+         {/*        inputProps={{*/}
+         {/*          step: 1, // 5 min*/}
+         {/*        }}*/}
+         {/*      />*/}
+         {/*    </div>*/}
+         {/*  </ListItemText>*/}
+
+         {/*  <ListItemText >*/}
+         {/*    {isNaN(this.state.sum) ? null : this.state.sum }*/}
+         {/*  </ListItemText>*/}
+         {/*</ListItem>*/}
+         {/*<Divider />*/}
 
          <ListItem>
            <ListItemText >Total</ListItemText>

@@ -157,8 +157,8 @@ class EditForm extends Component {
       return {};
     }
 
-    // const product_name = invoiceItems.map(invoiceItem => (
-    //   products.find(product => invoiceItem.product_id === product._id).name));
+    const product_name = invoiceItems.map(invoiceItem => (
+      (products.find(product => invoiceItem.product_id === product._id) || {name: 'kill me'}).name));
     //
     // const product_price = invoiceItems.map(invoiceItem => (
     //   products.find(product => invoiceItem.product_id === product._id).price));
@@ -174,7 +174,7 @@ class EditForm extends Component {
       discount: invoice.invoice.discount ? invoice.invoice.discount : 0,
       quantity: invoiceItems.map(inv => inv.quantity),
       customerName: customer && customer.customer ? customer.customer.name : 'kill me',
-      // productName: product_name
+      productName: product_name
     },
       // [{keepDirty: false, keepSubmitSucceeded: false, updateUnregisteredFields: false, keepValues: false}]
     );
