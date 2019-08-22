@@ -106,8 +106,6 @@ export const continueOnPostInvoiceItemsSuccess = (action$) =>
     ofType("POST_INVOICE_ITEMS_REQUEST_SUCCEEDED"),
     map(
       () => {
-        // console.log("FETCHING");
-        {/*<Redirect to="/invoices"/>*/}
         return InvoicesRequestActions.getInvoices.action();
       }
     )
@@ -205,7 +203,7 @@ export const continueOnGetInvoiceItemsSuccess = (action$) =>
     ofType("GET_INVOICE_ITEMS_REQUEST_SUCCEEDED"),
     map(
       (response) => {       
-        console.log(response.payload);
+        // console.log(response.payload);
       return ProductsRequestActions.getProduct.action()
       },
       ),
@@ -215,16 +213,10 @@ export const updateInvoiceRequest = (action$) =>
   action$.pipe(
     ofType(UPDATE_INVOICE),
     map(
-      (response) => {
-        // console.log(JSON.parse(response.payload.request.body));
-        // const customer_id = JSON.parse(response.payload.request.body).customer_id;
-        // const discount = JSON.parse(response.payload.request.body).discount;
-        // const total = JSON.parse(response.payload.request.body).total;
-        // const invoice_id = response.payload.response._id;
-        //
-        // const payload = {invoice_id, customer_id, discount, total};
-        const payload = {response};
-        return InvoicesRequestActions.updateInvoice.action(payload)
+      (payload) => {
+        // console.log(payload.payload.invoice_id);
+
+        return InvoicesRequestActions.updateInvoice.action(payload.payload)
       },
     ),
   );

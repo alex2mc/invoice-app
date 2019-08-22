@@ -54,7 +54,12 @@ const styles = theme => ({
   button: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(2),
-  }
+  },
+  tableHeader: {
+    // paddingTop: theme.spacing(1),
+    // paddingLeft: theme.spacing(2),
+    // marginBottom: theme.spacing(2),
+  },
 });
 
 
@@ -137,6 +142,7 @@ class EditForm extends Component {
   state = {
     customerName: null,
     productName: null,
+    productPrice: null,
     discount: null,
     quantity: null,
     total: ''
@@ -148,6 +154,11 @@ class EditForm extends Component {
     const product_name = invoiceItems.map(invoiceItem => (
       products.find(product => invoiceItem.product_id === product._id).name));
 
+    const product_price = invoiceItems.map(invoiceItem => (
+      products.find(product => invoiceItem.product_id === product._id).price));
+
+    const ChoosenProduct = invoiceItems.map(invoiceItem => (
+      products.find(product => invoiceItem.product_id === product._id)));
 
     // console.log(invoiceItems);
     this.props.initialize({
@@ -155,6 +166,21 @@ class EditForm extends Component {
       quantity: invoiceItems.map(inv => inv.quantity),
       customerName: customer.customer.name,
       productName: product_name
+    },
+      // [{keepDirty: false, keepSubmitSucceeded: false, updateUnregisteredFields: false, keepValues: false}]
+    );
+
+    this.setState(state => {
+
+
+      return {
+        ...state,
+        customerName: customer.customer.name,
+        productName: ChoosenProduct.name ? ChoosenProduct.name : product_name,
+        productPrice: ChoosenProduct.price ? ChoosenProduct.price : product_price,
+        discount: invoice.invoice.discount ? invoice.invoice.discount : 0,
+        quantity: invoiceItems.map(inv => inv.quantity),
+      }
     })
   }
 
@@ -203,13 +229,13 @@ class EditForm extends Component {
         [name]: value
       }
     },
-      // makeAfterSetState
+      makeAfterSetState
     );
 
     function makeAfterSetState() {
-      const invoiceSubtotal = this.state.quantity * this.state.productName.price;
+      const invoiceSubtotal = +this.state.quantity * +this.state.productPrice;
 
-      const invoiceDiscount = (this.state.discount.discount * invoiceSubtotal) / 100;
+      const invoiceDiscount = (this.state.discount * invoiceSubtotal) / 100;
       const invoiceTotal = invoiceSubtotal - invoiceDiscount;
 
       this.setState(state => {
@@ -222,15 +248,16 @@ class EditForm extends Component {
 
   handleSavingInvoice =  (e) => {
     e.preventDefault();
-    // this.props.editInvoice(this.props.match.params.invoiceId, {customer_id: this.state.customerName.id, discount: +this.state.discount, total: +this.state.total})
-
+    this.props.updateInvoice({
+      invoice_id: this.props.match.params.invoiceId,
+      customer_id: this.state.customerName.id,
+      discount: +this.state.discount,
+      total: +this.state.total})
 
   };
 
 
   render () {
-
-
     const {
       pristine,
       submitting,
@@ -241,8 +268,7 @@ class EditForm extends Component {
       invalid
     } = this.props;
 
-    // console.log(this.state);
-    // console.log(customer && customer.customer._id ? customer.customer._id : 'oooooo');
+    console.log(this.state);
 
     if(!customer || customer.name ) {
       return <Spinner />
@@ -334,6 +360,7 @@ class EditForm extends Component {
 
                 <ListItemText >
                   {/*{this.state.productName.price}*/}
+                  {this.state.productPrice}
                 </ListItemText>
               </ListItem>
               <Divider />
@@ -341,7 +368,7 @@ class EditForm extends Component {
               <ListItem>
                 <ListItemText >Total</ListItemText>
                 <ListItemText >
-                  {/*{this.state.total}*/}
+                  {this.state.total}
                 </ListItemText>
               </ListItem>
             </List>
@@ -385,5 +412,6 @@ export default reduxForm({
   form: 'EditForm', // a unique identifier for this form
   validate,
   asyncValidate,
-
+  enableReinitialize : true,
+  keepDirtyOnReinitialize : true
 })(withStyles(styles)(withRouter(EditForm)))

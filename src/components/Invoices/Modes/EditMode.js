@@ -7,8 +7,8 @@ import Paper from '@material-ui/core/Paper';
 import Spinner from '../../UI/Spinner/Spinner'
 
 import { connect } from 'react-redux';
-import {bindActionCreators} from "redux";
-import { getInvoice, getInvoiceItems } from "../../../store/invoices/actions";
+import { bindActionCreators } from "redux";
+import { getInvoice, getInvoiceItems, updateInvoice } from "../../../store/invoices/actions";
 
 import EditForm from './EditForm';
 
@@ -33,10 +33,7 @@ const styles = theme => ({
     marginBottom: theme.spacing(6),
     overflowX: 'auto',
   },
-  tableHeader: {
-    paddingTop: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
-  },
+
   table: {
     minWidth: 500,
     // marginBottom: theme.spacing(3),
@@ -70,7 +67,7 @@ const styles = theme => ({
 
 
 class InvoiceCreateMode extends Component {
-  componentDidMount() {
+  componentWillMount() {
     // const { customer, invoiceItems } = this.props;
     this.props.getInvoiceItems(this.props.match.params.invoiceId);
     this.props.getInvoice(this.props.match.params.invoiceId);
@@ -90,7 +87,8 @@ class InvoiceCreateMode extends Component {
       invoiceItems,
       invoice,
       getInvoice,
-      getInvoiceItems
+      getInvoiceItems,
+      updateInvoice
     } = this.props;
     // console.log(this.props)
     // console.log(this.state)
@@ -112,7 +110,7 @@ class InvoiceCreateMode extends Component {
           invoice={invoice}
           getInvoice={getInvoice}
           getInvoiceItems={getInvoiceItems}
-          // initialValues={{customer}}
+          updateInvoice={updateInvoice}
         />
         :null}
       </Paper>
@@ -133,7 +131,8 @@ const mapStateToProps =  state => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
     getInvoice,
-    getInvoiceItems
+    getInvoiceItems,
+    updateInvoice
   }, dispatch);
 
 

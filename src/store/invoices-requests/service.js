@@ -54,7 +54,7 @@ class InvoicesRequestsService {
     return ajax
       .put(
         `${url}/${payload.invoice_id}`,
-        JSON.stringify(payload),
+        JSON.stringify(payload.customer_id, payload.discount, payload.total),
         {'Content-Type': 'application/json'}
       )
   }
