@@ -12,7 +12,7 @@ import { getInvoice, getInvoiceItems, updateInvoice } from "../../../store/invoi
 
 import EditForm from './EditForm';
 
-import { getCustomersState, getCustomerState } from '../../../store/customers/selectors';
+import {getCustomer, getCustomersState, getCustomerState} from '../../../store/customers/selectors';
 import { getInvoiceState, getInvoiceItemsState } from '../../../store/invoices/selectors';
 import { getProductsState } from '../../../store/products/selectors';
 
@@ -100,7 +100,7 @@ class InvoiceCreateMode extends Component {
     return (
       <Paper className={classes.wrapper}>
 
-        {customer ?
+        {/*{customer ?*/}
           <EditForm
           customers={customers}
           customer={customer}
@@ -112,7 +112,7 @@ class InvoiceCreateMode extends Component {
           getInvoiceItems={getInvoiceItems}
           updateInvoice={updateInvoice}
         />
-        :null}
+        {/*:null}*/}
       </Paper>
     )
   }
@@ -121,7 +121,7 @@ class InvoiceCreateMode extends Component {
 const mapStateToProps =  state => {
   return {
     products: getProductsState(state),
-    customer: getCustomerState(state),
+    customer: getCustomer(state),
     customers: getCustomersState(state),
     invoiceItems: getInvoiceItemsState(state),
     invoice: getInvoiceState(state)

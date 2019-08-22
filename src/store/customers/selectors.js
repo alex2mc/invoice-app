@@ -7,11 +7,19 @@ export const getCustomersState = createSelector(
   (customers) => customers
 );
 
-const getCustomer = (state) => state.customers.customer;
+export const getCustomer = (state) => state.customers.customer;
 // reselect function
 export const getCustomerState = createSelector(
   [ getCustomer ],
-  (customer) => customer
+  (customer) => {
+
+    if(!customer){
+      return {};
+    }
+
+    console.log(123, customer.customer)
+    return customer.customer;
+  }
 );
 
 

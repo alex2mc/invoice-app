@@ -24,6 +24,9 @@ import {withStyles} from "@material-ui/core";
 
 import { withRouter } from 'react-router-dom';
 
+import { getCustomer } from "../../../store/customers/selectors";
+import { connect } from 'react-redux';
+
 
 
 
@@ -148,40 +151,46 @@ class EditForm extends Component {
     total: ''
   };
 
-  componentDidMount() {
+  componentDidUpdate(prevProps, prevState) {
     const { customer,  invoiceItems, products, invoice} = this.props;
+    if(!invoice || !products) {
+      return {};
+    }
 
-    const product_name = invoiceItems.map(invoiceItem => (
-      products.find(product => invoiceItem.product_id === product._id).name));
+    // const product_name = invoiceItems.map(invoiceItem => (
+    //   products.find(product => invoiceItem.product_id === product._id).name));
+    //
+    // const product_price = invoiceItems.map(invoiceItem => (
+    //   products.find(product => invoiceItem.product_id === product._id).price));
 
-    const product_price = invoiceItems.map(invoiceItem => (
-      products.find(product => invoiceItem.product_id === product._id).price));
-
-    const ChoosenProduct = invoiceItems.map(invoiceItem => (
+    const chosenProduct = invoiceItems.map(invoiceItem => (
       products.find(product => invoiceItem.product_id === product._id)));
 
-    // console.log(invoiceItems);
+
+
+    // console.log(4444, customer);
+    console.log(chosenProduct.name);
     this.props.initialize({
       discount: invoice.invoice.discount ? invoice.invoice.discount : 0,
       quantity: invoiceItems.map(inv => inv.quantity),
-      customerName: customer.customer.name,
-      productName: product_name
+      customerName: customer && customer.customer ? customer.customer.name : 'kill me',
+      // productName: product_name
     },
       // [{keepDirty: false, keepSubmitSucceeded: false, updateUnregisteredFields: false, keepValues: false}]
     );
 
-    this.setState(state => {
-
-
-      return {
-        ...state,
-        customerName: customer.customer.name,
-        productName: ChoosenProduct.name ? ChoosenProduct.name : product_name,
-        productPrice: ChoosenProduct.price ? ChoosenProduct.price : product_price,
-        discount: invoice.invoice.discount ? invoice.invoice.discount : 0,
-        quantity: invoiceItems.map(inv => inv.quantity),
-      }
-    })
+    // this.setState(state => {
+    //
+    //
+    //   return {
+    //     ...state,
+    //     customerName: customer.customer.name,
+    //     productName: chosenProduct.name ? chosenProduct.name : product_name,
+    //     productPrice: chosenProduct.price ? chosenProduct.price : product_price,
+    //     discount: invoice.invoice.discount ? invoice.invoice.discount : 0,
+    //     quantity: invoiceItems.map(inv => inv.quantity),
+    //   }
+    // })
   }
 
   // componentWillReceiveProps(nextProps, nextContext) {
@@ -268,7 +277,7 @@ class EditForm extends Component {
       invalid
     } = this.props;
 
-    console.log(this.state);
+    // console.log(5555, customer);
 
     if(!customer || customer.name ) {
       return <Spinner />
@@ -408,10 +417,16 @@ class EditForm extends Component {
   }
 };
 
+const mapStateToProps =  state => {
+  return {
+    // customer: getCustomer(state),
+  }
+};
+
 export default reduxForm({
   form: 'EditForm', // a unique identifier for this form
   validate,
   asyncValidate,
   enableReinitialize : true,
   keepDirtyOnReinitialize : true
-})(withStyles(styles)(withRouter(EditForm)))
+})(withStyles(styles)(withRouter(connect(mapStateToProps)(EditForm))))

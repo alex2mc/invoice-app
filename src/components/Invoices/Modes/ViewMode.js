@@ -16,7 +16,7 @@ import Spinner from '../../UI/Spinner/Spinner'
 
 import { getProductsState } from '../../../store/products/selectors';
 import { getInvoiceState, getInvoiceItemsState } from '../../../store/invoices/selectors';
-import { getCustomerState } from '../../../store/customers/selectors';
+import { getCustomer } from '../../../store/customers/selectors';
 
 
 const styles = theme => ({
@@ -141,7 +141,7 @@ const mapStateToProps =  state => {
   return {
     products: getProductsState(state),
     invoice: getInvoiceState(state),
-    customer: getCustomerState(state),
+    customer: getCustomer(state),
     invoiceItems: getInvoiceItemsState(state)
   }
 };
