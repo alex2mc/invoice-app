@@ -44,7 +44,7 @@ class CreateFields extends Component {
           // console.log('quantity', quantity);
           return (
 
-          <div>
+          <div key={fieldsArrayIndex}>
             <ListItem>
               <ListItemText>
                 {/*PRODUCT NAME*/}
@@ -93,16 +93,6 @@ class CreateFields extends Component {
           </div>
           )
         })}
-        {/* TOTAL LINE */}
-        {/*<div>{this.total()}</div>*/}
-
-
-        {/*<ListItem>*/}
-          {/*<ListItemText >Total</ListItemText>*/}
-          {/*<ListItemText >*/}
-            {/*{console.log(this.props) || this.total()}*/}
-          {/*</ListItemText>*/}
-        {/*</ListItem>*/}
       </div>
     );
   }

@@ -73,7 +73,7 @@ class InvoiceCreateMode extends Component {
 
   render() {
     const {classes, isProductsLoading, isCustomersLoading, customers, products, getInvoices, postInvoice, postInvoiceItems } = this.props;
-    // console.log(this.props)
+    console.log('this.props.total', this.props.total)
     // console.log(this.state)
 
     if (isProductsLoading && isCustomersLoading) {
@@ -85,6 +85,7 @@ class InvoiceCreateMode extends Component {
         <Typography variant="subtitle2" gutterBottom className={classes.tableHeader}>Invoice id</Typography>
 
         <Form
+          total={this.props.total}
           customers={customers}
           products={products}
           postInvoice={postInvoice}
@@ -96,11 +97,19 @@ class InvoiceCreateMode extends Component {
 }
 
 const mapStateToProps =  state => {
+  const discount = state.form.CreateForm && (state.form.CreateForm.values.discount || 0)
+  const totalReduceCb = (acc, cur) =>
+    acc + (((cur.productName && cur.productName.price) || 0) * (cur.quantity || 1))
+  const totalWithoutDiscount = state.form.CreateForm ? state.form.CreateForm.values.items.reduce(totalReduceCb, 0) : 0
+  const discountIn$ = (discount * totalWithoutDiscount) / 100
+  const total = totalWithoutDiscount - discountIn$
+
   return {
     products: state.products.products,
     isProductsLoading: state.products.isLoading,
     customers: state.customers.customers,
-    isCustomersLoading: state.customers.isLoading
+    isCustomersLoading: state.customers.isLoading,
+    total,
   }
 }
 

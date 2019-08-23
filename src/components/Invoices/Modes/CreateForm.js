@@ -217,7 +217,7 @@ class CreateForm extends Component {
          <Divider />
 
           <FieldArray
-            name="item"
+            name="items"
             component={CreateFields}
             renderSelectFieldProduct={renderSelectFieldProduct}
             renderTextField={renderTextField}
@@ -278,7 +278,7 @@ class CreateForm extends Component {
          <ListItem>
            <ListItemText >Total</ListItemText>
            <ListItemText >
-             {isNaN(this.state.total) ? null : this.state.total}
+             {this.props.total || 0}
            </ListItemText>
          </ListItem>
         </List>
