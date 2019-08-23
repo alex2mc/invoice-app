@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Field, reduxForm, FieldArray } from 'redux-form';
+import { Field, reduxForm, FieldArray, formValues } from 'redux-form';
 
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
@@ -132,37 +132,37 @@ const renderSelectFieldProduct = ({
 
 class CreateForm extends Component {
   state = {
-    customerName: '',
-    productName: '',
-    discount: 0,
-    quantity: 0,
-    sum: '',
-    total: ''
+    // customerName: '',
+    // productName: '',
+    // discount: 0,
+    // quantity: 0,
+    // sum: '',
+    // total: ''
   };
 
-  handleChange = e => {
-    const {name, value} = e.target;
-    this.setState(state => {
-      return {
-        ...state,
-        [name]: value
-      }
-    }, makeAfterSetState);
-
-    function makeAfterSetState() {
-      const invoiceSum = this.state.quantity * this.state.productName.price;
-
-      const invoiceDiscount = (this.state.discount * invoiceSum) / 100;
-      const invoiceTotal = invoiceSum - invoiceDiscount;
-
-      this.setState(state => {
-        return  {
-          ...state,
-          sum: invoiceSum.toFixed(2),
-          total: invoiceTotal.toFixed(2)
-        }
-      })}
-  };
+  // handleChange = e => {
+  //   const {name, value} = e.target;
+  //   this.setState(state => {
+  //     return {
+  //       ...state,
+  //       [name]: value
+  //     }
+  //   }, makeAfterSetState);
+  //
+  //   function makeAfterSetState() {
+  //     const invoiceSum = this.state.quantity * this.state.productName.price;
+  //
+  //     const invoiceDiscount = (this.state.discount * invoiceSum) / 100;
+  //     const invoiceTotal = invoiceSum - invoiceDiscount;
+  //
+  //     this.setState(state => {
+  //       return  {
+  //         ...state,
+  //         sum: invoiceSum.toFixed(2),
+  //         total: invoiceTotal.toFixed(2)
+  //       }
+  //     })}
+  // };
 
   handleSavingInvoice = (e) => {
     e.preventDefault();
@@ -180,7 +180,7 @@ class CreateForm extends Component {
 
  render () {
    const {pristine, submitting, classes, customers, products, invalid,} = this.props;
-   // console.log(this.state);
+   console.log(this.props);
    return (
      <form onSubmit={this.handleSavingInvoice}>
 
@@ -217,13 +217,15 @@ class CreateForm extends Component {
          <Divider />
 
           <FieldArray
-            name="holidays"
+            name="item"
             component={CreateFields}
             renderSelectFieldProduct={renderSelectFieldProduct}
             renderTextField={renderTextField}
             classes={classes}
             products={products}
-            handleChange={this.handleChange}
+            // handleChange={this.handleChange}
+            // nestedFields={['productName', 'quantity']}
+            discount={this.state.discount}
           />
 
          {/*<ListItem>*/}
@@ -291,13 +293,13 @@ class CreateForm extends Component {
              name="discount"
              className={classes.numberFormControl}
              component={renderTextField}
-             label="0"
+             // label="0"
              type='number'
-             onChange={this.handleChange}
-             value={this.state.discount}
-             inputProps={{
-               step: 1, // 5 min
-             }}
+             // onChange={this.handleChange}
+             // value={this.state.discount}
+             // inputProps={{
+             //   step: 1, // 5 min
+             // }}
            />
          </div>
 
@@ -316,8 +318,8 @@ class CreateForm extends Component {
  }
 }
 
-export default reduxForm({
+export default (reduxForm({
   form: 'CreateForm', // a unique identifier for this form
   validate,
   asyncValidate
-})(withStyles(styles)(withRouter(CreateForm)))
+})(withStyles(styles)(withRouter(CreateForm))))
