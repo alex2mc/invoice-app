@@ -19,6 +19,7 @@ class CreateFields extends Component {
     this.add()
   }
 
+  // adds new row of fields
   add = () => {
     this.props.fields.push({quantity: 1})
   }
@@ -76,6 +77,9 @@ class CreateFields extends Component {
                     className={classes.numberFormControl}
                     component={renderTextField}
                     type='number'
+                    inputProps={{
+                      min: 1,
+                    }}
                   />
                 </div>
               </ListItemText>

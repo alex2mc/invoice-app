@@ -17,7 +17,6 @@ import Typography from "@material-ui/core/Typography";
 import ColorButtonGreen from "../../UI/Buttons/ColorButtonGreen";
 import Spinner from '../../UI/Spinner/Spinner';
 
-import asyncValidate from './asyncValidate'
 import validate from './validate'
 
 import {withStyles} from "@material-ui/core";
@@ -426,7 +425,6 @@ const mapStateToProps =  state => {
 export default reduxForm({
   form: 'EditForm', // a unique identifier for this form
   validate,
-  asyncValidate,
   enableReinitialize : true,
   keepDirtyOnReinitialize : true
 })(withStyles(styles)(withRouter(connect(mapStateToProps)(EditForm))))

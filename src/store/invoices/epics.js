@@ -67,7 +67,7 @@ export const postInvoiceRequest = (action$) =>
     ofType(POST_INVOICE),
     map(
       (invoice) => {
-        // console.log(invoice)
+        // console.log('post-invoice', invoice)
         return InvoicesRequestActions.postInvoice.action(invoice);
       },
     ),
@@ -90,12 +90,25 @@ export const continueOnPostInvoiceSuccess = (action$) =>
     ofType("POST_INVOICE_REQUEST_SUCCEEDED"),
     map(
       (response) => {
-        // console.log(JSON.parse(response.payload.request.body));
-        const product_id = JSON.parse(response.payload.request.body).product_id;
-        const quantity = JSON.parse(response.payload.request.body).quantity;
+        // console.log('post-items', JSON.parse(response.payload.request.body).items);
+        const items = JSON.parse(response.payload.request.body).items;
+        const product = JSON.parse(response.payload.request.body).items.productName;
+        const product_id = product ? product._id : 'aaa';
+        const quantity = JSON.parse(response.payload.request.body).items.quantity;
         const invoice_id = response.payload.response._id;
 
-        const payload = {invoice_id, product_id, quantity};
+
+
+        const payload = {invoice_id, items
+          // product_id, quantity
+        };
+        // console.log('items', items)
+        // console.log('product', product)
+        // console.log('product_id', product_id)
+        // console.log('quantity', quantity)
+
+
+
       return InvoicesRequestActions.postInvoiceItems.action(payload)
       },
       ),

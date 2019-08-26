@@ -72,9 +72,7 @@ class InvoiceCreateMode extends Component {
 
 
   render() {
-    const {classes, isProductsLoading, isCustomersLoading, customers, products, getInvoices, postInvoice, postInvoiceItems } = this.props;
-    console.log('this.props.total', this.props.total)
-    // console.log(this.state)
+    const {classes, myForm, isProductsLoading, isCustomersLoading, customers, products, getInvoices, postInvoice, postInvoiceItems } = this.props;
 
     if (isProductsLoading && isCustomersLoading) {
       return <Spinner />
@@ -88,6 +86,7 @@ class InvoiceCreateMode extends Component {
           total={this.props.total}
           customers={customers}
           products={products}
+          myForm={myForm}
           postInvoice={postInvoice}
           postInvoiceItems={postInvoiceItems}
           getInvoices={getInvoices}/>
@@ -97,10 +96,11 @@ class InvoiceCreateMode extends Component {
 }
 
 const mapStateToProps =  state => {
-  const discount = state.form.CreateForm && (state.form.CreateForm.values.discount || 0)
+  const {CreateForm} = state.form
+  const discount = CreateForm && (CreateForm.values.discount || 0)
   const totalReduceCb = (acc, cur) =>
     acc + (((cur.productName && cur.productName.price) || 0) * (cur.quantity || 1))
-  const totalWithoutDiscount = state.form.CreateForm ? state.form.CreateForm.values.items.reduce(totalReduceCb, 0) : 0
+  const totalWithoutDiscount = CreateForm ? CreateForm.values.items.reduce(totalReduceCb, 0) : 0
   const discountIn$ = (discount * totalWithoutDiscount) / 100
   const total = totalWithoutDiscount - discountIn$
 
@@ -110,10 +110,11 @@ const mapStateToProps =  state => {
     customers: state.customers.customers,
     isCustomersLoading: state.customers.isLoading,
     total,
+    myForm: CreateForm
   }
 }
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators({
     getInvoices,
     postInvoice,

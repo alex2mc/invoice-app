@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Field, reduxForm, FieldArray, formValues } from 'redux-form';
+import { Field, reduxForm, FieldArray } from 'redux-form';
 
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
@@ -18,7 +18,6 @@ import { withStyles } from "@material-ui/core";
 
 import ColorButtonGreen from "../../UI/Buttons/ColorButtonGreen";
 
-import asyncValidate from './asyncValidate';
 import validate from './validate';
 
 import { withRouter } from 'react-router-dom';
@@ -167,20 +166,25 @@ class CreateForm extends Component {
   handleSavingInvoice = (e) => {
     e.preventDefault();
 
-    this.props.postInvoice({
-      customer_id: this.state.customerName._id,
-      discount: +this.state.discount,
-      total: +this.state.total,
-      product_id: this.state.productName._id,
-      quantity: +this.state.quantity});
+    const customer_id = this.props.myForm && this.props.myForm.values && this.props.myForm.values.customerName && this.props.myForm.values.customerName._id ? this.props.myForm.values.customerName._id : 'kill';
+    const discount = this.props.myForm && this.props.myForm.values && this.props.myForm.values.discount ? +this.props.myForm.values.discount : 0;
+    const total = this.props.total
+    const items = this.props.myForm && this.props.myForm.values && this.props.myForm.values.items ? this.props.myForm.values.items : 'kill';
+
+
+
+    const payload = {customer_id, discount, total, items}
+    // console.log(payload);
+
+    this.props.postInvoice(payload);
 
     this.props.history.push("/invoices")
   };
 
 
  render () {
-   const {pristine, submitting, classes, customers, products, invalid,} = this.props;
-   console.log(this.props);
+   const {pristine, submitting, classes, customers, products, valid} = this.props;
+   // console.log(this.props.myForm && this.props.myForm.values && this.props.myForm.values.items ? this.props.myForm.values.items : 'kill')
    return (
      <form onSubmit={this.handleSavingInvoice}>
 
@@ -224,56 +228,9 @@ class CreateForm extends Component {
             classes={classes}
             products={products}
             // handleChange={this.handleChange}
-            // nestedFields={['productName', 'quantity']}
             discount={this.state.discount}
           />
 
-         {/*<ListItem>*/}
-         {/*  <ListItemText>*/}
-         {/*     /!*PRODUCT NAME*!/*/}
-         {/*    <div>*/}
-         {/*      <Field*/}
-         {/*        className={classes.formControl}*/}
-         {/*        name="productName"*/}
-         {/*        value={this.state.productName}*/}
-         {/*        component={renderSelectFieldProduct}*/}
-         {/*        onChange={this.handleChange}*/}
-         {/*        label="Add Product"*/}
-         {/*      >*/}
-         {/*        {*/}
-         {/*          products*/}
-         {/*            ? products.map(product => (*/}
-         {/*              <MenuItem key={product._id} value={product}>{product.name}</MenuItem>*/}
-         {/*            ))*/}
-         {/*            : null*/}
-         {/*        }*/}
-         {/*      </Field>*/}
-         {/*    </div>*/}
-         {/*    </ListItemText>*/}
-
-         {/*  <ListItemText >*/}
-         {/*    /!*QUANTITY*!/*/}
-         {/*    <div>*/}
-         {/*      <Field*/}
-         {/*        name="quantity"*/}
-         {/*        className={classes.numberFormControl}*/}
-         {/*        component={renderTextField}*/}
-         {/*        label="0"*/}
-         {/*        type='number'*/}
-         {/*        onChange={this.handleChange}*/}
-         {/*        value={this.state.quantity}*/}
-         {/*        inputProps={{*/}
-         {/*          step: 1, // 5 min*/}
-         {/*        }}*/}
-         {/*      />*/}
-         {/*    </div>*/}
-         {/*  </ListItemText>*/}
-
-         {/*  <ListItemText >*/}
-         {/*    {isNaN(this.state.sum) ? null : this.state.sum }*/}
-         {/*  </ListItemText>*/}
-         {/*</ListItem>*/}
-         {/*<Divider />*/}
 
          <ListItem>
            <ListItemText >Total</ListItemText>
@@ -297,9 +254,10 @@ class CreateForm extends Component {
              type='number'
              // onChange={this.handleChange}
              // value={this.state.discount}
-             // inputProps={{
-             //   step: 1, // 5 min
-             // }}
+             inputProps={{
+               min: 1,
+               max: 50,
+             }}
            />
          </div>
 
@@ -309,7 +267,10 @@ class CreateForm extends Component {
 
        {/*BUTTON*/}
        <div className={classes.button}>
-         <ColorButtonGreen type="submit" disabled={invalid || submitting || pristine} onClick={this.handleSavingInvoice}>
+         <ColorButtonGreen
+           type="submit"
+           disabled={!valid || submitting || pristine}
+           onClick={this.handleSavingInvoice}>
            SAVE INVOICE
          </ColorButtonGreen>
        </div>
@@ -318,8 +279,7 @@ class CreateForm extends Component {
  }
 }
 
-export default (reduxForm({
+export default reduxForm({
   form: 'CreateForm', // a unique identifier for this form
   validate,
-  asyncValidate
-})(withStyles(styles)(withRouter(CreateForm))))
+})((withStyles(styles)(withRouter(CreateForm))))
