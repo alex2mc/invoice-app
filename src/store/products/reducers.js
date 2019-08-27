@@ -1,30 +1,31 @@
+import {
+  GET_PRODUCT_SUCCEEDED,
+  GET_PRODUCTS_SUCCEEDED,
+} from './actions';
+
 
 const initialState = {
   products: [],
   product: null,
-  isLoading: false,
-  error: false
 };
 
 export default function productsReducer(state = initialState, action) {
 
   switch (action.type) {
 
-    case "GET_PRODUCTS_REQUEST_SUCCEEDED": {
-      // console.log(action)
+    case GET_PRODUCTS_SUCCEEDED: {
       return {
         ...state,
-        products: [...action.payload]
+        products: action.payload
       };
     }
 
-    case "GET_PRODUCT_REQUEST_SUCCEEDED": {
-      // console.log(action)
+    case GET_PRODUCT_SUCCEEDED: {
       return {
         ...state,
         product: {
           ...state.product,
-          product: action.payload
+          product: action.payload.payload
         } 
       };
     }

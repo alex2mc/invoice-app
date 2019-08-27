@@ -1,14 +1,6 @@
 import { ofType } from 'redux-observable';
-// import React from "react";
-
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-
 import { map } from 'rxjs/operators';
 
-// import { Redirect } from 'react-router-dom';
 
 import { transferActionEpicFactory } from '../utils/transfer-action';
 import { Actions as InvoicesRequestActions, ActionTypes as InvoicesRequestsActionTypes } from '../invoices-requests';
@@ -20,6 +12,8 @@ import {
   GET_INVOICES,
   getInvoicesSucceeded,
   getInvoicesFail,
+
+
   POST_INVOICE,
   postInvoiceSucceeded,
   postInvoiceFail,
@@ -34,9 +28,15 @@ import {
   getInvoiceFail,
   UPDATE_INVOICE,
   updateInvoiceSucceeded,
-  updateInvoiceFail
+  updateInvoiceFail,
+  DELETE_INVOICE_SUCCEEDED,
+  GET_INVOICE_SUCCEEDED,
+  POST_INVOICE_SUCCEEDED,
+  POST_INVOICE_ITEMS_SUCCEEDED,
+  GET_INVOICE_ITEMS_SUCCEEDED
   // POST_INVOICE_SUCCEEDED
 } from "./actions";
+
 
 
 
@@ -48,17 +48,24 @@ export const getInvoicesRequest = (action$) =>
     ),
   );
 
-export const getInvoicesRequestSuccess = transferActionEpicFactory(
-  InvoicesRequestsActionTypes.getInvoicesActionTypes.ACTION_SUCCEEDED,
-  getInvoicesSucceeded,
-  GET_INVOICES,
+export const getInvoicesRequestSuccess = (action$) =>
+  action$.pipe(
+    ofType(InvoicesRequestsActionTypes.getInvoicesActionTypes.ACTION_SUCCEEDED),
+    map((action) => getInvoicesSucceeded(action.payload)),
 );
 
-export const getInvoicesRequestFail = transferActionEpicFactory(
-  InvoicesRequestsActionTypes.getInvoicesActionTypes.ACTION_FAILED,
-  getInvoicesFail,
-  GET_INVOICES,
+export const getInvoicesRequestFail = (action$) =>
+  action$.pipe(
+    ofType(InvoicesRequestsActionTypes.getInvoicesActionTypes.ACTION_FAILED),
+    map(({ payload, meta }) => getInvoicesFail({ payload, meta })),
 );
+
+
+
+
+
+
+
 
 
 
@@ -66,57 +73,48 @@ export const postInvoiceRequest = (action$) =>
   action$.pipe(
     ofType(POST_INVOICE),
     map(
-      (invoice) => {
-        // console.log('post-invoice', invoice)
-        return InvoicesRequestActions.postInvoice.action(invoice);
+      (action) => {
+        return InvoicesRequestActions.postInvoice.action(action.payload, action.payload.items);
       },
     ),
   );
 
-export const postInvoiceRequestSuccess = transferActionEpicFactory(
-  InvoicesRequestsActionTypes.postInvoiceActionTypes.ACTION_SUCCEEDED,
-  postInvoiceSucceeded,
-  POST_INVOICE,
-);
-
-export const postInvoiceRequestFail = transferActionEpicFactory(
-  InvoicesRequestsActionTypes.postInvoiceActionTypes.ACTION_FAILED,
-  postInvoiceFail,
-  POST_INVOICE,
-);
-
-export const continueOnPostInvoiceSuccess = (action$) =>
+export const postInvoiceRequestSuccess = (action$) =>
   action$.pipe(
-    ofType("POST_INVOICE_REQUEST_SUCCEEDED"),
+    ofType(InvoicesRequestsActionTypes.postInvoiceActionTypes.ACTION_SUCCEEDED),
+    map((action) => postInvoiceSucceeded(action)),
+);
+
+export const postInvoiceRequestFail = (action$) =>
+action$.pipe(
+  ofType(InvoicesRequestsActionTypes.postInvoiceActionTypes.ACTION_FAILED),
+  map(({ payload, meta }) => postInvoiceFail({ payload, meta })),
+);
+
+
+
+export const postInvoiceItemsRequest = (action$) =>
+  action$.pipe(
+    ofType(POST_INVOICE_SUCCEEDED),
     map(
-      (response) => {
-        // console.log('post-items', JSON.parse(response.payload.request.body).items);
-        const items = JSON.parse(response.payload.request.body).items;
-        const product = JSON.parse(response.payload.request.body).items.productName;
-        const product_id = product ? product._id : 'aaa';
-        const quantity = JSON.parse(response.payload.request.body).items.quantity;
-        const invoice_id = response.payload.response._id;
+      (action) => {
+        // console.log(action);
 
+        const invoice_id = action.payload.response._id;
+        const items = action.meta
+        console.log(items);
 
+        const payload = { invoice_id, items }
 
-        const payload = {invoice_id, items
-          // product_id, quantity
-        };
-        // console.log('items', items)
-        // console.log('product', product)
-        // console.log('product_id', product_id)
-        // console.log('quantity', quantity)
+        return InvoicesRequestActions.postInvoiceItems.action(payload)
 
+        })
+      )
 
-
-      return InvoicesRequestActions.postInvoiceItems.action(payload)
-      },
-      ),
-  );
 
 export const continueOnPostInvoiceItemsSuccess = (action$) =>
   action$.pipe(
-    ofType("POST_INVOICE_ITEMS_REQUEST_SUCCEEDED"),
+    ofType(POST_INVOICE_ITEMS_SUCCEEDED),
     map(
       () => {
         return InvoicesRequestActions.getInvoices.action();
@@ -130,27 +128,26 @@ export const deleteInvoiceRequest = (action$) =>
     ofType(DELETE_INVOICE),
     map(
       (id) => {
-        // console.log(id)
         return InvoicesRequestActions.deleteInvoice.action(id.id);
       },
     ),
   );
 
-export const deleteInvoiceRequestSuccess = transferActionEpicFactory(
-  InvoicesRequestsActionTypes.deleteInvoiceActionTypes.ACTION_SUCCEEDED,
-  deleteInvoiceSucceeded,
-  DELETE_INVOICE,
+export const deleteInvoiceRequestSuccess = (action$) =>
+  action$.pipe(
+    ofType(InvoicesRequestsActionTypes.deleteInvoiceActionTypes.ACTION_SUCCEEDED),
+    map((action) => deleteInvoiceSucceeded(action)),
 );
 
-export const deleteInvoiceRequestFail = transferActionEpicFactory(
-  InvoicesRequestsActionTypes.deleteInvoiceActionTypes.ACTION_FAILED,
-  deleteInvoiceFail,
-  DELETE_INVOICE,
+export const deleteInvoiceRequestFail = (action$) =>
+  action$.pipe(
+    ofType(  InvoicesRequestsActionTypes.deleteInvoiceActionTypes.ACTION_FAILED),
+    map(({ payload, meta }) => deleteInvoiceFail({ payload, meta })),
 );
 
 export const continueOnDeleteInvoiceSuccess = (action$) =>
   action$.pipe(
-    ofType("DELETE_INVOICE_REQUEST_SUCCEEDED"),
+    ofType(DELETE_INVOICE_SUCCEEDED),
     map(
       () => {
         return InvoicesRequestActions.getInvoices.action();
@@ -168,52 +165,59 @@ export const getInvoiceItemsRequest = (action$) =>
     ),
   );
 
-export const getInvoiceItemsRequestSuccess = transferActionEpicFactory(
-  InvoicesRequestsActionTypes.getInvoiceItemsActionTypes.ACTION_SUCCEEDED,
-  getInvoiceItemsSucceeded,
-  GET_INVOICE_ITEMS,
+export const getInvoiceItemsRequestSuccess = (action$) =>
+  action$.pipe(
+    ofType(InvoicesRequestsActionTypes.getInvoiceItemsActionTypes.ACTION_SUCCEEDED),
+    map((action) => getInvoiceItemsSucceeded(action.payload))
 );
 
-export const getInvoiceItemsRequestFail = transferActionEpicFactory(
-  InvoicesRequestsActionTypes.getInvoiceItemsActionTypes.ACTION_FAILED,
-  getInvoiceItemsFail,
-  GET_INVOICE_ITEMS,
+export const getInvoiceItemsRequestFail = (action$) =>
+  action$.pipe(
+    ofType(InvoicesRequestsActionTypes.getInvoiceItemsActionTypes.ACTION_FAILED),
+    map(({ payload, meta }) => getInvoiceItemsFail({ payload, meta })),
 );
+
+
 
 export const getInvoiceRequest = (action$) =>
   action$.pipe(
     ofType(GET_INVOICE),
     map((id) => {
-      // debugger
       return InvoicesRequestActions.getInvoice.action(id.id)},
     ),
   );
 
-export const getInvoiceRequestSuccess = transferActionEpicFactory(
-  InvoicesRequestsActionTypes.getInvoiceActionTypes.ACTION_SUCCEEDED,
-  getInvoiceSucceeded,
-  GET_INVOICE);
+export const getInvoiceRequestSuccess = (action$) =>
+  action$.pipe(
+    ofType(InvoicesRequestsActionTypes.getInvoiceActionTypes.ACTION_SUCCEEDED),
+    map((action) => getInvoiceSucceeded(action.payload)),
+  );
 
-export const getInvoiceRequestFail = transferActionEpicFactory(
-  InvoicesRequestsActionTypes.getInvoiceActionTypes.ACTION_FAILED,
-  getInvoiceFail,
-  GET_INVOICE,
+export const getInvoiceRequestFail = (action$) =>
+  action$.pipe(
+    ofType(InvoicesRequestsActionTypes.getInvoiceActionTypes.ACTION_FAILED),
+    map(({ payload, meta }) => getInvoiceFail({ payload, meta }))
 );
+
 
 export const continueOnGetInvoiceSuccess = (action$) =>
   action$.pipe(
-    ofType("GET_INVOICE_REQUEST_SUCCEEDED"),
+    ofType(GET_INVOICE_SUCCEEDED),
     map(
       (response) => {
       const id = response.payload.customer_id;
       return CustomersRequestActions.getCustomer.action(id)
       },
-      ),
+    ),
   );
+
+
+
+
 
 export const continueOnGetInvoiceItemsSuccess = (action$) =>
   action$.pipe(
-    ofType("GET_INVOICE_ITEMS_REQUEST_SUCCEEDED"),
+    ofType(GET_INVOICE_ITEMS_SUCCEEDED),
     map(
       (response) => {       
         // console.log(response.payload);
@@ -251,10 +255,11 @@ export const epics = [
   getInvoicesRequest,
   getInvoicesRequestSuccess,
   getInvoicesRequestFail,
+
   postInvoiceRequest,
   postInvoiceRequestSuccess,
   postInvoiceRequestFail,
-  continueOnPostInvoiceSuccess,
+  // postInvoiceItemsRequest,
   deleteInvoiceRequest,
   deleteInvoiceRequestSuccess,
   deleteInvoiceRequestFail,
@@ -265,10 +270,10 @@ export const epics = [
   getInvoiceRequestSuccess,
   getInvoiceRequestFail,
   continueOnGetInvoiceSuccess,
-  continueOnPostInvoiceItemsSuccess,
+  // continueOnPostInvoiceItemsSuccess,
   continueOnDeleteInvoiceSuccess,
-  updateInvoiceRequest,
-  updateInvoiceRequestSuccess,
-  updateInvoiceRequestFail
+  // updateInvoiceRequest,
+  // updateInvoiceRequestSuccess,
+  // updateInvoiceRequestFail
   // continueOnGetInvoiceItemsSuccess
 ];

@@ -54,7 +54,7 @@ const styles = theme => ({
 class Customers extends Component {
 
   componentDidMount() {
-    this.props.getCustomers();
+    // this.props.getCustomers();
   }
 
   render () {

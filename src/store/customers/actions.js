@@ -24,7 +24,7 @@ export const getCurrentCustomer = (payload) => ({
   payload: payload
 });
 
-export const getCurrentuCstomerSucceeded = (customers) => ({
+export const getCurrentCustomerSucceeded = (customers) => ({
   type: GET_CURRENT_CUSTOMER_SUCCEEDED,
   payload: customers
 });

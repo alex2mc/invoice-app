@@ -4,8 +4,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import {Field} from "redux-form";
 import MenuItem from "@material-ui/core/MenuItem";
 import Divider from "@material-ui/core/Divider";
-import Button from "@material-ui/core/Button";
-import List from "./CreateForm";
+// import Button from "@material-ui/core/Button";
+// import List from "./CreateForm";
 
 const PriceReadable = ({input, get, quantity = 1, ...props}) => {
   const productCost = input.value ? input.value.price : 0

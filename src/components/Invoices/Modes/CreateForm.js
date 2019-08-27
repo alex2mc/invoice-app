@@ -178,7 +178,7 @@ class CreateForm extends Component {
 
     this.props.postInvoice(payload);
 
-    this.props.history.push("/invoices")
+    // this.props.history.push("/invoices")
   };
 
 

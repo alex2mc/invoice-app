@@ -7,7 +7,7 @@ const url = `https://api.invoice-app.2muchcoffee.com/api/customers`;
 
 class CustomersRequestsService {
 
-  getCustomers(input){
+  getCustomers(){
   
     return ajax
       .getJSON(url)

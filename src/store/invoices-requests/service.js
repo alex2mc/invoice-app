@@ -7,7 +7,7 @@ const url = `https://api.invoice-app.2muchcoffee.com/api/invoices`;
 
 class InvoicesRequestsService {
 
-  getInvoices(input){
+  getInvoices(){
 
     return ajax
       .getJSON(url)
@@ -18,7 +18,7 @@ class InvoicesRequestsService {
     return ajax
         .post(
           url,
-          JSON.stringify(invoice.payload),
+          JSON.stringify(invoice),
           {'Content-Type': 'application/json'}
         )
   }
@@ -28,7 +28,7 @@ class InvoicesRequestsService {
     return ajax
       .post(
         `${url}/${payload.invoice_id}/items`,
-        JSON.stringify(payload),
+        JSON.stringify(payload.items),
         {'Content-Type': 'application/json'}
       )
   }
