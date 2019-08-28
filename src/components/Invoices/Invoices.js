@@ -11,10 +11,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getInvoices } from '../../store/invoices/actions';
 
-import { getInvoicesState } from '../../store/invoices/selectors';
-// import { getCustomersState } from '../../store/customers/selectors';
+import { getInvoicesArray } from '../../store/invoices/selectors';
+import { getEntities as getCustomers } from '../../store/customers/selectors';
 
-import Spinner from '../UI/Spinner/Spinner';
+// import Spinner from '../UI/Spinner/Spinner';
 
 import Invoice from "./Invoice";
 import StyledTableCell from "../UI/Table/StyledTableCell";
@@ -46,12 +46,9 @@ class CommonContent extends Component {
 
   render() {
 
-    // console.log(this.props)
+    // console.log(this.props.invoices)
 
     const {
-      isLoading,
-      isCustomerLoading,
-      // error,
       invoices,
       customers,
       classes
@@ -62,12 +59,12 @@ class CommonContent extends Component {
 
     const invoicesRows  =  invoices
       ? invoices.map(invoice => (
-        <Invoice key={invoice._id} customers={customers} id={invoice._id} {...invoice} /> ))
+        <Invoice key={invoice._id} customers={customers} inv_id={invoice._id} {...invoice} /> ))
       : null;
 
-    if(isLoading && isCustomerLoading)  {
-      return <Spinner />
-    }
+    // if(isLoading && isCustomerLoading)  {
+    //   return <Spinner />
+    // }
 
     return (
       <Paper className={classes.root}>
@@ -83,7 +80,7 @@ class CommonContent extends Component {
           </TableHead>
           <TableBody>
 
-            {/*{invoicesRows}*/}
+            {invoicesRows}
 
           </TableBody>
         </Table>
@@ -94,10 +91,8 @@ class CommonContent extends Component {
 
 const mapStateToProps = state => {
   return {
-    invoices: getInvoicesState(state),
-    // customers: getCustomersState(state),
-    isLoading: state.invoices.isLoading,
-    isCustomerLoading: state.customers.isLoading
+    invoices: getInvoicesArray(state),
+    customers: getCustomers(state),
   }
 }
 

@@ -6,7 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
 import { Link, withRouter } from 'react-router-dom';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import { getInvoicesArray } from '../../store/invoices/selectors';
 
 
 
@@ -16,7 +17,7 @@ class NavTabs extends Component {
   render () {
     const { invoices } = this.props;
 
-    // const invoicesAmount = invoices.length
+    const invoicesAmount = invoices.length
 
     const toolbarStyles = {
       display: 'flex',
@@ -39,9 +40,7 @@ class NavTabs extends Component {
                 <Typography variant="h6" color="textPrimary"> Customers</Typography>
               </Link>
               <Link to="/invoices">
-                <Typography variant="h6" color="textPrimary"> Invoices (
-                  {/*{invoicesAmount}*/}
-                  )</Typography>
+                <Typography variant="h6" color="textPrimary"> Invoices ({invoicesAmount})</Typography>
               </Link>
               {
                 this.props.location.pathname !== "/newinvoice"
@@ -61,7 +60,7 @@ class NavTabs extends Component {
 }
 const mapStateToProps =  state => {
   return {
-    invoices: state.invoices.invoices,
+    invoices: getInvoicesArray(state),
   }
 }
 

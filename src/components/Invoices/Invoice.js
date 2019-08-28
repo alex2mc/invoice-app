@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Link, withRouter} from "react-router-dom";
+import React, { Component } from 'react';
+import { Link, withRouter } from "react-router-dom";
 import { withStyles} from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button";
 import StyledTableCell from "../UI/Table/StyledTableCell";
@@ -75,34 +75,30 @@ class Invoice extends Component {
   };
 
   render() {
-    const {id, discount, total, customers, classes} = this.props;
+    const { inv_id, discount, total, customers, classes } = this.props;
 
+    console.log(customers[this.props.customer_id])
     // console.log(this.props)
     return (
 
       <StyledTableRow>
-        <StyledTableCell component="th" scope="row">{id}</StyledTableCell>
+        <StyledTableCell component="th" scope="row">{inv_id}</StyledTableCell>
         <StyledTableCell>
-
-        {/*  {customers &&*/}
-        {/*  (customers.find(customer => customer._id === this.props.customer_id ) || { name: 'Unnamed' }).name*/}
-        {/*  }*/}
-
+          { customers[this.props.customer_id].name }
         </StyledTableCell>
         <StyledTableCell>{discount ? discount : 0}</StyledTableCell>
         <StyledTableCell>{total}</StyledTableCell>
         <StyledTableCell className={classes.buttons}>
 
-          <Link to={`/viewmode/${id}`}>
+          <Link to={`/viewmode/${inv_id}`}>
             <Button variant="contained" color="secondary"> View </Button>
           </Link>
-
 
           {
             this.props.location.pathname === "/invoices"
               ?
               <>
-                <Link to={`/editmode/${id}`}>
+                <Link to={`/editmode/${inv_id}`}>
                   <ColorButtonYellow variant="contained" color="secondary"> Edit </ColorButtonYellow>
                 </Link>
 
@@ -122,7 +118,7 @@ class Invoice extends Component {
               Are you sure you want to delete an invoice?
 
               <div className={classes.modalButtons}>
-                <ColorButtonGreen variant="contained" color="secondary" onClick={() => this.handleDelete(id)}>
+                <ColorButtonGreen variant="contained" color="secondary" onClick={() => this.handleDelete(inv_id)}>
                   Yes
                 </ColorButtonGreen>
                 <ColorButtonRed variant="contained" color="secondary" onClick={this.handleClose}>

@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom'
 import Spinner from '../../UI/Spinner/Spinner'
 
 import { getProductsState } from '../../../store/products/selectors';
-import { getInvoiceState, getInvoiceItemsState } from '../../../store/invoices/selectors';
+// import { getInvoiceState, getInvoiceItemsState } from '../../../store/invoices/selectors';
 // import { getCustomer } from '../../../store/customers/selectors';
 
 
@@ -140,9 +140,9 @@ class ViewMode extends Component {
 const mapStateToProps =  state => {
   return {
     products: getProductsState(state),
-    invoice: getInvoiceState(state),
+    // invoice: getInvoiceState(state),
     // customer: getCustomer(state),
-    invoiceItems: getInvoiceItemsState(state)
+    // invoiceItems: getInvoiceItemsState(state)
   }
 };
 

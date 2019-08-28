@@ -1,24 +1,19 @@
 import { createSelector } from 'reselect';
 
+import { RootState } from '../index';
 
-// selector
-const getInvoices = (state) => state.invoices.invoices;
-// reselect function
-export const getInvoicesState = createSelector(
-  [ getInvoices ],
-  (invoices) => invoices
+
+export const getInvoicesState = (state = RootState) => state.invoices;
+
+
+export const getEntities = createSelector(
+  getInvoicesState,
+  (state ) => state.entities,
 );
 
-const getInvoice = (state) => state.invoices.invoice;
-// reselect function
-export const getInvoiceState = createSelector(
-  [ getInvoice ],
-  (invoice) => invoice
-);
 
-const getInvoiceItems = (state) => state.invoices.invoiceItems;
-// reselect function
-export const getInvoiceItemsState = createSelector(
-  [ getInvoiceItems ],
-  (invoiceItems) => invoiceItems
-);
+export const getInvoicesArray = createSelector(
+  getInvoicesState,
+  getEntities,
+  (state , entities) => state.ids.map((id) => entities[id]),
+)
