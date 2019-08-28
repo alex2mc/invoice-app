@@ -10,14 +10,14 @@ export const getCustomersState = (state = RootState) => state.customers;
 
 export const getEntities = createSelector(
   getCustomersState,
-  (state ) => state.customers.entities,
+  (state ) => state.entities,
 );
 
 
-export const getCustomers = createSelector(
+export const getCustomersArray = createSelector(
   getCustomersState,
   getEntities,
-  (state , entities) => state.customers.ids.map((id) => entities[id]),
+  (state , entities) => state.ids.map((id) => entities[id]),
 )
 
 

@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getCustomers } from '../../store/customers/actions';
 
-import { getCustomersState } from '../../store/customers/selectors';
+import { getCustomersArray } from '../../store/customers/selectors';
 
 import Spinner from '../UI/Spinner/Spinner';
 
@@ -58,7 +58,7 @@ class Customers extends Component {
   }
 
   render () {
-    // console.log(this.props)
+    console.log(this.props)
 
     const {
       isLoading,
@@ -103,7 +103,7 @@ class Customers extends Component {
 
 const mapStateToProps =  state => {
   return {
-    customers: getCustomersState(state),
+    customers: getCustomersArray(state),
   }
 }
 
