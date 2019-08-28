@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getProducts } from '../../store/products/actions';
 
-import { getProductsState } from '../../store/products/selectors';
+import { getProductsArray } from '../../store/products/selectors';
 
 
 
@@ -56,7 +56,7 @@ const styles = theme => ({
 class Products extends Component {
 
   componentDidMount() {
-    // this.props.fetchProducts();
+
   }
 
   render () {
@@ -103,8 +103,7 @@ class Products extends Component {
 
 const mapStateToProps =  state => {
   return {
-    products: getProductsState(state),
-    isLoading: state.products.isLoading
+    products: getProductsArray(state),
   }
 }
 

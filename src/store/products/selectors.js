@@ -1,10 +1,20 @@
 import { createSelector } from 'reselect';
 
-// selector
-const getProducts = (state) => state.products.products;
+import { RootState } from '../index';
 
-// reselect function
-export const getProductsState = createSelector(
-  [ getProducts ],
-  (products) => products
+
+
+export const getProductsState = (state = RootState) => state.products;
+
+
+export const getEntities = createSelector(
+  getProductsState,
+  (state ) => state.entities,
+);
+
+
+export const getProductsArray = createSelector(
+  getProductsState,
+  getEntities,
+  (state , entities) => state.ids.map((id) => entities[id]),
 )
