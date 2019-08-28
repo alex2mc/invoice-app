@@ -104,7 +104,6 @@ class Customers extends Component {
 const mapStateToProps =  state => {
   return {
     customers: getCustomersState(state),
-    isLoading: state.customers.isLoading
   }
 }
 

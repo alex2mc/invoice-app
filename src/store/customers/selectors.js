@@ -1,26 +1,53 @@
 import { createSelector } from 'reselect';
+
+import { RootState } from '../index';
+// import { State } from '../';
+
+
+
+export const getCustomersState = (state = RootState) => state.customers;
+
+
+export const getEntities = createSelector(
+  getCustomersState,
+  (state ) => state.customers.entities,
+);
+
+
+export const getCustomers = createSelector(
+  getCustomersState,
+  getEntities,
+  (state , entities) => state.customers.ids.map((id) => entities[id]),
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+// console.log(getCustomersState);
+// export const getCurrentCustomer = createSelector(
+//   getCustomersState,
+//   getEntities,
+//   (state = State, entities) => entities[state.currentOfferId!],
+// );
+
 // selector
-const getCustomers = (state) => state.customers.customers;
+// const getCustomers = (state) => state.customers;
+
+
 // reselect function
-export const getCustomersState = createSelector(
-  [ getCustomers ],
-  (customers) => customers
-);
-
-export const getCustomer = (state) => state.customers.customer;
-// reselect function
-export const getCustomerState = createSelector(
-  [ getCustomer ],
-  (customer) => {
-
-    if(!customer){
-      return {};
-    }
-
-    console.log(123, customer.customer)
-    return customer.customer;
-  }
-);
+// export const getCustomersState = createSelector(
+//   [ getCustomers ],
+//   (customers) => customers
+// );
 
 
 

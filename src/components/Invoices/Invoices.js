@@ -12,7 +12,7 @@ import { bindActionCreators } from 'redux';
 import { getInvoices } from '../../store/invoices/actions';
 
 import { getInvoicesState } from '../../store/invoices/selectors';
-import { getCustomersState } from '../../store/customers/selectors';
+// import { getCustomersState } from '../../store/customers/selectors';
 
 import Spinner from '../UI/Spinner/Spinner';
 
@@ -83,7 +83,7 @@ class CommonContent extends Component {
           </TableHead>
           <TableBody>
 
-            {invoicesRows}
+            {/*{invoicesRows}*/}
 
           </TableBody>
         </Table>
@@ -95,7 +95,7 @@ class CommonContent extends Component {
 const mapStateToProps = state => {
   return {
     invoices: getInvoicesState(state),
-    customers: getCustomersState(state),
+    // customers: getCustomersState(state),
     isLoading: state.invoices.isLoading,
     isCustomerLoading: state.customers.isLoading
   }

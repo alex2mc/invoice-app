@@ -84,9 +84,9 @@ class Invoice extends Component {
         <StyledTableCell component="th" scope="row">{id}</StyledTableCell>
         <StyledTableCell>
 
-          {customers &&
-          (customers.find(customer => customer._id === this.props.customer_id ) || { name: 'Unnamed' }).name
-          }
+        {/*  {customers &&*/}
+        {/*  (customers.find(customer => customer._id === this.props.customer_id ) || { name: 'Unnamed' }).name*/}
+        {/*  }*/}
 
         </StyledTableCell>
         <StyledTableCell>{discount ? discount : 0}</StyledTableCell>
