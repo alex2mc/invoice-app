@@ -16,7 +16,7 @@ class NavTabs extends Component {
   render () {
     const { invoices } = this.props;
 
-    const invoicesAmount = invoices.length
+    // const invoicesAmount = invoices.length
 
     const toolbarStyles = {
       display: 'flex',
@@ -39,7 +39,9 @@ class NavTabs extends Component {
                 <Typography variant="h6" color="textPrimary"> Customers</Typography>
               </Link>
               <Link to="/invoices">
-                <Typography variant="h6" color="textPrimary"> Invoices ({invoicesAmount})</Typography>
+                <Typography variant="h6" color="textPrimary"> Invoices (
+                  {/*{invoicesAmount}*/}
+                  )</Typography>
               </Link>
               {
                 this.props.location.pathname !== "/newinvoice"

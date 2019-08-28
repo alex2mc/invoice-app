@@ -6,18 +6,36 @@ import {
 } from './actions';
 
 const initialState = {
-  invoices: [],
-  invoiceItems: [],
-  invoice: null,
+  // invoices: [],
+  // invoiceItems: [],
+  // invoice: null,
+  entities: {},
+  ids: [],
+  currentInvoiceId: null
 };
 
 export default function invoicesReducer(state = initialState, action) {
   switch (action.type) {
 
     case GET_INVOICES_SUCCEEDED: {
+      const invoices = action.payload
+
+
+      const newEntities = invoices.reduce((acc, invoice) => {
+        return {
+          ...acc,
+          [invoice._id]: invoice
+        }
+      }, {})
+
+      const newIds = invoices.reduce((acc, invoice) => {
+        return  [...acc, invoice._id]
+      }, [])
+
       return {
         ...state,
-        invoices: action.payload
+        entities: newEntities,
+        ids: newIds,
       };
     }
 
