@@ -152,8 +152,18 @@ class CreateForm extends Component {
                   ? this.props.myForm.values.items
                   : 'kill';
 
-    const payload = {customer_id, discount, total, items}
-    // console.log(payload);
+    const filteredItems = items.filter(item => item.productName)
+
+    const reducedItems = filteredItems.reduce((acc, item) => {
+      return [...acc,
+        {
+          quantity: item.quantity,
+          product_id: item.productName._id
+        }
+      ]
+    }, [])
+
+    const payload = {customer_id, discount, total, reducedItems}
 
     this.props.postInvoice(payload);
 
@@ -167,7 +177,7 @@ class CreateForm extends Component {
      <form onSubmit={this.handleSavingInvoice}>
 
        {/*CUSTOMER NAME*/}
-       <div >
+       <div>
          <Field
            className={classes.formControl}
            name="customerName"
@@ -210,7 +220,7 @@ class CreateForm extends Component {
          <ListItem>
            <ListItemText >Total</ListItemText>
            <ListItemText >
-             {this.props.total || 0}
+             {this.props.total.toFixed(2) || 0}
            </ListItemText>
          </ListItem>
         </List>

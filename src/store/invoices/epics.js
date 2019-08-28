@@ -1,19 +1,16 @@
 import { ofType } from 'redux-observable';
-import { map } from 'rxjs/operators';
-
+import { map, mergeMap } from 'rxjs/operators';
+import { from } from 'rxjs'
 
 import { transferActionEpicFactory } from '../utils/transfer-action';
 import { Actions as InvoicesRequestActions, ActionTypes as InvoicesRequestsActionTypes } from '../invoices-requests';
 import { Actions as CustomersRequestActions } from '../customers-requests/index';
 import { Actions as ProductsRequestActions } from '../products-requests/index';
 
-
 import {
   GET_INVOICES,
   getInvoicesSucceeded,
   getInvoicesFail,
-
-
   POST_INVOICE,
   postInvoiceSucceeded,
   postInvoiceFail,
@@ -33,10 +30,10 @@ import {
   GET_INVOICE_SUCCEEDED,
   POST_INVOICE_SUCCEEDED,
   POST_INVOICE_ITEMS_SUCCEEDED,
-  GET_INVOICE_ITEMS_SUCCEEDED
-  // POST_INVOICE_SUCCEEDED
+  postInvoiceItemsSucceeded,
+  postInvoiceItemsFail,
+  GET_INVOICE_ITEMS_SUCCEEDED,
 } from "./actions";
-
 
 
 
@@ -57,13 +54,8 @@ export const getInvoicesRequestSuccess = (action$) =>
 export const getInvoicesRequestFail = (action$) =>
   action$.pipe(
     ofType(InvoicesRequestsActionTypes.getInvoicesActionTypes.ACTION_FAILED),
-    map(({ payload, meta }) => getInvoicesFail({ payload, meta })),
+    map((action) => getInvoicesFail(action.payload)),
 );
-
-
-
-
-
 
 
 
@@ -74,7 +66,7 @@ export const postInvoiceRequest = (action$) =>
     ofType(POST_INVOICE),
     map(
       (action) => {
-        return InvoicesRequestActions.postInvoice.action(action.payload, action.payload.items);
+        return InvoicesRequestActions.postInvoice.action(action.payload, action.payload.reducedItems);
       },
     ),
   );
@@ -86,9 +78,9 @@ export const postInvoiceRequestSuccess = (action$) =>
 );
 
 export const postInvoiceRequestFail = (action$) =>
-action$.pipe(
-  ofType(InvoicesRequestsActionTypes.postInvoiceActionTypes.ACTION_FAILED),
-  map(({ payload, meta }) => postInvoiceFail({ payload, meta })),
+  action$.pipe(
+    ofType(InvoicesRequestsActionTypes.postInvoiceActionTypes.ACTION_FAILED),
+    map((action) => postInvoiceFail(action)),
 );
 
 
@@ -96,20 +88,43 @@ action$.pipe(
 export const postInvoiceItemsRequest = (action$) =>
   action$.pipe(
     ofType(POST_INVOICE_SUCCEEDED),
-    map(
+    mergeMap(
       (action) => {
-        // console.log(action);
+        const { payload, meta } = action.payload;
 
-        const invoice_id = action.payload.response._id;
-        const items = action.meta
-        console.log(items);
+        const invoice_id = payload.response._id;
+        const items = meta;
 
-        const payload = { invoice_id, items }
+        console.log('items', items);
 
-        return InvoicesRequestActions.postInvoiceItems.action(payload)
 
-        })
-      )
+        // const payloadData = { invoice_id, items };
+        const resultItems = from(items)
+      .pipe(map(() =>  {
+            console.log('2', resultItems);
+            return resultItems.subscribe(i => InvoicesRequestActions.postInvoiceItems.action(invoice_id, i))
+          }))
+
+
+        // return InvoicesRequestActions.postInvoiceItems.action(invoice_id, item);
+
+        }
+    )
+  );
+
+
+export const postInvoiceItemsRequestSuccess = (action$) =>
+  action$.pipe(
+    ofType(InvoicesRequestsActionTypes.postInvoiceItemsActionTypes.ACTION_SUCCEEDED),
+    map((action) => postInvoiceItemsSucceeded(action.payload)),
+  );
+
+export const postInvoiceItemsRequestFail = (action$) =>
+  action$.pipe(
+    ofType(InvoicesRequestsActionTypes.postInvoiceItemsActionTypes.ACTION_FAILED),
+    map((action) => postInvoiceItemsFail(action.payload)),
+  );
+
 
 
 export const continueOnPostInvoiceItemsSuccess = (action$) =>
@@ -136,13 +151,13 @@ export const deleteInvoiceRequest = (action$) =>
 export const deleteInvoiceRequestSuccess = (action$) =>
   action$.pipe(
     ofType(InvoicesRequestsActionTypes.deleteInvoiceActionTypes.ACTION_SUCCEEDED),
-    map((action) => deleteInvoiceSucceeded(action)),
+    map((action) => deleteInvoiceSucceeded(action.payload)),
 );
 
 export const deleteInvoiceRequestFail = (action$) =>
   action$.pipe(
     ofType(  InvoicesRequestsActionTypes.deleteInvoiceActionTypes.ACTION_FAILED),
-    map(({ payload, meta }) => deleteInvoiceFail({ payload, meta })),
+    map((action) => deleteInvoiceFail(action.payload)),
 );
 
 export const continueOnDeleteInvoiceSuccess = (action$) =>
@@ -174,7 +189,7 @@ export const getInvoiceItemsRequestSuccess = (action$) =>
 export const getInvoiceItemsRequestFail = (action$) =>
   action$.pipe(
     ofType(InvoicesRequestsActionTypes.getInvoiceItemsActionTypes.ACTION_FAILED),
-    map(({ payload, meta }) => getInvoiceItemsFail({ payload, meta })),
+    map((action) => getInvoiceItemsFail(action.payload)),
 );
 
 
@@ -196,7 +211,7 @@ export const getInvoiceRequestSuccess = (action$) =>
 export const getInvoiceRequestFail = (action$) =>
   action$.pipe(
     ofType(InvoicesRequestsActionTypes.getInvoiceActionTypes.ACTION_FAILED),
-    map(({ payload, meta }) => getInvoiceFail({ payload, meta }))
+    map((action) => getInvoiceFail(action.payload))
 );
 
 
@@ -259,10 +274,17 @@ export const epics = [
   postInvoiceRequest,
   postInvoiceRequestSuccess,
   postInvoiceRequestFail,
-  // postInvoiceItemsRequest,
+
+
+  postInvoiceItemsRequest,
+  postInvoiceItemsRequestSuccess,
+  postInvoiceItemsRequestFail,
+
+
   deleteInvoiceRequest,
   deleteInvoiceRequestSuccess,
   deleteInvoiceRequestFail,
+  continueOnDeleteInvoiceSuccess,
   getInvoiceItemsRequest,
   getInvoiceItemsRequestSuccess,
   getInvoiceItemsRequestFail,
@@ -271,7 +293,7 @@ export const epics = [
   getInvoiceRequestFail,
   continueOnGetInvoiceSuccess,
   // continueOnPostInvoiceItemsSuccess,
-  continueOnDeleteInvoiceSuccess,
+
   // updateInvoiceRequest,
   // updateInvoiceRequestSuccess,
   // updateInvoiceRequestFail

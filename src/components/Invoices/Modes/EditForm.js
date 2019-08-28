@@ -23,7 +23,7 @@ import {withStyles} from "@material-ui/core";
 
 import { withRouter } from 'react-router-dom';
 
-import { getCustomer } from "../../../store/customers/selectors";
+// import { getCustomer } from "../../../store/customers/selectors";
 import { connect } from 'react-redux';
 
 

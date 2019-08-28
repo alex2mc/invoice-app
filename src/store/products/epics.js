@@ -29,7 +29,7 @@ export const getProductsRequestSuccess = (action$) =>
 export const getProductsRequestFail = (action$) =>
   action$.pipe(
     ofType(ProductsRequestsActionTypes.getProductsActionTypes.ACTION_FAILED),
-    map(({ payload, meta }) => getProductsFail(payload, meta))
+    map((action) => getProductsFail(action.payload))
   )
 
 

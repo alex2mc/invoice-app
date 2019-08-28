@@ -70,15 +70,11 @@ class Invoice extends Component {
   handleDelete = async (id) => {
     this.props.deleteInvoice(id);
     this.setState({isOpen: false});
-    // await this.props.fetchInvoices();
-    // this.props.history.push("/invoices")
   };
 
   render() {
     const { inv_id, discount, total, customers, classes } = this.props;
 
-    // console.log(customers[this.props.customer_id])
-    // console.log(this.props)
     return (
 
       <StyledTableRow>
@@ -87,7 +83,7 @@ class Invoice extends Component {
           { customers[this.props.customer_id].name }
         </StyledTableCell>
         <StyledTableCell>{discount ? discount : 0}</StyledTableCell>
-        <StyledTableCell>{total}</StyledTableCell>
+        <StyledTableCell>{total.toFixed(2)}</StyledTableCell>
         <StyledTableCell className={classes.buttons}>
 
           <Link to={`/viewmode/${inv_id}`}>

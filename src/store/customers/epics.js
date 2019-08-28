@@ -28,7 +28,7 @@ export const getCustomersRequestSuccess = (action$) =>
 export const getCustomersRequestFail = (action$) =>
   action$.pipe(
     ofType(CustomersRequestsActionTypes.getCustomersActionTypes.ACTION_FAILED),
-    map(({ payload, meta }) => getCustomersFail({ payload, meta })),
+    map((action) => getCustomersFail(action.payload)),
   )
 
 
