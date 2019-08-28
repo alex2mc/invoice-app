@@ -1,35 +1,40 @@
 import {
-  GET_PRODUCT_SUCCEEDED,
+  // GET_PRODUCT_SUCCEEDED,
   GET_PRODUCTS_SUCCEEDED,
 } from './actions';
 
 
 const initialState = {
-  products: [],
-  product: null,
+  entities: {},
+  ids: [],
+  currentProductId: null
 };
 
-export default function productsReducer(state = initialState, action) {
+export default function customersReducer(state = initialState, action) {
 
   switch (action.type) {
 
     case GET_PRODUCTS_SUCCEEDED: {
+      const products = action.payload
+
+
+      const newEntities = products.reduce((acc, product) => {
+        return {
+          ...acc,
+          [product._id]: product
+        }
+      }, {})
+
+      const newIds = products.reduce((acc, product) => {
+        return  [...acc, product._id]
+      }, [])
+
       return {
         ...state,
-        products: action.payload
+        entities: newEntities,
+        ids: newIds,
       };
     }
-
-    case GET_PRODUCT_SUCCEEDED: {
-      return {
-        ...state,
-        product: {
-          ...state.product,
-          product: action.payload.payload
-        } 
-      };
-    }
-
 
 
     default:
