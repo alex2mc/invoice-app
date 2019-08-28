@@ -4,8 +4,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import {Field} from "redux-form";
 import MenuItem from "@material-ui/core/MenuItem";
 import Divider from "@material-ui/core/Divider";
-// import Button from "@material-ui/core/Button";
-// import List from "./CreateForm";
 
 const PriceReadable = ({input, get, quantity = 1, ...props}) => {
   const productCost = input.value ? input.value.price : 0
@@ -16,23 +14,19 @@ const PriceReadable = ({input, get, quantity = 1, ...props}) => {
 
 class CreateFields extends Component {
   componentDidMount() {
-    this.add()
+    this.addNewRow()
   }
 
-  // adds new row of fields
-  add = () => {
+  addNewRow = () => {
     this.props.fields.push({quantity: 1})
   }
 
   handleSelectChange = (e, value, prevValue, name) => {
     if(!prevValue) {
-      this.add()
+      this.addNewRow()
     }
   }
 
-  // total = () => {
-  //   return 23213
-  // }
 
   render() {
     const { renderSelectFieldProduct, renderTextField, classes, products} = this.props;
@@ -53,7 +47,6 @@ class CreateFields extends Component {
                   <Field
                     className={classes.formControl}
                     name={`${item}.productName`}
-                    // value={this.state.productName}
                     component={renderSelectFieldProduct}
                     onChange={this.handleSelectChange}
                     label="Add Product"

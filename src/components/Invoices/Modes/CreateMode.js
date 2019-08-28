@@ -3,17 +3,17 @@ import React, { Component } from 'react';
 import { withStyles} from '@material-ui/core/styles';
 
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 
 import Spinner from '../../UI/Spinner/Spinner'
 
 import { connect } from 'react-redux';
-import {bindActionCreators} from "redux";
+import { bindActionCreators } from "redux";
 import { getInvoices, postInvoice, postInvoiceItems } from "../../../store/invoices/actions";
 
 import Form from './CreateForm';
 
-
+import { getCustomersArray } from '../../../store/customers/selectors';
+import { getProductsArray } from '../../../store/products/selectors';
 
 const styles = theme => ({
   wrapper: {
@@ -80,8 +80,6 @@ class InvoiceCreateMode extends Component {
 
     return (
       <Paper className={classes.wrapper}>
-        <Typography variant="subtitle2" gutterBottom className={classes.tableHeader}>Invoice id</Typography>
-
         <Form
           total={this.props.total}
           customers={customers}
@@ -96,7 +94,7 @@ class InvoiceCreateMode extends Component {
 }
 
 const mapStateToProps =  state => {
-  const {CreateForm} = state.form
+  const { CreateForm } = state.form
   const discount = CreateForm && (CreateForm.values.discount || 0)
   const totalReduceCb = (acc, cur) =>
     acc + (((cur.productName && cur.productName.price) || 0) * (cur.quantity || 1))
@@ -105,10 +103,8 @@ const mapStateToProps =  state => {
   const total = totalWithoutDiscount - discountIn$
 
   return {
-    products: state.products.products,
-    isProductsLoading: state.products.isLoading,
-    customers: state.customers.customers,
-    isCustomersLoading: state.customers.isLoading,
+    products: getProductsArray(state),
+    customers: getCustomersArray(state),
     total,
     myForm: CreateForm
   }

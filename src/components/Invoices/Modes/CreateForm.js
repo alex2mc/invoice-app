@@ -130,48 +130,27 @@ const renderSelectFieldProduct = ({
 
 
 class CreateForm extends Component {
-  state = {
-    // customerName: '',
-    // productName: '',
-    // discount: 0,
-    // quantity: 0,
-    // sum: '',
-    // total: ''
-  };
-
-  // handleChange = e => {
-  //   const {name, value} = e.target;
-  //   this.setState(state => {
-  //     return {
-  //       ...state,
-  //       [name]: value
-  //     }
-  //   }, makeAfterSetState);
-  //
-  //   function makeAfterSetState() {
-  //     const invoiceSum = this.state.quantity * this.state.productName.price;
-  //
-  //     const invoiceDiscount = (this.state.discount * invoiceSum) / 100;
-  //     const invoiceTotal = invoiceSum - invoiceDiscount;
-  //
-  //     this.setState(state => {
-  //       return  {
-  //         ...state,
-  //         sum: invoiceSum.toFixed(2),
-  //         total: invoiceTotal.toFixed(2)
-  //       }
-  //     })}
-  // };
 
   handleSavingInvoice = (e) => {
     e.preventDefault();
 
-    const customer_id = this.props.myForm && this.props.myForm.values && this.props.myForm.values.customerName && this.props.myForm.values.customerName._id ? this.props.myForm.values.customerName._id : 'kill';
-    const discount = this.props.myForm && this.props.myForm.values && this.props.myForm.values.discount ? +this.props.myForm.values.discount : 0;
+    const customer_id = this.props.myForm
+                        && this.props.myForm.values
+                        && this.props.myForm.values.customerName
+                        && this.props.myForm.values.customerName._id
+                        ? this.props.myForm.values.customerName._id
+                        : 'kill';
+    const discount = this.props.myForm
+                      && this.props.myForm.values
+                      && this.props.myForm.values.discount
+                      ? +this.props.myForm.values.discount
+                      : 0;
     const total = this.props.total
-    const items = this.props.myForm && this.props.myForm.values && this.props.myForm.values.items ? this.props.myForm.values.items : 'kill';
-
-
+    const items = this.props.myForm
+                  && this.props.myForm.values
+                  && this.props.myForm.values.items
+                  ? this.props.myForm.values.items
+                  : 'kill';
 
     const payload = {customer_id, discount, total, items}
     // console.log(payload);
@@ -183,8 +162,7 @@ class CreateForm extends Component {
 
 
  render () {
-   const {pristine, submitting, classes, customers, products, valid} = this.props;
-   // console.log(this.props.myForm && this.props.myForm.values && this.props.myForm.values.items ? this.props.myForm.values.items : 'kill')
+   const { pristine, submitting, classes, customers, products, valid } = this.props;
    return (
      <form onSubmit={this.handleSavingInvoice}>
 
@@ -193,7 +171,6 @@ class CreateForm extends Component {
          <Field
            className={classes.formControl}
            name="customerName"
-           value={this.state.customerName}
            component={renderSelectFieldCustomer}
            onChange={this.handleChange}
            label="Select Name"
@@ -227,8 +204,6 @@ class CreateForm extends Component {
             renderTextField={renderTextField}
             classes={classes}
             products={products}
-            // handleChange={this.handleChange}
-            discount={this.state.discount}
           />
 
 
@@ -250,10 +225,7 @@ class CreateForm extends Component {
              name="discount"
              className={classes.numberFormControl}
              component={renderTextField}
-             // label="0"
              type='number'
-             // onChange={this.handleChange}
-             // value={this.state.discount}
              inputProps={{
                min: 1,
                max: 50,
