@@ -11,7 +11,8 @@ const initialState = {
   // invoice: null,
   entities: {},
   ids: [],
-  currentInvoiceId: null
+  currentInvoiceId: null,
+  invoiceItems: []
 };
 
 export default function invoicesReducer(state = initialState, action) {

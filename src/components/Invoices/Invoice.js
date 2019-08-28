@@ -12,7 +12,7 @@ import ColorButtonGreen from "../UI/Buttons/ColorButtonGreen";
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {  getInvoices, deleteInvoice } from '../../store/invoices/actions';
+import { getInvoices, deleteInvoice } from '../../store/invoices/actions';
 
 
 
@@ -77,7 +77,7 @@ class Invoice extends Component {
   render() {
     const { inv_id, discount, total, customers, classes } = this.props;
 
-    console.log(customers[this.props.customer_id])
+    // console.log(customers[this.props.customer_id])
     // console.log(this.props)
     return (
 

@@ -17,3 +17,8 @@ export const getInvoicesArray = createSelector(
   getEntities,
   (state , entities) => state.ids.map((id) => entities[id]),
 )
+
+export const getInvoiceItemsArray = createSelector(
+  getInvoicesState,
+  (state) => state.invoiceItems
+)
