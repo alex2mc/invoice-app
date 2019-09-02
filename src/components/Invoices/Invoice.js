@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Link, withRouter } from "react-router-dom";
 import { withStyles} from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button";
+import Modal from "@material-ui/core/Modal";
 import StyledTableCell from "../UI/Table/StyledTableCell";
 import StyledTableRow from "../UI/Table/StyledTableRow";
 import ColorButtonYellow from "../UI/Buttons/ColorButtonYellow";
-
 import ColorButtonRed from "../UI/Buttons/ColorButtonRed";
-import Modal from "@material-ui/core/Modal";
 import ColorButtonGreen from "../UI/Buttons/ColorButtonGreen";
+import Spinner from "../UI/Spinner/Spinner";
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -75,12 +75,16 @@ class Invoice extends Component {
   render() {
     const { inv_id, discount, total, customers, classes } = this.props;
 
+    if(!customers) {
+      return <Spinner />
+    }
+
     return (
 
       <StyledTableRow>
         <StyledTableCell component="th" scope="row">{inv_id}</StyledTableCell>
         <StyledTableCell>
-          { customers[this.props.customer_id].name }
+          { customers[this.props.customer_id] ? customers[this.props.customer_id].name : 'name'}
         </StyledTableCell>
         <StyledTableCell>{discount ? discount : 0}</StyledTableCell>
         <StyledTableCell>{total.toFixed(2)}</StyledTableCell>
