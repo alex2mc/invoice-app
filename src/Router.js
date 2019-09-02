@@ -6,7 +6,7 @@ import Products from './components/Products/Products';
 import Customers from './components/Customers/Customers';
 import Invoices from './components/Invoices/Invoices';
 import CreateInvoice from './components/Invoices/CreateInvoice/CreateInvoice';
-import ViewMode from './components/Invoices/Modes/ViewMode'
+import ViewInvoice from './components/Invoices/ViewInvoice/ViewInvoice'
 import EditInvoice from "./components/Invoices/EditInvoice/EditInvoice";
 
 
@@ -14,7 +14,7 @@ import EditInvoice from "./components/Invoices/EditInvoice/EditInvoice";
 export default function router() {
   return (
     <>
-      <Route exact path='/viewmode/:invoiceId' component={ViewMode} />
+      <Route exact path='/viewinvoice/:invoiceId' component={ViewInvoice} />
       <Route exact path='/editinvoice/:invoiceId' component={EditInvoice} />
 
       <Route exact path='/' component={MainPage} />

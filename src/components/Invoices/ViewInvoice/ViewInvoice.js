@@ -15,13 +15,10 @@ import { connect } from "react-redux";
 import { Link } from 'react-router-dom'
 import Spinner from '../../UI/Spinner/Spinner'
 
-// import { getProductsState } from '../../../store/products/selectors';
-// import { getInvoiceState, getInvoiceItemsState } from '../../../store/invoices/selectors';
-// import { getCustomer } from '../../../store/customers/selectors';
-
 import { getEntities as getInvoices, getInvoiceItemsArray } from '../../../store/invoices/selectors';
 import { getEntities as getCustomers } from '../../../store/customers/selectors';
 import { getEntities as getProducts } from '../../../store/products/selectors';
+
 
 const styles = theme => ({
   wrapper: {
@@ -50,7 +47,7 @@ const styles = theme => ({
 
 
 
-class ViewMode extends Component {
+class ViewInvoice extends Component {
 
   componentDidMount() {
     this.props.getInvoiceItems(this.props.match.params.invoiceId);
@@ -68,21 +65,9 @@ class ViewMode extends Component {
       invoiceItems
     } = this.props;
 
-    // console.log("invoiceItems", invoiceItems);
-    // console.log(products);
-    // console.log(customers );
-
-
-
-    // if(!invoice || !customer || !customer.customer || !products ) {
-    //   return <Spinner />
-    // }
 
     const neededInvoice = invoices[this.props.match.params.invoiceId];
-// debugger
     const neededCustomer = customers[neededInvoice && neededInvoice.customer_id]
-
-    // console.log(neededCustomer);
 
 
     if(!neededInvoice || !neededCustomer  ) {
@@ -94,7 +79,6 @@ class ViewMode extends Component {
       <Paper className={classes.wrapper}>
         <Link to="/customers">
           <Typography variant="h6" gutterBottom className={classes.tableHeader}>
-            {/*{customer.customer.name}*/}
             {neededCustomer.name}
           </Typography>
         </Link>
@@ -115,8 +99,6 @@ class ViewMode extends Component {
                   invoiceItems.map(invoiceItem => (
                     <TableRow key={invoiceItem._id}>
                       <TableCell>
-                        {/*{products.find(product => invoiceItem.product_id === product._id).name}*/}
-
                         {products[invoiceItem.product_id].name}
                       </TableCell>
                       <TableCell align="right">
@@ -124,7 +106,6 @@ class ViewMode extends Component {
 
                       </TableCell>
                       <TableCell align="right">
-                        {/*{products.find(product => invoiceItem.product_id === product._id).price}*/}
                         {products[invoiceItem.product_id].price}
                       </TableCell>
                     </TableRow>
@@ -136,7 +117,6 @@ class ViewMode extends Component {
                   <TableCell/>
                   <TableCell colSpan={1}>Total</TableCell>
                   <TableCell align="right">
-                    {/*{invoice.invoice.total}*/}
                     {neededInvoice ? neededInvoice.total : 0}
                   </TableCell>
                 </TableRow>
@@ -149,7 +129,6 @@ class ViewMode extends Component {
               Discount (%)
             </Typography>
             <Typography variant="h4" align="center" gutterBottom className={classes.tableHeader}>
-              {/*{invoice.invoice.discount ? invoice.invoice.discount : 0}*/}
               {neededInvoice && neededInvoice.discount ? neededInvoice.discount : 0}
             </Typography>
           </Paper>
@@ -163,7 +142,6 @@ const mapStateToProps =  state => {
   return {
     invoices: getInvoices(state),
     products: getProducts(state),
-    // invoice: getInvoiceState(state),
     customers: getCustomers(state),
     invoiceItems: getInvoiceItemsArray(state)
   }
@@ -175,4 +153,4 @@ const mapDispatchToProps = dispatch =>
     getInvoice
   }, dispatch);
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ViewMode));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ViewInvoice));

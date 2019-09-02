@@ -86,7 +86,7 @@ class Invoice extends Component {
         <StyledTableCell>{total.toFixed(2)}</StyledTableCell>
         <StyledTableCell className={classes.buttons}>
 
-          <Link to={`/viewmode/${inv_id}`}>
+          <Link to={`/viewinvoice/${inv_id}`}>
             <Button variant="contained" color="secondary"> View </Button>
           </Link>
 
