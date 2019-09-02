@@ -94,7 +94,7 @@ class Invoice extends Component {
             this.props.location.pathname === "/invoices"
               ?
               <>
-                <Link to={`/editmode/${inv_id}`}>
+                <Link to={`/editinvoice/${inv_id}`}>
                   <ColorButtonYellow variant="contained" color="secondary"> Edit </ColorButtonYellow>
                 </Link>
 
