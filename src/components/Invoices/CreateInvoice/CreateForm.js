@@ -5,8 +5,8 @@ import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import MenuItem from "@material-ui/core/MenuItem";
+// import FormHelperText from '@material-ui/core/FormHelperText';
+// import MenuItem from "@material-ui/core/MenuItem";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -22,6 +22,8 @@ import validate from '../../../shared/validate';
 
 import { withRouter } from 'react-router-dom';
 import CreateFields from "./CreateFields";
+import { renderFromHelper } from "../shared/utilities/renderFromHelper";
+import CustomerSelector from '../shared/CustomerSelector';
 
 
 const styles = theme => ({
@@ -73,36 +75,36 @@ const renderTextField = ({
 );
 
 
-const renderFromHelper = ({ touched, error }) => {
-  if (!(touched && error)) {
-    return
-  } else {
-    return <FormHelperText>{touched && error}</FormHelperText>
-  }
-};
+// const renderFromHelper = ({ touched, error }) => {
+//   if (!(touched && error)) {
+//     return
+//   } else {
+//     return <FormHelperText>{touched && error}</FormHelperText>
+//   }
+// };
 
-const renderSelectFieldCustomer = ({
-                             input,
-                             label,
-                             meta: { touched, error },
-                             children,
-                             ...custom
-                           }) => (
-  <FormControl error={touched && error}>
-    <InputLabel htmlFor="customer-name">Select Name</InputLabel>
-    <Select
-      {...input}
-      {...custom}
-      inputProps={{
-        name: 'customerName',
-        id: 'customer-name'
-      }}
-    >
-      {children}
-    </Select>
-    {renderFromHelper({ touched, error })}
-  </FormControl>
-);
+// const renderSelectFieldCustomer = ({
+//                              input,
+//                              label,
+//                              meta: { touched, error },
+//                              children,
+//                              ...custom
+//                            }) => (
+//   <FormControl error={touched && error}>
+//     <InputLabel htmlFor="customer-name">Select Name</InputLabel>
+//     <Select
+//       {...input}
+//       {...custom}
+//       inputProps={{
+//         name: 'customerName',
+//         id: 'customer-name'
+//       }}
+//     >
+//       {children}
+//     </Select>
+//     {renderFromHelper({ touched, error })}
+//   </FormControl>
+// );
 
 const renderSelectFieldProduct = ({
                                      input,
@@ -136,10 +138,8 @@ class CreateForm extends Component {
 
     const customer_id = this.props.myForm
                         && this.props.myForm.values
-                        && this.props.myForm.values.customerName
-                        && this.props.myForm.values.customerName._id
-                        ? this.props.myForm.values.customerName._id
-                        : 'kill';
+                        && this.props.myForm.values.customer_id;
+
     const discount = this.props.myForm
                       && this.props.myForm.values
                       && this.props.myForm.values.discount
@@ -172,27 +172,38 @@ class CreateForm extends Component {
 
 
  render () {
-   const { pristine, submitting, classes, customers, products, valid } = this.props;
+   const {
+     pristine,
+     submitting,
+     classes,
+     customers,
+     products,
+     valid
+   } = this.props;
+
+
    return (
      <form onSubmit={this.handleSavingInvoice}>
 
        {/*CUSTOMER NAME*/}
        <div>
-         <Field
-           className={classes.formControl}
-           name="customerName"
-           component={renderSelectFieldCustomer}
-           onChange={this.handleChange}
-           label="Select Name"
-         >
-           {
-             customers
-               ? customers.map(customer => (
-                 <MenuItem key={customer._id} value={customer}>{customer.name}</MenuItem>
-               ))
-               : null
-           }
-         </Field>
+
+         <CustomerSelector />
+         {/*<Field*/}
+         {/*  className={classes.formControl}*/}
+         {/*  name="customer_id"*/}
+         {/*  component={renderSelectFieldCustomer}*/}
+         {/*  onChange={this.handleChange}*/}
+         {/*  label="Select Name"*/}
+         {/*>*/}
+         {/*  {*/}
+         {/*    customers*/}
+         {/*      ? customers.map(customer => (*/}
+         {/*        <MenuItem key={customer._id} value={customer._id}>{customer.name}</MenuItem>*/}
+         {/*      ))*/}
+         {/*      : null*/}
+         {/*  }*/}
+         {/*</Field>*/}
        </div>
 
        <div style={{display: "flex"}}>

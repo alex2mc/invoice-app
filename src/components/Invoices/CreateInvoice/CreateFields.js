@@ -4,6 +4,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { Field } from "redux-form";
 import MenuItem from "@material-ui/core/MenuItem";
 import Divider from "@material-ui/core/Divider";
+import { renderSelectFieldProduct } from '../shared/ProductSelector'
 
 const PriceReadable = ({input, get, quantity = 1, ...props}) => {
   const productCost = input.value ? input.value.price : 0
@@ -29,9 +30,9 @@ class CreateFields extends Component {
 
 
   render() {
-    const { renderSelectFieldProduct, renderTextField, classes, products} = this.props;
+    const { renderTextField, classes, products} = this.props;
 
-
+// console.log(this.props)
     return (
       <div>
         {this.props.fields.map((item, fieldsArrayIndex, form)=> {

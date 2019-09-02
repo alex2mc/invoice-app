@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
-
-import { withStyles} from '@material-ui/core/styles';
-
-import Paper from '@material-ui/core/Paper';
-
-import Spinner from '../../UI/Spinner/Spinner'
-
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
-import { getInvoice, getInvoiceItems, updateInvoice } from "../../../store/invoices/actions";
-
 import EditForm from './EditForm';
 
-import { getProductsState } from '../../../store/products/selectors';
+import { withStyles} from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+// import Spinner from '../../UI/Spinner/Spinner'
+
+import {
+  getInvoice,
+  getInvoiceItems
+} from "../../../store/invoices/actions";
+import { getEntities as getCustomers, getCustomersArray } from '../../../store/customers/selectors';
+import { getEntities as getProducts, getProductsArray } from '../../../store/products/selectors';
+import { getEntities as getInvoices, getInvoiceItemsArray } from "../../../store/invoices/selectors";
 
 
 const styles = theme => ({
@@ -65,72 +66,81 @@ const styles = theme => ({
 
 
 class EditInvoice extends Component {
-  componentWillMount() {
-    // const { customer, invoiceItems } = this.props;
+  componentDidMount() {
     this.props.getInvoiceItems(this.props.match.params.invoiceId);
     this.props.getInvoice(this.props.match.params.invoiceId);
-    // console.log(customer.customer._id );
-    // this.props.initialize({discount: 10, quantity: 25, customerName: customer && customer.customer._id ? customer.customer._id : 'oooooo' })
   }
 
 
   render() {
-    const {classes,
-      isProductsLoading,
-      isCustomersLoading,
+    const {
+      classes,
+      customersEntities,
       customers,
-      customer,
+      productsEntities,
       products,
-      postInvoice,
       invoiceItems,
+      invoices,
       invoice,
       getInvoice,
       getInvoiceItems,
-      updateInvoice
+      updateInvoice,
+      total,
+      myForm
     } = this.props;
-    // console.log(this.props)
-    // console.log(this.state)
 
-    if (isProductsLoading && isCustomersLoading) {
-      return <Spinner />
-    }
+    // console.log(this.props)
+
+    // if (isProductsLoading && isCustomersLoading) {
+    //   return <Spinner />
+    // }
 
     return (
       <Paper className={classes.wrapper}>
-
-        {/*{customer ?*/}
           <EditForm
+          customersEntities={customersEntities}
           customers={customers}
-          customer={customer}
+          productsEntities={productsEntities}
           products={products}
-          postInvoice={postInvoice}
+          invoices={invoices}
           invoiceItems={invoiceItems}
           invoice={invoice}
           getInvoice={getInvoice}
           getInvoiceItems={getInvoiceItems}
           updateInvoice={updateInvoice}
+          total={total}
+          myForm={myForm}
         />
-        {/*:null}*/}
       </Paper>
     )
   }
 }
 
 const mapStateToProps =  state => {
-  return {
-    products: getProductsState(state),
-    // customer: getCustomer(state),
-    // customers: getCustomersState(state),
-    // invoiceItems: getInvoiceItemsState(state),
-    // invoice: getInvoiceState(state)
-  }
-};
+  const { EditForm } = state.form
+  const discount = EditForm && EditForm.values && (EditForm.values.discount || 0)
+  const totalReduceCb = (acc, cur) =>
+    acc + (((cur.productName && cur.productName.price) || 0) * (cur.quantity || 1))
+  const totalWithoutDiscount = EditForm && EditForm.values && EditForm.values.items  ? EditForm.values.items.reduce(totalReduceCb, 0) : 0
+  const discountIn$ = (discount * totalWithoutDiscount) / 100
+  const total = totalWithoutDiscount - discountIn$
 
-const mapDispatchToProps = dispatch =>
+  return {
+    productsEntities: getProducts(state),
+    products: getProductsArray(state),
+    customersEntities: getCustomers(state),
+    customers: getCustomersArray(state),
+    total,
+    myForm: EditForm,
+    invoices: getInvoices(state),
+    invoiceItems: getInvoiceItemsArray(state)
+  }
+}
+
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators({
     getInvoice,
-    getInvoiceItems,
-    updateInvoice
+    getInvoiceItems
   }, dispatch);
 
 

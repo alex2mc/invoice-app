@@ -58,9 +58,6 @@ export const getInvoicesRequestFail = (action$) =>
 );
 
 
-
-
-
 export const postInvoiceRequest = (action$) =>
   action$.pipe(
     ofType(POST_INVOICE),
@@ -212,8 +209,8 @@ export const continueOnGetInvoiceSuccess = (action$) =>
   action$.pipe(
     ofType(GET_INVOICE_SUCCEEDED),
     map(
-      (response) => {
-      const id = response.payload.customer_id;
+      (action) => {
+      const id = action.payload.customer_id;
       return CustomersRequestActions.getCustomer.action(id)
       },
     ),

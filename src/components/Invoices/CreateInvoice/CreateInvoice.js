@@ -1,69 +1,15 @@
 import React, { Component } from 'react';
-
-import { withStyles} from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import { bindActionCreators } from "redux";
+// import Form from './CreateForm';
+import {InvoiceForm} from '../forms/InvoiceForm';
 
 import Paper from '@material-ui/core/Paper';
 
-import Spinner from '../../UI/Spinner/Spinner'
-
-import { connect } from 'react-redux';
-import { bindActionCreators } from "redux";
 import { getInvoices, postInvoice, postInvoiceItems } from "../../../store/invoices/actions";
-
-import Form from './CreateForm';
-
-import { getCustomersArray } from '../../../store/customers/selectors';
 import { getProductsArray } from '../../../store/products/selectors';
 
-const styles = theme => ({
-  wrapper: {
-    padding: theme.spacing(2),
-  },
-  root: {
-    width: '75%',
-    marginTop: theme.spacing(3),
-    marginRight: theme.spacing(2),
-    overflowX: 'auto',
-  },
-  rootRight: {
-    width: '25%',
-    marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(6),
-    overflowX: 'auto',
-  },
-  tableHeader: {
-    paddingTop: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
-  },
-  table: {
-    minWidth: 500,
-    // marginBottom: theme.spacing(3),
-  },
-  button: {
-    margin: theme.spacing(1),
-  },
-  rootForm: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-  container: {
-    // display: 'flex',
-    // flexWrap: 'wrap',
-  },
-  textField: {
-    // marginLeft: theme.spacing(1),
-    // marginRight: theme.spacing(1),
-    width: 50,
-  },
-
-});
+import { styles } from '../shared/styles';
 
 
 
@@ -72,19 +18,21 @@ class CreateInvoice extends Component {
 
 
   render() {
-    const {classes, myForm, isProductsLoading, isCustomersLoading, customers, products, getInvoices, postInvoice, postInvoiceItems } = this.props;
-
-    if (isProductsLoading && isCustomersLoading) {
-      return <Spinner />
-    }
+    const {
+      // myForm,
+      products,
+      getInvoices,
+      postInvoice,
+      postInvoiceItems,
+      total
+    } = this.props;
 
     return (
-      <Paper className={classes.wrapper}>
-        <Form
-          total={this.props.total}
-          customers={customers}
+      <Paper style={styles.wrapper}>
+        <InvoiceForm
+          total={total}
           products={products}
-          myForm={myForm}
+          // myForm={myForm}
           postInvoice={postInvoice}
           postInvoiceItems={postInvoiceItems}
           getInvoices={getInvoices}/>
@@ -104,7 +52,6 @@ const mapStateToProps =  state => {
 
   return {
     products: getProductsArray(state),
-    customers: getCustomersArray(state),
     total,
     myForm: CreateForm
   }
@@ -119,4 +66,4 @@ const mapDispatchToProps = (dispatch) =>
 
 
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(CreateInvoice));
+export default connect(mapStateToProps, mapDispatchToProps)(CreateInvoice);
