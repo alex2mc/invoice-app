@@ -157,7 +157,7 @@ class CreateForm extends Component {
     const reducedItems = filteredItems.reduce((acc, item) => {
       return [...acc,
         {
-          quantity: item.quantity,
+          quantity: +item.quantity,
           product_id: item.productName._id
         }
       ]
@@ -167,7 +167,7 @@ class CreateForm extends Component {
 
     this.props.postInvoice(payload);
 
-    // this.props.history.push("/invoices")
+    this.props.history.push("/invoices")
   };
 
 

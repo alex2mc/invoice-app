@@ -24,11 +24,10 @@ class InvoicesRequestsService {
   }
 
   postInvoiceItems(payload) {
-    console.log(payload)
     return ajax
       .post(
         `${url}/${payload.invoice_id}/items`,
-        JSON.stringify(payload.items),
+        JSON.stringify(payload),
         {'Content-Type': 'application/json'}
       )
   }

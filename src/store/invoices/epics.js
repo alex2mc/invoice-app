@@ -95,20 +95,13 @@ export const postInvoiceItemsRequest = (action$) =>
         const invoice_id = payload.response._id;
         const items = meta;
 
-        console.log('items', items);
-
-
-        // const payloadData = { invoice_id, items };
-        const resultItems = from(items)
-      .pipe(map(() =>  {
-            console.log('2', resultItems);
-            return resultItems.subscribe(i => InvoicesRequestActions.postInvoiceItems.action(invoice_id, i))
-          }))
-
-
-        // return InvoicesRequestActions.postInvoiceItems.action(invoice_id, item);
-
-        }
+        return from(items)
+          .pipe(
+            map(  item => {
+              return InvoicesRequestActions.postInvoiceItems.action({...item, invoice_id})
+            })
+          );
+      }
     )
   );
 
@@ -292,7 +285,7 @@ export const epics = [
   getInvoiceRequestSuccess,
   getInvoiceRequestFail,
   continueOnGetInvoiceSuccess,
-  // continueOnPostInvoiceItemsSuccess,
+  continueOnPostInvoiceItemsSuccess,
 
   // updateInvoiceRequest,
   // updateInvoiceRequestSuccess,
