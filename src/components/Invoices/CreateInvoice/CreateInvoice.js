@@ -67,7 +67,7 @@ const styles = theme => ({
 
 
 
-class InvoiceCreateMode extends Component {
+class CreateInvoice extends Component {
 
 
 
@@ -119,4 +119,4 @@ const mapDispatchToProps = (dispatch) =>
 
 
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(InvoiceCreateMode));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(CreateInvoice));

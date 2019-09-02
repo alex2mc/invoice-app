@@ -12,8 +12,6 @@ import { getInvoice, getInvoiceItems, updateInvoice } from "../../../store/invoi
 
 import EditForm from './EditForm';
 
-// import {getCustomer, getCustomersState,} from '../../../store/customers/selectors';
-// import { getInvoiceState, getInvoiceItemsState } from '../../../store/invoices/selectors';
 import { getProductsState } from '../../../store/products/selectors';
 
 
@@ -66,7 +64,7 @@ const styles = theme => ({
 
 
 
-class InvoiceCreateMode extends Component {
+class EditInvoice extends Component {
   componentWillMount() {
     // const { customer, invoiceItems } = this.props;
     this.props.getInvoiceItems(this.props.match.params.invoiceId);
@@ -137,4 +135,4 @@ const mapDispatchToProps = dispatch =>
 
 
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(InvoiceCreateMode));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(EditInvoice));
