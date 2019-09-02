@@ -17,7 +17,7 @@ import Typography from "@material-ui/core/Typography";
 import ColorButtonGreen from "../../UI/Buttons/ColorButtonGreen";
 import Spinner from '../../UI/Spinner/Spinner';
 
-import validate from './validate'
+import validate from '../../../shared/validate'
 
 import {withStyles} from "@material-ui/core";
 
