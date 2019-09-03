@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import {connect, useSelector} from 'react-redux';
+import React, {  } from 'react';
+import {connect, } from 'react-redux';
 import { Field, reduxForm, FieldArray } from 'redux-form';
 
 import List from '@material-ui/core/List';
@@ -11,8 +11,6 @@ import Typography from "@material-ui/core/Typography";
 
 import ColorButtonGreen from "../../UI/Buttons/ColorButtonGreen";
 
-// import validate from '../../../shared/validate';
-
 import InvoiceFormItems from "./InvoiceFormItems";
 import { styles } from './styles';
 import CustomerSelector from '../shared/CustomerSelector';
@@ -20,52 +18,70 @@ import { renderTextField } from "../shared/renderTextField";
 import { bindActionCreators, compose } from "redux";
 import { postInvoice } from "../../../store/invoices/actions";
 import { getEntities as getProducts } from "../../../store/products/selectors";
+import { minValue0, maxValue50 } from '../../../shared/validators'
+import { withRouter } from "react-router";
 
 
-const CreateForm = ({ pristine, submitting, valid,  form, ...props}) => {
-
-  const [total, setTotal] = useState(0)
-  const products = useSelector(state => getProducts(state))
 
 
+const CreateForm = ({ pristine, submitting, valid,  form, total, customer_id, discount, items, ...props}) => {
+  // const products = useSelector(state => getProducts(state));
+  //
+  // const [total, setTotal] = useState(0);
+  // const [customer_id, setCustomer_id] = useState(null);
+  // const [discount, setDiscount] = useState(0);
+  // const [items, setItems] = useState([]);
+
+
+  // const  handleChangingInvoice = () => {
+    // e.preventDefault();
+
+    // const customer_id = form.values.customer_id;
+    // const discount = +form.values.discount || 0;
+
+    // const filteredItems = form.values.items.filter(item => item.product_id);
+    // const reducedItems = filteredItems.reduce((acc, item) => {
+    //   return [...acc,
+    //     {
+    //       quantity: +item.quantity,
+    //       product_id: item.product_id
+    //     }
+    //   ]
+    // }, [])
+    //
+    // const totalReduceCb = (acc, it) =>
+    //   acc + (((it.product_id && products[it.product_id].price) || 0) * (it.quantity || 1))
+    // const totalWithoutDiscount = reducedItems ? reducedItems.reduce(totalReduceCb, 0) : 0
+    // const discountInMoney = (discount * totalWithoutDiscount) / 100
+    // const totalWithoutToFixed = totalWithoutDiscount - discountInMoney
+    // const total = +totalWithoutToFixed.toFixed(2) || 0;
+    //
+    // setTotal(total);
+    // setCustomer_id(customer_id);
+    // setDiscount(discount);
+    // setItems([
+    //   // ...items,
+    // reducedItems
+    // ])
+
+    // };
+  //
+  // console.log('ci', customer_id, 'd', discount, 't', total, items);
+  //
   const  handleSavingInvoice = (e) => {
     e.preventDefault();
 
-    const customer_id = form.values.customer_id;
-
-    const discount = +form.values.discount || 0;
-
-    // const { product_id, quantity } = form.values.items
-    // const quantityToNmbr = Number(quantity)
-    // const upgradedItems = { product_id, quantityToNmbr}
-    const filteredItems = form.values.items.filter(item => item.product_id);
-
-
-
-
-    console.log(filteredItems);
-    const totalReduceCb = (acc, it) =>
-      acc + (((it.product_id && products[it.product_id].price) || 0) * (it.quantity || 1))
-    const totalWithoutDiscount = filteredItems ? filteredItems.reduce(totalReduceCb, 0) : 0
-
-    const discountInMoney = (discount * totalWithoutDiscount) / 100
-
-    const totalWithoutToFixed = totalWithoutDiscount - discountInMoney
-
-    const total = +totalWithoutToFixed.toFixed(2) || 0;
-
-
-
-    const payload = {customer_id, discount, total, filteredItems}
+    const payload = {customer_id, discount, total, items}
+    console.log('SI', payload);
 
     props.postInvoice(payload);
 
-      // this.props.history.push("/invoices")
-    };
+    props.history.push("/invoices")
+  }
 
     return (
       <form
-        // onSubmit={this.handleSavingInvoice}
+        // onSubmit={handleSavingInvoice} onChange={() => {console.log(123); handleChangingInvoice()}}
       >
 
         <div>
@@ -93,7 +109,6 @@ const CreateForm = ({ pristine, submitting, valid,  form, ...props}) => {
                 <ListItemText>Total</ListItemText>
                 <ListItemText>
                   {total}
-                  {/*{total.toFixed(2) || 0}*/}
                 </ListItemText>
               </ListItem>
             </List>
@@ -108,9 +123,10 @@ const CreateForm = ({ pristine, submitting, valid,  form, ...props}) => {
                 name="discount"
                 style={styles.numberFormControl}
                 component={renderTextField}
+                validate={[minValue0, maxValue50]}
                 type='number'
                 inputProps={{
-                  min: 1,
+                  min: 0,
                   max: 50,
                 }}
               />
@@ -134,9 +150,41 @@ const CreateForm = ({ pristine, submitting, valid,  form, ...props}) => {
   // }
 }
 
-const mapStateToProps =  state => {
+const mapStateToProps = state => {
+  const { CreateForm }  = state.form;
+  const products = getProducts(state);
+
+  const filteredItems = CreateForm && CreateForm.values && CreateForm.values.items && CreateForm.values.items.filter(item => item.product_id);
+
+  const reducedItems = filteredItems && filteredItems.reduce((acc, item) => {
+    return [...acc,
+      {
+        quantity: +item.quantity,
+        product_id: item.product_id
+      }
+    ]
+  }, [])
+
+  const discount = (CreateForm && CreateForm.values && CreateForm.values.discount ? +CreateForm.values.discount : 0);
+
+  const totalReduceCb = (acc, it) => {
+    return acc + ((it && it.product_id && products && products[it.product_id] && +products[it.product_id].price)  * (+it.quantity || 1))}
+
+  const totalWithoutDiscount = reducedItems ? reducedItems.reduce(totalReduceCb, 0) : 0
+
+  const discountInMoney = (discount * totalWithoutDiscount) / 100
+  const totalWithoutToFixed = totalWithoutDiscount - discountInMoney
+  const total = +totalWithoutToFixed.toFixed(2) || 0;
+
+  const customer_id = CreateForm && CreateForm.values && CreateForm.values.customer_id;
+
   return {
     form: state.form.CreateForm,
+    products: getProducts(state),
+    total,
+    customer_id,
+    discount,
+    items: reducedItems
   }
 }
 
@@ -149,10 +197,10 @@ const mapDispatchToProps = (dispatch) =>
 export const InvoiceForm  = compose(
   reduxForm({
   form: 'CreateForm',
-  // validate,
 }),
   connect(
     mapStateToProps,
     mapDispatchToProps,
   ),
-)(CreateForm)
+
+) (withRouter(CreateForm))

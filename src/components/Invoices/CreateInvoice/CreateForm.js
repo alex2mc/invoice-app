@@ -18,7 +18,7 @@ import { withStyles } from "@material-ui/core";
 
 import ColorButtonGreen from "../../UI/Buttons/ColorButtonGreen";
 
-import validate from '../../../shared/validate';
+import validate from '../../../shared/validators';
 
 import { withRouter } from 'react-router-dom';
 import CreateFields from "./CreateFields";

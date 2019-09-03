@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import { Field } from "redux-form";
@@ -21,27 +21,25 @@ const PriceReadable = ({input, get, quantity = 1, ...props}) => {
   return priceToFixed || 0
 }
 
-class CreateFields extends Component {
-  componentDidMount() {
-    this.addNewRow()
+export default function CreateFields({fields, ...props}) {
+
+  useEffect(() => {
+   addNewRow()
+  }, []);
+
+  const addNewRow = () => {
+    fields.push({quantity: 1})
   }
 
-  addNewRow = () => {
-    this.props.fields.push({quantity: 1})
-  }
-
-  handleSelectChange = (e, value, prevValue, name) => {
+  const handleSelectChange = (e, value, prevValue, name) => {
     if(!prevValue) {
-      this.addNewRow()
+      addNewRow()
     }
   }
 
-  render() {
-
-
     return (
       <div>
-        {this.props.fields.map((item, fieldsArrayIndex, form)=> {
+        {fields.map((item, fieldsArrayIndex, form)=> {
           const quantity = form.get(fieldsArrayIndex).quantity
           return (
 
@@ -51,7 +49,7 @@ class CreateFields extends Component {
                 <ListItemText>
                   <div>
                     <ProductSelector
-                      handleSelectChange={this.handleSelectChange}
+                      handleSelectChange={handleSelectChange}
                       item={item}
                     />
                   </div>
@@ -86,7 +84,4 @@ class CreateFields extends Component {
         })}
       </div>
     );
-  }
 }
-
-export default CreateFields;

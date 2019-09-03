@@ -63,7 +63,7 @@ export const postInvoiceRequest = (action$) =>
     ofType(POST_INVOICE),
     map(
       (action) => {
-        return InvoicesRequestActions.postInvoice.action(action.payload, action.payload.filteredItems);
+        return InvoicesRequestActions.postInvoice.action(action.payload, action.payload.items);
       },
     ),
   );

@@ -106,7 +106,7 @@ class ViewInvoice extends Component {
 
                       </TableCell>
                       <TableCell align="right">
-                        {products[invoiceItem.product_id].price}
+                        {invoiceItem.quantity * products[invoiceItem.product_id].price}
                       </TableCell>
                     </TableRow>
                   ))

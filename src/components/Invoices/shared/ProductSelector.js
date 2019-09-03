@@ -8,6 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { Field } from "redux-form";
 import { useSelector } from "react-redux";
 import { getProductsArray } from "../../../store/products/selectors";
+// import { productValidation } from '../../../shared/validators'
 
 
 export const renderSelectFieldProduct = ({
@@ -40,7 +41,7 @@ const ProductSelector = ({ handleSelectChange, item }) => {
     <Field
       style={styles.formControl}
       name={`${item}.product_id`}
-      // name="product_id"
+      // validate={[productValidation]}
       component={renderSelectFieldProduct}
       onChange={handleSelectChange}
       label="Add Product"

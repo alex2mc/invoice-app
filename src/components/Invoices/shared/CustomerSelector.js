@@ -9,7 +9,7 @@ import { Field } from "redux-form";
 import { getCustomersArray } from '../../../store/customers/selectors';
 
 import { styles } from './styles';
-
+import { required } from '../../../shared/validators'
 
 export const renderSelectFieldCustomer = ({
                                      input,
@@ -40,6 +40,7 @@ const CustomerSelector = () => {
     <Field
       style={styles.formControl}
       name="customer_id"
+      validate={[required]}
       component={renderSelectFieldCustomer}
       label="Select Name"
     >
