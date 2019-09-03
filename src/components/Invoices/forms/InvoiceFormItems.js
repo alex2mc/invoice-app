@@ -2,18 +2,23 @@ import React, { Component } from 'react';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import { Field } from "redux-form";
-import MenuItem from "@material-ui/core/MenuItem";
 import Divider from "@material-ui/core/Divider";
-import { renderSelectFieldProduct } from '../shared/ProductSelector'
 
 import { styles } from './styles';
 import { renderTextField } from "../shared/renderTextField";
+import ProductSelector from '../shared/ProductSelector';
+import { useSelector } from "react-redux";
+import { getEntities as getProducts } from "../../../store/products/selectors";
 
 const PriceReadable = ({input, get, quantity = 1, ...props}) => {
-  const productCost = input.value ? input.value.price : 0
-  const price = (productCost * quantity).toFixed(2) || '-'
 
-  return price
+  const products = useSelector(state => getProducts(state))
+  const productId = input.value ? input.value : 'no id'
+  const product = products[productId]
+  const price = (product && product.price * quantity)
+  const priceToFixed = price && price.toFixed(2)
+
+  return priceToFixed || 0
 }
 
 class CreateFields extends Component {
@@ -31,44 +36,28 @@ class CreateFields extends Component {
     }
   }
 
-
   render() {
-    const { products} = this.props;
 
-console.log(this.props)
+
     return (
       <div>
         {this.props.fields.map((item, fieldsArrayIndex, form)=> {
           const quantity = form.get(fieldsArrayIndex).quantity
-          // console.log('quantity', quantity);
           return (
 
             <div key={fieldsArrayIndex}>
               <ListItem>
 
                 <ListItemText>
-                  {/*PRODUCT NAME*/}
                   <div>
-                    <Field
-                      style={styles.formControl}
-                      name={`${item}.productName`}
-                      component={renderSelectFieldProduct}
-                      onChange={this.handleSelectChange}
-                      label="Add Product"
-                    >
-                      {
-                        products
-                          ? products.map(product => (
-                            <MenuItem key={product._id} value={product._id}>{product.name}</MenuItem>
-                          ))
-                          : null
-                      }
-                    </Field>
+                    <ProductSelector
+                      handleSelectChange={this.handleSelectChange}
+                      item={item}
+                    />
                   </div>
                 </ListItemText>
 
                 <ListItemText >
-                  {/*QUANTITY*/}
                   <div>
                     <Field
                       name={`${item}.quantity`}
@@ -85,7 +74,7 @@ console.log(this.props)
                 <ListItemText >
                   <Field
                     component={PriceReadable}
-                    name={`${item}.productName`}
+                    name={`${item}.product_id`}
                     quantity={quantity}
                     fieldsArrayIndex={fieldsArrayIndex}
                   />

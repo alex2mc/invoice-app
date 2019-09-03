@@ -1,5 +1,5 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import {connect, useSelector} from 'react-redux';
 import { Field, reduxForm, FieldArray } from 'redux-form';
 
 import List from '@material-ui/core/List';
@@ -11,72 +11,68 @@ import Typography from "@material-ui/core/Typography";
 
 import ColorButtonGreen from "../../UI/Buttons/ColorButtonGreen";
 
-import validate from '../../../shared/validate';
+// import validate from '../../../shared/validate';
 
 import InvoiceFormItems from "./InvoiceFormItems";
 import { styles } from './styles';
 import CustomerSelector from '../shared/CustomerSelector';
 import { renderTextField } from "../shared/renderTextField";
-import {bindActionCreators, compose} from "redux";
+import { bindActionCreators, compose } from "redux";
 import { postInvoice } from "../../../store/invoices/actions";
+import { getEntities as getProducts } from "../../../store/products/selectors";
+
+
+const CreateForm = ({ pristine, submitting, valid,  form, ...props}) => {
+
+  const [total, setTotal] = useState(0)
+  const products = useSelector(state => getProducts(state))
+
+
+  const  handleSavingInvoice = (e) => {
+    e.preventDefault();
+
+    const customer_id = form.values.customer_id;
+
+    const discount = +form.values.discount || 0;
+
+    // const { product_id, quantity } = form.values.items
+    // const quantityToNmbr = Number(quantity)
+    // const upgradedItems = { product_id, quantityToNmbr}
+    const filteredItems = form.values.items.filter(item => item.product_id);
 
 
 
 
+    console.log(filteredItems);
+    const totalReduceCb = (acc, it) =>
+      acc + (((it.product_id && products[it.product_id].price) || 0) * (it.quantity || 1))
+    const totalWithoutDiscount = filteredItems ? filteredItems.reduce(totalReduceCb, 0) : 0
 
-  // handleSavingInvoice = (e) => {
-  //   e.preventDefault();
-  //
-  //   const customer_id = this.props.myForm
-  //     && this.props.myForm.values
-  //     && this.props.myForm.values.customer_id;
-  //
-  //   const discount = this.props.myForm
-  //   && this.props.myForm.values
-  //   && this.props.myForm.values.discount
-  //     ? +this.props.myForm.values.discount
-  //     : 0;
-  //   const total = this.props.total
-  //   const items = this.props.myForm
-  //   && this.props.myForm.values
-  //   && this.props.myForm.values.items
-  //     ? this.props.myForm.values.items
-  //     : 'kill';
-  //
-  //   const filteredItems = items.filter(item => item.productName)
-  //
-  //   const reducedItems = filteredItems.reduce((acc, item) => {
-  //     return [...acc,
-  //       {
-  //         quantity: +item.quantity,
-  //         product_id: item.productName._id
-  //       }
-  //     ]
-  //   }, [])
-  //
-  //   const payload = {customer_id, discount, total, reducedItems}
-  //
-  //   this.props.postInvoice(payload);
-  //
-  //   this.props.history.push("/invoices")
-  // };
+    const discountInMoney = (discount * totalWithoutDiscount) / 100
+
+    const totalWithoutToFixed = totalWithoutDiscount - discountInMoney
+
+    const total = +totalWithoutToFixed.toFixed(2) || 0;
 
 
-const CreateForm = ({ pristine, submitting, products, valid, total, ...props}) => {
-  // const dispatch = useDispatch()
-  console.log(props)
+
+    const payload = {customer_id, discount, total, filteredItems}
+
+    props.postInvoice(payload);
+
+      // this.props.history.push("/invoices")
+    };
+
     return (
       <form
         // onSubmit={this.handleSavingInvoice}
       >
 
-        {/*CUSTOMER NAME*/}
         <div>
           <CustomerSelector />
         </div>
 
         <div style={styles.body}>
-
           <Paper style={styles.root}>
 
             <List>
@@ -90,14 +86,14 @@ const CreateForm = ({ pristine, submitting, products, valid, total, ...props}) =
               <FieldArray
                 name="items"
                 component={InvoiceFormItems}
-                products={products}
               />
 
 
               <ListItem>
                 <ListItemText>Total</ListItemText>
                 <ListItemText>
-                  {total.toFixed(2) || 0}
+                  {total}
+                  {/*{total.toFixed(2) || 0}*/}
                 </ListItemText>
               </ListItem>
             </List>
@@ -124,12 +120,11 @@ const CreateForm = ({ pristine, submitting, products, valid, total, ...props}) =
 
         </div>
 
-        {/*BUTTON*/}
         <div style={styles.button}>
           <ColorButtonGreen
             type="submit"
             disabled={!valid || submitting || pristine}
-            // onClick={this.handleSavingInvoice}
+            onClick={handleSavingInvoice}
           >
             save invoice
           </ColorButtonGreen>
@@ -137,6 +132,12 @@ const CreateForm = ({ pristine, submitting, products, valid, total, ...props}) =
       </form>
     )
   // }
+}
+
+const mapStateToProps =  state => {
+  return {
+    form: state.form.CreateForm,
+  }
 }
 
 const mapDispatchToProps = (dispatch) =>
@@ -148,10 +149,10 @@ const mapDispatchToProps = (dispatch) =>
 export const InvoiceForm  = compose(
   reduxForm({
   form: 'CreateForm',
-  validate,
+  // validate,
 }),
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps,
   ),
 )(CreateForm)
