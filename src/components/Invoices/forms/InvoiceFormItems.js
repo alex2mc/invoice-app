@@ -13,7 +13,7 @@ import { getEntities as getProducts } from "../../../store/products/selectors";
 const PriceReadable = ({input, get, quantity = 1, ...props}) => {
 
   const products = useSelector(state => getProducts(state))
-  const productId = input.value ? input.value : 'no id'
+  const productId = input.value;
   const product = products[productId]
   const price = (product && product.price * quantity)
   const priceToFixed = price && price.toFixed(2)

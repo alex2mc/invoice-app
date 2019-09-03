@@ -7,6 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import { styles } from './styles';
 
 import { bindActionCreators } from "redux";
 import { getInvoiceItems, getInvoice } from "../../../store/invoices/actions";
@@ -20,31 +21,6 @@ import { getEntities as getCustomers } from '../../../store/customers/selectors'
 import { getEntities as getProducts } from '../../../store/products/selectors';
 
 
-const styles = theme => ({
-  wrapper: {
-    padding: theme.spacing(2),
-  },
-  root: {
-    width: '75%',
-    marginTop: theme.spacing(3),
-    marginRight: theme.spacing(2),
-    overflowX: 'auto',
-  },
-  rootRight: {
-    width: '25%',
-    marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(6),
-    overflowX: 'auto',
-  },
-  tableHeader: {
-    paddingTop: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
-  },
-  table: {
-    minWidth: 500,
-  },
-});
-
 
 
 class ViewInvoice extends Component {
@@ -57,7 +33,6 @@ class ViewInvoice extends Component {
 
   render () {
     const {
-      classes,
       invoices,
       customers,
       // invoice,
@@ -76,16 +51,16 @@ class ViewInvoice extends Component {
 
 
     return (
-      <Paper className={classes.wrapper}>
+      <Paper style={styles.wrapper}>
         <Link to="/customers">
-          <Typography variant="h6" gutterBottom className={classes.tableHeader}>
+          <Typography variant="h6" gutterBottom style={styles.tableHeader}>
             {neededCustomer.name}
           </Typography>
         </Link>
         <div style={{display: "flex"}}>
-          <Paper className={classes.root}>
+          <Paper style={styles.root}>
 
-            <Table className={classes.table}>
+            <Table style={styles.table}>
               <TableHead>
                 <TableRow>
                   <TableCell>Products</TableCell>
@@ -124,11 +99,11 @@ class ViewInvoice extends Component {
             </Table>
           </Paper>
 
-          <Paper className={classes.rootRight}>
-            <Typography variant="h6" align="center" gutterBottom className={classes.tableHeader}>
+          <Paper style={styles.rootRight}>
+            <Typography variant="h6" align="center" gutterBottom style={styles.tableHeader}>
               Discount (%)
             </Typography>
-            <Typography variant="h4" align="center" gutterBottom className={classes.tableHeader}>
+            <Typography variant="h4" align="center" gutterBottom style={styles.tableHeader}>
               {neededInvoice && neededInvoice.discount ? neededInvoice.discount : 0}
             </Typography>
           </Paper>

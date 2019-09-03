@@ -23,74 +23,24 @@ import { withRouter } from "react-router";
 
 
 
+const CreateForm = ({ pristine, submitting, valid,  form, total, customer_id, discount, items, ...props }) => {
 
-const CreateForm = ({ pristine, submitting, valid,  form, total, customer_id, discount, items, ...props}) => {
-  // const products = useSelector(state => getProducts(state));
-  //
-  // const [total, setTotal] = useState(0);
-  // const [customer_id, setCustomer_id] = useState(null);
-  // const [discount, setDiscount] = useState(0);
-  // const [items, setItems] = useState([]);
-
-
-  // const  handleChangingInvoice = () => {
-    // e.preventDefault();
-
-    // const customer_id = form.values.customer_id;
-    // const discount = +form.values.discount || 0;
-
-    // const filteredItems = form.values.items.filter(item => item.product_id);
-    // const reducedItems = filteredItems.reduce((acc, item) => {
-    //   return [...acc,
-    //     {
-    //       quantity: +item.quantity,
-    //       product_id: item.product_id
-    //     }
-    //   ]
-    // }, [])
-    //
-    // const totalReduceCb = (acc, it) =>
-    //   acc + (((it.product_id && products[it.product_id].price) || 0) * (it.quantity || 1))
-    // const totalWithoutDiscount = reducedItems ? reducedItems.reduce(totalReduceCb, 0) : 0
-    // const discountInMoney = (discount * totalWithoutDiscount) / 100
-    // const totalWithoutToFixed = totalWithoutDiscount - discountInMoney
-    // const total = +totalWithoutToFixed.toFixed(2) || 0;
-    //
-    // setTotal(total);
-    // setCustomer_id(customer_id);
-    // setDiscount(discount);
-    // setItems([
-    //   // ...items,
-    // reducedItems
-    // ])
-
-    // };
-  //
-  // console.log('ci', customer_id, 'd', discount, 't', total, items);
-  //
   const  handleSavingInvoice = (e) => {
     e.preventDefault();
 
     const payload = {customer_id, discount, total, items}
-    console.log('SI', payload);
-
     props.postInvoice(payload);
-
     props.history.push("/invoices")
   }
 
     return (
-      <form
-        // onSubmit={handleSavingInvoice} onChange={() => {console.log(123); handleChangingInvoice()}}
-      >
-
+      <form>
         <div>
           <CustomerSelector />
         </div>
 
         <div style={styles.body}>
           <Paper style={styles.root}>
-
             <List>
               <ListItem>
                 <ListItemText>Products</ListItemText>
@@ -104,7 +54,6 @@ const CreateForm = ({ pristine, submitting, valid,  form, total, customer_id, di
                 component={InvoiceFormItems}
               />
 
-
               <ListItem>
                 <ListItemText>Total</ListItemText>
                 <ListItemText>
@@ -112,12 +61,10 @@ const CreateForm = ({ pristine, submitting, valid,  form, total, customer_id, di
                 </ListItemText>
               </ListItem>
             </List>
-
           </Paper>
 
           <Paper style={styles.rootRight}>
             <Typography variant="h6" align="center" gutterBottom style={styles.tableHeader}>Discount (%)</Typography>
-            {/*DISCOUNT*/}
             <div>
               <Field
                 name="discount"
@@ -131,11 +78,9 @@ const CreateForm = ({ pristine, submitting, valid,  form, total, customer_id, di
                 }}
               />
             </div>
-
           </Paper>
 
         </div>
-
         <div style={styles.button}>
           <ColorButtonGreen
             type="submit"
@@ -147,7 +92,6 @@ const CreateForm = ({ pristine, submitting, valid,  form, total, customer_id, di
         </div>
       </form>
     )
-  // }
 }
 
 const mapStateToProps = state => {
@@ -155,7 +99,6 @@ const mapStateToProps = state => {
   const products = getProducts(state);
 
   const filteredItems = CreateForm && CreateForm.values && CreateForm.values.items && CreateForm.values.items.filter(item => item.product_id);
-
   const reducedItems = filteredItems && filteredItems.reduce((acc, item) => {
     return [...acc,
       {
@@ -163,24 +106,22 @@ const mapStateToProps = state => {
         product_id: item.product_id
       }
     ]
-  }, [])
-
-  const discount = (CreateForm && CreateForm.values && CreateForm.values.discount ? +CreateForm.values.discount : 0);
+  }, []);
 
   const totalReduceCb = (acc, it) => {
     return acc + ((it && it.product_id && products && products[it.product_id] && +products[it.product_id].price)  * (+it.quantity || 1))}
-
   const totalWithoutDiscount = reducedItems ? reducedItems.reduce(totalReduceCb, 0) : 0
 
-  const discountInMoney = (discount * totalWithoutDiscount) / 100
-  const totalWithoutToFixed = totalWithoutDiscount - discountInMoney
+  const discount = (CreateForm && CreateForm.values && CreateForm.values.discount ? +CreateForm.values.discount : 0);
+  const discountInMoney = (discount * totalWithoutDiscount) / 100;
+
+  const totalWithoutToFixed = totalWithoutDiscount - discountInMoney;
   const total = +totalWithoutToFixed.toFixed(2) || 0;
 
   const customer_id = CreateForm && CreateForm.values && CreateForm.values.customer_id;
 
   return {
     form: state.form.CreateForm,
-    products: getProducts(state),
     total,
     customer_id,
     discount,

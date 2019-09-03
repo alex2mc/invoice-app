@@ -8,7 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { Field } from "redux-form";
 import { useSelector } from "react-redux";
 import { getProductsArray } from "../../../store/products/selectors";
-// import { productValidation } from '../../../shared/validators'
+import { required } from '../../../shared/validators'
 
 
 export const renderSelectFieldProduct = ({
@@ -41,7 +41,7 @@ const ProductSelector = ({ handleSelectChange, item }) => {
     <Field
       style={styles.formControl}
       name={`${item}.product_id`}
-      // validate={[productValidation]}
+      validate={[(value) => value ? undefined : 'Required']}
       component={renderSelectFieldProduct}
       onChange={handleSelectChange}
       label="Add Product"
@@ -49,7 +49,7 @@ const ProductSelector = ({ handleSelectChange, item }) => {
       {
         products
           ? products.map(product => (
-            <MenuItem key={product._id} value={product._id} >{product.name}</MenuItem>
+            <MenuItem key={product._id} value={product._id}>{product.name}</MenuItem>
           ))
           : null
       }
