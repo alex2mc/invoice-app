@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Link, withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
@@ -19,26 +19,18 @@ import { styles } from './styles';
 
 
 
-class Invoice extends Component {
-  state = {
-    isOpen: false
+const Invoice  = ({inv_id, discount, total, customers, deleteInvoice, ...props}) => {
+  const [isOpen, setToggleOpen] = useState(false)
+
+  const handleToggleOpen = () => {
+    setToggleOpen(!isOpen)
   };
 
-  handleOpen = () => {
-    this.setState({isOpen: true})
-  };
 
-  handleClose = () => {
-    this.setState({isOpen: false})
+  const handleDelete = async (id) => {
+    deleteInvoice(id);
+    handleToggleOpen();
   };
-
-  handleDelete = async (id) => {
-    this.props.deleteInvoice(id);
-    this.setState({isOpen: false});
-  };
-
-  render() {
-    const { inv_id, discount, total, customers } = this.props;
 
     if(!customers) {
       return <Spinner />
@@ -49,7 +41,7 @@ class Invoice extends Component {
       <StyledTableRow>
         <StyledTableCell component="th" scope="row">{inv_id}</StyledTableCell>
         <StyledTableCell>
-          { customers[this.props.customer_id] ? customers[this.props.customer_id].name : 'name'}
+          { customers[props.customer_id] ? customers[props.customer_id].name : 'name'}
         </StyledTableCell>
         <StyledTableCell>{discount ? discount : 0}</StyledTableCell>
         <StyledTableCell>{total.toFixed(2)}</StyledTableCell>
@@ -60,14 +52,14 @@ class Invoice extends Component {
           </Link>
 
           {
-            this.props.location.pathname === "/invoices"
+            props.location.pathname === "/invoices"
               ?
               <>
                 <Link to={`/editinvoice/${inv_id}`}>
                   <ColorButtonYellow variant="contained" color="secondary"> Edit </ColorButtonYellow>
                 </Link>
 
-                <ColorButtonRed variant="contained" color="secondary" onClick={this.handleOpen}> Delete </ColorButtonRed>
+                <ColorButtonRed variant="contained" color="secondary" onClick={handleToggleOpen}> Delete </ColorButtonRed>
               </>
               : null
           }
@@ -75,18 +67,18 @@ class Invoice extends Component {
           <Modal
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
-            open={this.state.isOpen}
-            onClose={this.handleClose}
+            open={isOpen}
+            onClose={handleToggleOpen}
             style={styles.modal}
           >
             <div style={styles.paper}>
               Are you sure you want to delete an invoice?
 
               <div style={styles.modalButtons}>
-                <ColorButtonGreen variant="contained" color="secondary" onClick={() => this.handleDelete(inv_id)}>
+                <ColorButtonGreen variant="contained" color="secondary" onClick={() => handleDelete(inv_id)}>
                   Yes
                 </ColorButtonGreen>
-                <ColorButtonRed variant="contained" color="secondary" onClick={this.handleClose}>
+                <ColorButtonRed variant="contained" color="secondary" onClick={handleToggleOpen}>
                   Cancel
                 </ColorButtonRed>
               </div>
@@ -98,7 +90,6 @@ class Invoice extends Component {
       </StyledTableRow>
 
     );
-  }
 }
 
 const mapDispatchToProps = dispatch =>
