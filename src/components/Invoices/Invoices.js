@@ -14,7 +14,7 @@ import { getCustomers } from '../../store/customers/actions';
 import { getInvoicesArray } from '../../store/invoices/selectors';
 import { getEntities as getCustomersEntities } from '../../store/customers/selectors';
 
-import Invoice from "./Invoice";
+import Invoice from "./Invoice/Invoice";
 import StyledTableCell from "../UI/Table/StyledTableCell";
 
 import { styles } from './styles';

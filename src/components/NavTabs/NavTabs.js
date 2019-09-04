@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -6,15 +6,22 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
 import { Link, withRouter } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { getInvoicesArray } from '../../store/invoices/selectors';
 import { styles } from './styles'
+import { bindActionCreators } from "redux";
+import { getInvoices } from "../../store/invoices/actions";
 
 
 
 
 
-const NavTabs = ({...props}) => {
+const NavTabs = ({getInvoices, ...props}) => {
+
+  useEffect(() => {
+    getInvoices();
+  }, [getInvoices]);
+
   const invoices = useSelector(state => getInvoicesArray(state))
 
   const invoicesAmount = invoices.length
@@ -51,6 +58,11 @@ const NavTabs = ({...props}) => {
       </div>
     );
 }
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({
+    getInvoices,
+  }, dispatch);
 
 
-export default (withRouter(NavTabs));
+
+export default connect(null, mapDispatchToProps)(withRouter(NavTabs));

@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { Link, withRouter } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
-import StyledTableCell from "../UI/Table/StyledTableCell";
-import StyledTableRow from "../UI/Table/StyledTableRow";
-import ColorButtonYellow from "../UI/Buttons/ColorButtonYellow";
-import ColorButtonRed from "../UI/Buttons/ColorButtonRed";
-import ColorButtonGreen from "../UI/Buttons/ColorButtonGreen";
-import Spinner from "../UI/Spinner/Spinner";
+import StyledTableCell from "../../UI/Table/StyledTableCell";
+import StyledTableRow from "../../UI/Table/StyledTableRow";
+import ColorButtonYellow from "../../UI/Buttons/ColorButtonYellow";
+import ColorButtonRed from "../../UI/Buttons/ColorButtonRed";
+import ColorButtonGreen from "../../UI/Buttons/ColorButtonGreen";
+import Spinner from "../../UI/Spinner/Spinner";
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getInvoices, deleteInvoice } from '../../store/invoices/actions';
+import { getInvoices, deleteInvoice } from '../../../store/invoices/actions';
 
 import { styles } from './styles';
 
