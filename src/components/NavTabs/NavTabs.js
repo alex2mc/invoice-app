@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -6,30 +6,24 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
 import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getInvoicesArray } from '../../store/invoices/selectors';
+import { styles } from './styles'
 
 
 
 
 
-class NavTabs extends Component {
-  render () {
-    const { invoices } = this.props;
+const NavTabs = ({...props}) => {
+  const invoices = useSelector(state => getInvoicesArray(state))
 
-    const invoicesAmount = invoices.length
-
-    const toolbarStyles = {
-      display: 'flex',
-      justifyContent: 'space-between'
-    }
-
+  const invoicesAmount = invoices.length
 
     return (
       <div>
         <AppBar position="static" >
           <Container>
-            <Toolbar variant="dense" style={toolbarStyles}>
+            <Toolbar variant="dense" style={styles.toolbar}>
               <Link to="/">
                 <Typography variant="h6" color="textPrimary"> Logo</Typography>
               </Link>
@@ -43,7 +37,7 @@ class NavTabs extends Component {
                 <Typography variant="h6" color="textPrimary"> Invoices ({invoicesAmount})</Typography>
               </Link>
               {
-                this.props.location.pathname !== "/newinvoice"
+                props.location.pathname !== "/newinvoice"
                   ?
                   <Link to="/newinvoice">
                     <Typography variant="h6" color="textPrimary"> + New Invoice</Typography>
@@ -56,12 +50,7 @@ class NavTabs extends Component {
 
       </div>
     );
-  }
-}
-const mapStateToProps =  state => {
-  return {
-    invoices: getInvoicesArray(state),
-  }
 }
 
-export default connect(mapStateToProps)(withRouter(NavTabs));
+
+export default (withRouter(NavTabs));

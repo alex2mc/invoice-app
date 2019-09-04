@@ -1,5 +1,5 @@
 export const required = (value, ...restProps) => {
-  console.log(value, restProps);
+  // console.log(value, restProps);
   return value ? undefined : 'Required';
 }
 
