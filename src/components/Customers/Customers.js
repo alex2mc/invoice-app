@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,7 +9,7 @@ import StyledTableCell from "../UI/Table/StyledTableCell";
 import StyledTableRow from "../UI/Table/StyledTableRow";
 import { styles } from "../UI/shared/styles";
 
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getCustomers } from '../../store/customers/actions';
 
@@ -17,21 +17,21 @@ import { getCustomersArray } from '../../store/customers/selectors';
 
 
 
-class Customers extends Component {
+const Customers = ({ getCustomers, ...props}) => {
 
-  render () {
+  useEffect(() => {
+    getCustomers();
+  }, []);
 
-    const {
-      customers
-    } = this.props;
+  const customers = useSelector(state => getCustomersArray(state))
 
-    const customersRows = customers.map(customer => (
-      <StyledTableRow key={customer._id}>
-        <StyledTableCell component="th" scope="row">{customer.name}</StyledTableCell>
-        <StyledTableCell>{customer.address}</StyledTableCell>
-        <StyledTableCell>{customer.phone}</StyledTableCell>
-      </StyledTableRow>
-    ))
+  const customersRows = customers.map(customer => (
+    <StyledTableRow key={customer._id}>
+      <StyledTableCell component="th" scope="row">{customer.name}</StyledTableCell>
+      <StyledTableCell>{customer.address}</StyledTableCell>
+      <StyledTableCell>{customer.phone}</StyledTableCell>
+    </StyledTableRow>
+  ))
 
 
     return (
@@ -52,18 +52,12 @@ class Customers extends Component {
         </Table>
       </Paper>
     );
-  }
 }
 
-const mapStateToProps =  state => {
-  return {
-    customers: getCustomersArray(state),
-  }
-}
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
     getCustomers
   }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Customers);
+export default connect(null, mapDispatchToProps)(Customers);
