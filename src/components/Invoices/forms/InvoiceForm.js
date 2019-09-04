@@ -1,4 +1,4 @@
-import React, {  } from 'react';
+import React, {useEffect} from 'react';
 import {connect, } from 'react-redux';
 import { Field, reduxForm, FieldArray } from 'redux-form';
 
@@ -11,19 +11,39 @@ import Typography from "@material-ui/core/Typography";
 
 import ColorButtonGreen from "../../UI/Buttons/ColorButtonGreen";
 
-import InvoiceFormItems from "./InvoiceFormItems";
+import InvoiceFormItems from "./InvoiceItemForm";
 import { styles } from './styles';
 import CustomerSelector from '../shared/CustomerSelector';
 import { renderTextField } from "../shared/renderTextField";
 import { bindActionCreators, compose } from "redux";
 import { postInvoice } from "../../../store/invoices/actions";
-import { getEntities as getProducts } from "../../../store/products/selectors";
-import { minValue0, maxValue50 } from '../../../shared/validators'
+import { getCustomers } from "../../../store/customers/actions";
+import { getProducts } from "../../../store/products/actions";
+import { getEntities as getProductsEntities } from "../../../store/products/selectors";
+import { minValue0, maxValue50 } from '../../../shared/validators/validators'
 import { withRouter } from "react-router";
 
 
 
-const CreateForm = ({ pristine, submitting, valid,  form, total, customer_id, discount, items, ...props }) => {
+const Form = ({ getProducts,
+                getCustomers,
+                pristine,
+                submitting,
+                valid,
+                form,
+                total,
+                customer_id,
+                discount,
+                items,
+                ...props }) => {
+
+  useEffect(() => {
+    getProducts();
+  }, [getProducts]);
+
+  useEffect(() => {
+    getCustomers();
+  }, [getCustomers]);
 
   const  handleSavingInvoice = (e) => {
     e.preventDefault();
@@ -35,9 +55,7 @@ const CreateForm = ({ pristine, submitting, valid,  form, total, customer_id, di
 
     return (
       <form>
-        <div>
-          <CustomerSelector />
-        </div>
+        <CustomerSelector />
 
         <div style={styles.body}>
           <Paper style={styles.root}>
@@ -65,7 +83,6 @@ const CreateForm = ({ pristine, submitting, valid,  form, total, customer_id, di
 
           <Paper style={styles.rootRight}>
             <Typography variant="h6" align="center" gutterBottom style={styles.tableHeader}>Discount (%)</Typography>
-            <div>
               <Field
                 name="discount"
                 style={styles.numberFormControl}
@@ -77,7 +94,6 @@ const CreateForm = ({ pristine, submitting, valid,  form, total, customer_id, di
                   max: 50,
                 }}
               />
-            </div>
           </Paper>
 
         </div>
@@ -96,7 +112,7 @@ const CreateForm = ({ pristine, submitting, valid,  form, total, customer_id, di
 
 const mapStateToProps = state => {
   const { CreateForm }  = state.form;
-  const products = getProducts(state);
+  const products = getProductsEntities(state);
 
   const filteredItems = CreateForm && CreateForm.values && CreateForm.values.items && CreateForm.values.items.filter(item => item.product_id);
   const reducedItems = filteredItems && filteredItems.reduce((acc, item) => {
@@ -131,6 +147,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators({
+    getCustomers,
+    getProducts,
     postInvoice,
   }, dispatch);
 
@@ -138,10 +156,11 @@ const mapDispatchToProps = (dispatch) =>
 export const InvoiceForm  = compose(
   reduxForm({
   form: 'CreateForm',
+    destroyOnUnmount: false
 }),
   connect(
     mapStateToProps,
     mapDispatchToProps,
   ),
 
-) (withRouter(CreateForm))
+) (withRouter(Form))

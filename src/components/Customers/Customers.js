@@ -21,7 +21,7 @@ const Customers = ({ getCustomers, ...props}) => {
 
   useEffect(() => {
     getCustomers();
-  }, []);
+  }, [getCustomers]);
 
   const customers = useSelector(state => getCustomersArray(state))
 

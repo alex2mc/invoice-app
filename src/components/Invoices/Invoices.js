@@ -24,14 +24,14 @@ import { styles } from './styles';
 
 
 
-const CommonContent = ({getInvoices, getCustomers, ...props}) => {
+const Invoices = ({getInvoices, getCustomers, ...props}) => {
   useEffect(() => {
     getInvoices();
-  }, []);
+  }, [getInvoices]);
 
   useEffect(() => {
     getCustomers();
-  }, []);
+  }, [getCustomers]);
 
   const customers = useSelector(state => getCustomersEntities(state))
   const invoices = useSelector(state => getInvoicesArray(state))
@@ -71,4 +71,4 @@ const mapDispatchToProps = dispatch =>
     getCustomers
   }, dispatch);
 
-export default connect(null, mapDispatchToProps)(CommonContent);
+export default connect(null, mapDispatchToProps)(Invoices);

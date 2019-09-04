@@ -21,10 +21,7 @@ const Products = ({getProducts, ...props}) => {
 
   useEffect(() => {
     getProducts();
-    // return () => {
-    //   getProducts();
-    // };
-  }, []);
+  }, [getProducts]);
 
   const products = useSelector(state => getProductsArray(state))
 
