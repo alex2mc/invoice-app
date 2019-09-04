@@ -10,15 +10,16 @@ import Typography from '@material-ui/core/Typography';
 import { styles } from './styles';
 
 import { bindActionCreators } from "redux";
-import { getInvoiceItems, getInvoice } from "../../../store/invoices/actions";
+import { getInvoiceItems, getInvoice, getInvoices } from "../../../store/invoices/actions";
+import { getProducts } from "../../../store/products/actions";
 import { connect } from "react-redux";
 
 import { Link } from 'react-router-dom'
-import Spinner from '../../UI/Spinner/Spinner'
+// import Spinner from '../../UI/Spinner/Spinner'
 
-import { getEntities as getInvoices, getInvoiceItemsArray } from '../../../store/invoices/selectors';
-import { getEntities as getCustomers } from '../../../store/customers/selectors';
-import { getEntities as getProducts } from '../../../store/products/selectors';
+import { getEntities as getInvoicesEntities, getInvoiceItemsArray } from '../../../store/invoices/selectors';
+import { getEntities as getCustomersEntities } from '../../../store/customers/selectors';
+import { getEntities as getProductsEntities } from '../../../store/products/selectors';
 
 
 
@@ -26,6 +27,8 @@ import { getEntities as getProducts } from '../../../store/products/selectors';
 class ViewInvoice extends Component {
 
   componentDidMount() {
+    this.props.getInvoices();
+    this.props.getProducts();
     this.props.getInvoiceItems(this.props.match.params.invoiceId);
     this.props.getInvoice(this.props.match.params.invoiceId);
   }
@@ -37,24 +40,24 @@ class ViewInvoice extends Component {
       customers,
       // invoice,
       products,
-      invoiceItems
+      invoiceItems,
     } = this.props;
 
 
-    const neededInvoice = invoices[this.props.match.params.invoiceId];
-    const neededCustomer = customers[neededInvoice && neededInvoice.customer_id]
+    const neededInvoice = invoices && invoices[this.props.match.params.invoiceId];
+    const neededCustomer = customers && customers[neededInvoice && neededInvoice.customer_id]
 
 
-    if(!neededInvoice || !neededCustomer  ) {
-      return <Spinner />
-    }
+    // if(!neededInvoice || !neededCustomer  ) {
+    //   return <Spinner />
+    // }
 
 
     return (
       <Paper style={styles.wrapper}>
         <Link to="/customers">
           <Typography variant="h6" gutterBottom style={styles.tableHeader}>
-            {neededCustomer.name}
+            {neededCustomer && neededCustomer.name}
           </Typography>
         </Link>
         <div style={{display: "flex"}}>
@@ -74,18 +77,16 @@ class ViewInvoice extends Component {
                   invoiceItems.map(invoiceItem => (
                     <TableRow key={invoiceItem._id}>
                       <TableCell>
-                        {products[invoiceItem.product_id].name}
+                        {products && products[invoiceItem.product_id] && products[invoiceItem.product_id].name}
                       </TableCell>
                       <TableCell align="right">
                         {invoiceItem.quantity}
-
                       </TableCell>
                       <TableCell align="right">
-                        {invoiceItem.quantity * products[invoiceItem.product_id].price}
+                        {invoiceItem.quantity * (products && products[invoiceItem.product_id] && products[invoiceItem.product_id].price) || 0}
                       </TableCell>
                     </TableRow>
                   ))
-
                 }
 
                 <TableRow>
@@ -115,17 +116,19 @@ class ViewInvoice extends Component {
 
 const mapStateToProps =  state => {
   return {
-    invoices: getInvoices(state),
-    products: getProducts(state),
-    customers: getCustomers(state),
-    invoiceItems: getInvoiceItemsArray(state)
+    invoices: getInvoicesEntities(state),
+    products: getProductsEntities(state),
+    customers: getCustomersEntities(state),
+    invoiceItems: getInvoiceItemsArray(state),
   }
 };
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
     getInvoiceItems,
-    getInvoice
+    getInvoice,
+    getProducts,
+    getInvoices
   }, dispatch);
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ViewInvoice));
