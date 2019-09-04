@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from "react-router-dom";
-import { withStyles} from '@material-ui/core/styles';
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
 import StyledTableCell from "../UI/Table/StyledTableCell";
@@ -14,42 +13,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getInvoices, deleteInvoice } from '../../store/invoices/actions';
 
+import { styles } from './styles';
 
-
-const styles = theme => ({
-  paper: {
-    position: 'absolute',
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: '5px',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 4),
-  },
-  buttons: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap'
-  },
-  modalButtons: {
-    marginTop: theme.spacing(2),
-    display: 'flex',
-    justifyContent: 'center'
-  },
-  modal: {
-    position: 'fixed',
-    width: '100vw',
-    height: '100vh',
-    backgroundColor: 'rgba(16, 12, 26, 0.78)',
-    top: 0,
-    left: 0,
-    display: 'flex',
-    zIndex: 999,
-    transition: '0.3s',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-});
 
 
 
@@ -73,7 +38,7 @@ class Invoice extends Component {
   };
 
   render() {
-    const { inv_id, discount, total, customers, classes } = this.props;
+    const { inv_id, discount, total, customers } = this.props;
 
     if(!customers) {
       return <Spinner />
@@ -88,7 +53,7 @@ class Invoice extends Component {
         </StyledTableCell>
         <StyledTableCell>{discount ? discount : 0}</StyledTableCell>
         <StyledTableCell>{total.toFixed(2)}</StyledTableCell>
-        <StyledTableCell className={classes.buttons}>
+        <StyledTableCell style={styles.buttons}>
 
           <Link to={`/viewinvoice/${inv_id}`}>
             <Button variant="contained" color="secondary"> View </Button>
@@ -112,12 +77,12 @@ class Invoice extends Component {
             aria-describedby="simple-modal-description"
             open={this.state.isOpen}
             onClose={this.handleClose}
-            className={classes.modal}
+            style={styles.modal}
           >
-            <div className={classes.paper}>
+            <div style={styles.paper}>
               Are you sure you want to delete an invoice?
 
-              <div className={classes.modalButtons}>
+              <div style={styles.modalButtons}>
                 <ColorButtonGreen variant="contained" color="secondary" onClick={() => this.handleDelete(inv_id)}>
                   Yes
                 </ColorButtonGreen>
@@ -142,4 +107,4 @@ const mapDispatchToProps = dispatch =>
     getInvoices
   }, dispatch);
 
-export default (withStyles(styles)(connect(null,mapDispatchToProps)(withRouter(Invoice))))
+export default connect(null,mapDispatchToProps)(withRouter(Invoice))
