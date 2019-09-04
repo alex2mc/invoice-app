@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { useEffect } from 'react';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,7 +9,7 @@ import StyledTableCell from "../UI/Table/StyledTableCell";
 import StyledTableRow from "../UI/Table/StyledTableRow";
 import { styles } from "../UI/shared/styles";
 
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getProducts } from '../../store/products/actions';
 
@@ -17,22 +17,23 @@ import { getProductsArray } from '../../store/products/selectors';
 
 
 
-class Products extends Component {
+const Products = ({getProducts, ...props}) => {
 
-  render () {
+  useEffect(() => {
+    getProducts();
+    // return () => {
+    //   getProducts();
+    // };
+  }, []);
 
-    const {
-      products
-    } = this.props;
+  const products = useSelector(state => getProductsArray(state))
 
-
-    const productsRows =  products.map(product => (
-        <StyledTableRow key={product._id}>
-          <StyledTableCell component="th" scope="row">{product.name}</StyledTableCell>
-          <StyledTableCell >{product.price}</StyledTableCell>
-        </StyledTableRow>
-      ))
-
+  const productsRows =  products.map(product => (
+      <StyledTableRow key={product._id}>
+        <StyledTableCell component="th" scope="row">{product.name}</StyledTableCell>
+        <StyledTableCell >{product.price}</StyledTableCell>
+      </StyledTableRow>
+    ))
 
     return (
       <Paper style={styles.root}>
@@ -51,14 +52,7 @@ class Products extends Component {
         </Table>
       </Paper>
     );
-  }
-
-}
-
-const mapStateToProps =  state => {
-  return {
-    products: getProductsArray(state),
-  }
+  // }
 }
 
 const mapDispatchToProps = dispatch =>
@@ -66,4 +60,4 @@ const mapDispatchToProps = dispatch =>
     getProducts
   }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Products);
+export default connect(null, mapDispatchToProps)(Products);
