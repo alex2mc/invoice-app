@@ -19,6 +19,9 @@ export const styles =  ({
     marginTop: theme.spacing(5),
     marginBottom: theme.spacing(6),
     overflowX: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   tableHeader: {
     paddingTop: theme.spacing(2),
