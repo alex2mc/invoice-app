@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import ColorButtonGreen from "../../UI/Buttons/ColorButtonGreen";
 import { TextField } from 'formik-material-ui';
@@ -7,29 +7,11 @@ import {getCustomers} from "../../../store/customers/actions";
 import {bindActionCreators} from "redux";
 import Container from "@material-ui/core/Container";
 import CustomerSelector from "./utility/CustomerSelector";
+import {isDiscount, isRequired} from "../../../shared/validators/validators";
 // import InvoiceItemForm from './InvoiceItemForm'
 
 
 const InvoiceForm = ({getCustomers, ...props}) => {
-
-
-  const isRequired = (value) => {
-    console.log(value);
-    return !value ? "Required" : null;
-  }
-
-  const isMinValue0 = (value) => {
-      return value < 0 ? "should be bigger" : ""
-  }
-
-  const isDiscount = (value) => {
-    if (value < 0) {
-      return "should be at least 0"
-    } else if (value > 50) {
-      return "maximum 50"
-    }
-    return ""
-  }
 
   return (
     <Container>
@@ -52,10 +34,7 @@ const InvoiceForm = ({getCustomers, ...props}) => {
               validate={isDiscount}
               component={TextField}
             />
-
             <ErrorMessage name="discount" component="div" />
-
-
 
             <br/>
 
@@ -64,8 +43,6 @@ const InvoiceForm = ({getCustomers, ...props}) => {
                 validate={isRequired}
                 component={CustomerSelector}
               />
-
-
             <ErrorMessage name="customer_id" component="div" />
             <br/>
 

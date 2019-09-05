@@ -1,21 +1,20 @@
-export const required = (value, ...restProps) => {
-  // console.log(value, restProps);
-  return value ? undefined : 'Required';
+export const isRequired = (value) => {
+  console.log(value);
+  return !value ? "Required" : null;
 }
 
+export const isMinValue0 = (value) => {
+  return value < 0 ? "should be bigger" : null;
+}
 
-// export const productValidation = (values) => {
-//   console.log(values);
-//   const { items } = values
-//   let errorMessage = 'Please select product(s)'
-//
-//   if(!items || (items.length === 1 && !items[0].product_id)) {
-//     return errorMessage
-//   } else if(items.length > 1) {
-//     errorMessage = ''
-//     return errorMessage
-//   }
-// }
+export const isDiscount = (value) => {
+  if (value < 0) {
+    return "should be at least 0"
+  } else if (value > 50) {
+    return "maximum 50"
+  }
+  return null;
+}
 
 export const minValue = min => value =>
   value && value < min ? `Must be at least ${min}` : undefined
