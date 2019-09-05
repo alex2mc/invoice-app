@@ -9,6 +9,7 @@ import Container from "@material-ui/core/Container";
 import CustomerSelector from "./utility/CustomerSelector";
 import {isDiscount, isRequired} from "../../../shared/validators/validators";
 import InvoiceItemForm from "./InvoiceItemForm";
+import Total from "./utility/Total";
 // import InvoiceItemForm from './InvoiceItemForm'
 
 
@@ -58,6 +59,13 @@ const InvoiceForm = ({getCustomers, ...props}) => {
             />
 
             {/*<InvoiceItemForm arrayHelpers={arrayHelpers} values={values} handleChange={handleChange} {...props}/>*/}
+            <br/>
+            <br/>
+
+            <Field
+              name="total"
+              component={Total}
+            />
 
             <br/>
             <br/>
