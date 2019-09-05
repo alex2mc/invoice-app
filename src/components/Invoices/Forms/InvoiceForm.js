@@ -11,7 +11,7 @@ import { getCustomersArray } from "../../../store/customers/selectors";
 import { bindActionCreators } from "redux";
 import { getCustomers } from "../../../store/customers/actions";
 
-const InvoiceForm = () => {
+const InvoiceForm = ({getCustomers, ...props}) => {
 
   useEffect(() => {
     getCustomers();
@@ -21,7 +21,7 @@ const InvoiceForm = () => {
   return (
     <>
       <Formik
-        initialValues={{discount: 0, age: ''}}
+        initialValues={{discount: 0, customer_id: ''}}
         onSubmit={(values, {setSubmitting}) => {
           alert(JSON.stringify(values, null, 2));
           setSubmitting(false);
@@ -29,7 +29,9 @@ const InvoiceForm = () => {
         validationSchema={Yup.object().shape({
           discount: Yup.number()
             .min(0)
-            .max(50)
+            .max(50),
+          customer_id: Yup.object()
+            .required('Customer Name is required')
         })}
       >
 
@@ -49,15 +51,15 @@ const InvoiceForm = () => {
 
             <div>
               <FormControl>
-                <InputLabel shrink={true} htmlFor="age">
-                  age
+                <InputLabel shrink={true} htmlFor="customer_id">
+                  Select Customer Name
                 </InputLabel>
                 <Field
-                  label="Select Age"
-                  name="age"
+                  label="Select Customer Name"
+                  name="customer_id"
                   select
                   component={Select}
-                  inputProps={{name: 'age', id: 'age'}}
+                  inputProps={{name: 'customer_id', id: 'customer_id'}}
                 >
                   { customers.map(customer => (
                       <MenuItem key={customer._id} value={customer._id}>{customer.name}</MenuItem>
@@ -66,7 +68,7 @@ const InvoiceForm = () => {
                 </Field>
               </FormControl>
             </div>
-
+            <ErrorMessage name="customer_id" component="div" />
             <ColorButtonGreen type="submit" disabled={isSubmitting}>
               Submit
             </ColorButtonGreen>
