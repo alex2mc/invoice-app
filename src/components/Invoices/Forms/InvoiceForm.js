@@ -1,74 +1,87 @@
-import React, { useEffect } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { TextField, Select } from 'formik-material-ui';
+import React, {useEffect} from 'react';
+import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import ColorButtonGreen from "../../UI/Buttons/ColorButtonGreen";
-import MenuItem from "@material-ui/core/MenuItem";
-import * as Yup from 'yup';
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import {connect, useSelector} from "react-redux";
-import { getCustomersArray } from "../../../store/customers/selectors";
-import { bindActionCreators } from "redux";
-import { getCustomers } from "../../../store/customers/actions";
+import { TextField } from 'formik-material-ui';
+import {connect} from "react-redux";
+import {getCustomers} from "../../../store/customers/actions";
+import {bindActionCreators} from "redux";
+import Container from "@material-ui/core/Container";
+import CustomerSelector from "./utility/CustomerSelector";
+// import InvoiceItemForm from './InvoiceItemForm'
+
 
 const InvoiceForm = ({getCustomers, ...props}) => {
 
-  useEffect(() => {
-    getCustomers();
-  }, [getCustomers]);
 
-  const customers = useSelector(state => getCustomersArray(state))
+  const isRequired = (value) => {
+    console.log(value);
+    return !value ? "Required" : null;
+  }
+
+  const isMinValue0 = (value) => {
+      return value < 0 ? "should be bigger" : ""
+  }
+
+  const isDiscount = (value) => {
+    if (value < 0) {
+      return "should be at least 0"
+    } else if (value > 50) {
+      return "maximum 50"
+    }
+    return ""
+  }
+
   return (
-    <>
+    <Container>
       <Formik
-        initialValues={{discount: 0, customer_id: ''}}
+        initialValues={{discount: 0, customer_id: '', products: [{product_name: '', quantity: 1}] }}
         onSubmit={(values, {setSubmitting}) => {
           alert(JSON.stringify(values, null, 2));
           setSubmitting(false);
         }}
-        validationSchema={Yup.object().shape({
-          discount: Yup.number()
-            .min(0)
-            .max(50),
-          customer_id: Yup.object()
-            .required('Customer Name is required')
-        })}
       >
 
-        {({isSubmitting}) => (
+        {({isSubmitting, values}) => (
+
           <Form>
+
             <Field
               type="number"
               name="discount"
               label="discount"
-              validate={(v) => v > 50}
+              validate={isDiscount}
               component={TextField}
-              inputProps={{
-                min: 0,
-              }}
             />
+
             <ErrorMessage name="discount" component="div" />
 
-            <div>
-              <FormControl>
-                <InputLabel shrink={true} htmlFor="customer_id">
-                  Select Customer Name
-                </InputLabel>
-                <Field
-                  label="Select Customer Name"
-                  name="customer_id"
-                  select
-                  component={Select}
-                  inputProps={{name: 'customer_id', id: 'customer_id'}}
-                >
-                  { customers.map(customer => (
-                      <MenuItem key={customer._id} value={customer._id}>{customer.name}</MenuItem>
-                    )
-                  )}
-                </Field>
-              </FormControl>
-            </div>
+
+
+            <br/>
+
+              <Field
+                name="customer_id"
+                validate={isRequired}
+                component={CustomerSelector}
+              />
+
+
             <ErrorMessage name="customer_id" component="div" />
+            <br/>
+
+            <FieldArray name="products"
+                        render={arrayHelpers => (
+                          <div>
+                            {values.products.map((friend, index) => (
+                              <div key={index}>
+                                <Field name={`products[${index}].product_name`} />
+                                <Field name={`products.${index}.quantity`} />
+                              </div>
+                            ))}
+                          </div>
+                        )}
+            />
+
             <ColorButtonGreen type="submit" disabled={isSubmitting}>
               Submit
             </ColorButtonGreen>
@@ -76,9 +89,10 @@ const InvoiceForm = ({getCustomers, ...props}) => {
         )}
 
       </Formik>
-    </>
+    </Container>
   )
 };
+
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
