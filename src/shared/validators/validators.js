@@ -1,5 +1,5 @@
 export const isRequired = (value) => {
-  console.log(value);
+  // console.log(value);
   return !value ? "Required" : null;
 }
 

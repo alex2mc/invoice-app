@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { bindActionCreators } from "redux";
 import { connect, useSelector } from "react-redux";
-import { getCustomers } from "../../../../store/customers/actions";
-import { getCustomersArray } from "../../../../store/customers/selectors";
+import { getProducts } from "../../../../store/products/actions";
+import { getProductsArray } from "../../../../store/products/selectors";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
@@ -11,26 +11,26 @@ import { styles } from './styles';
 
 
 
-const CustomerSelector = ({getCustomers, field}) => {
+const ProductSelector = ({getProducts, field, ...props}) => {
   useEffect(() => {
-    getCustomers();
-  }, [getCustomers]);
+    getProducts();
+  }, [getProducts]);
 
-  const customers = useSelector(state => getCustomersArray(state))
-
+  const products = useSelector(state => getProductsArray(state))
 
   return (
     <FormControl style={styles.formControl}>
-      <InputLabel htmlFor={field.name}>Select Name</InputLabel>
+      <InputLabel htmlFor={field.name}>Select Product</InputLabel>
       <Select
         {...field}
         id={field.name}
         margin="dense"
         style={styles.selectEmpty}
+        {...props}
       >
         {
-          customers.map(customer => (
-            <MenuItem key={customer._id} value={customer._id}>{customer.name}</MenuItem>
+          products.map(product => (
+            <MenuItem key={product._id} price={product.price} value={product._id}>{product.name}</MenuItem>
           ))
         }
       </Select>
@@ -41,7 +41,7 @@ const CustomerSelector = ({getCustomers, field}) => {
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
-    getCustomers
+    getProducts
   }, dispatch);
 
-export default connect(null, mapDispatchToProps)(CustomerSelector);
+export default connect(null, mapDispatchToProps)(ProductSelector);
