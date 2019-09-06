@@ -3,15 +3,13 @@ import { bindActionCreators } from "redux";
 import { connect, useSelector } from "react-redux";
 import { getProducts } from "../../../../store/products/actions";
 import { getProductsArray } from "../../../../store/products/selectors";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import InputLabel from "@material-ui/core/InputLabel";
+import {MenuItem, FormControl, Select, InputLabel, FormHelperText} from "@material-ui/core";
 import { styles } from './styles';
 
 
 
-const ProductSelector = ({getProducts, field, ...props}) => {
+const ProductSelector = ({getProducts, field, form, ...props}) => {
+  console.log(form.errors.items);
   useEffect(() => {
     getProducts();
   }, [getProducts]);
@@ -19,7 +17,7 @@ const ProductSelector = ({getProducts, field, ...props}) => {
   const products = useSelector(state => getProductsArray(state))
 
   return (
-    <FormControl style={styles.formControl}>
+    <FormControl style={styles.formControl} >
       <InputLabel htmlFor={field.name}>Select Product</InputLabel>
       <Select
         {...field}
@@ -34,6 +32,7 @@ const ProductSelector = ({getProducts, field, ...props}) => {
           ))
         }
       </Select>
+      {/*<FormHelperText> {form.errors.items}</FormHelperText>*/}
     </FormControl>
   )
 }

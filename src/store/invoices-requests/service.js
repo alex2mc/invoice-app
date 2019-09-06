@@ -14,7 +14,7 @@ class InvoicesRequestsService {
 
   }
 
-  postInvoice(invoice) {
+  postInvoice({items, ...invoice}) {
     return ajax
         .post(
           url,

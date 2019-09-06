@@ -37,7 +37,7 @@ export const styles = ({
     overflowX: 'auto',
   },
   product: {
-    width: '60%'
+    width: '65%'
   },
   quantity: {
     width: '15%',
@@ -57,5 +57,19 @@ export const styles = ({
     marginBottom: theme.spacing(2),
     marginLeft: theme.spacing(2),
   },
+  remove: {
+    width: '3%',
+  },
+  buttonRemove: {
+    color: '#f44336',
+    border: 'none',
+    backgroundColor: 'transparent',
+    fontWeight: 'bold',
+    cursor: 'pointer'
+  },
+  errorMessage: {
+    color: '#f44336',
+    fontSize: '0.75rem'
+  }
 
 });

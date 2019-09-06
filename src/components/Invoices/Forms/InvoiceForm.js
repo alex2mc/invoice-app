@@ -1,61 +1,49 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
-import ColorButtonGreen from "../../UI/Buttons/ColorButtonGreen";
-import { TextField } from 'formik-material-ui';
-import {connect, useSelector} from "react-redux";
-import { postInvoice } from "../../../store/invoices/actions";
+import { connect, useSelector} from "react-redux";
 import { bindActionCreators } from "redux";
-import Container from "@material-ui/core/Container";
+import { postInvoice } from "../../../store/invoices/actions";
+import { getEntities as getProductsEntities } from "../../../store/products/selectors";
+import { getIsPostInvoiceLoading } from "../../../store/invoices-requests/selectors";
+
+import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
+import { Container, Paper, Typography, List, ListItem, ListItemText, Divider } from "@material-ui/core";
+import { TextField } from 'formik-material-ui';
+import ColorButtonGreen from "../../UI/Buttons/ColorButtonGreen";
+import { styles } from './styles';
+
 import CustomerSelector from "./utility/CustomerSelector";
-import { isDiscount, isRequired } from "../../../shared/validators/validators";
 import InvoiceItemForm from "./InvoiceItemForm";
 import Total from "./utility/Total";
-import Paper from "@material-ui/core/Paper";
-import { styles } from './styles';
-import Typography from "@material-ui/core/Typography";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Divider from "@material-ui/core/Divider";
-import {getEntities as getProductsEntities} from "../../../store/products/selectors";
+
+import { isDiscount, required } from "../../../shared/validators/validators";
+import {calculateInvoiceItemsTotal, makeItemsQuantityNumber} from './utility/utils'
+
+
 
 
 const InvoiceForm = ({postInvoice, ...props}) => {
-
   const productsEntities = useSelector(state => getProductsEntities(state))
+  const isInvoicesLoading = useSelector(state => getIsPostInvoiceLoading(state))
   return (
     <Container>
       <Paper style={styles.wrapper}>
         <Formik
-          initialValues={{discount: 0, customer_id: '', items: [{product_name: '', quantity: 1}] }}
-          onSubmit={(values, {setSubmitting}) => {
-            const totalReduceCb = (acc, it) =>
-              acc + ((( productsEntities[it.product_name] && productsEntities[it.product_name].price) || 0) * it.quantity)
-            const totalWithoutDiscount = values.items.reduce(totalReduceCb, 0)
+          initialValues={{discount: 0, customer_id: '', items: [{product_id: '', quantity: 1}] }}
+          onSubmit={({items, discount, customer_id}, {setSubmitting}) => {
 
-            const discount = values.discount;
+            const filteredItems = items.filter(item => item.product_id)
+            const reducedItems = makeItemsQuantityNumber(filteredItems)
 
-            const discountIntoMoney = (discount * totalWithoutDiscount) / 100
-            const total = totalWithoutDiscount - discountIntoMoney
-            const totalToFixed = total.toFixed(2)
-            console.log(totalToFixed);
+            const total = calculateInvoiceItemsTotal(reducedItems, discount, productsEntities)
 
-            const filteredItems = values.items.filter(item => item.product_name)
-
-            const reducedItems = filteredItems.reduce((acc, item) => {
-              return [...acc,
-                {
-                  quantity: +item.quantity,
-                  product_id: item.product_name
-                }
-              ]
-            }, [])
-
-            const payload = {customer_id: values.customer_id, discount, total: +totalToFixed, items: reducedItems}
-            console.log(payload);
+            const payload = {
+              items: reducedItems,
+              discount,
+              customer_id,
+              total,
+            }
 
             postInvoice(payload)
-
             props.history.push("/invoices")
 
             setSubmitting(false);
@@ -67,68 +55,72 @@ const InvoiceForm = ({postInvoice, ...props}) => {
             <Form>
               <Field
                 name="customer_id"
-                validate={isRequired}
+                validate={required}
                 component={CustomerSelector}
               />
-              <ErrorMessage name="customer_id" component="div" />
+              {/*<ErrorMessage name="customer_id">{msg => <div style={styles.errorMessage}>{msg}</div>}</ErrorMessage>*/}
 
               <div  style={styles.main}>
-              <Paper style={styles.items}>
+                <Paper style={styles.items}>
 
-                <List>
-                  <ListItem>
-                    <ListItemText style={styles.product}>Products</ListItemText>
-                    <ListItemText style={styles.quantity}>Q-ty</ListItemText>
-                    <ListItemText style={styles.price}>Price ($)</ListItemText>
-                  </ListItem>
-                  <Divider />
+                  <List>
+                    <ListItem>
+                      <ListItemText style={styles.product}>Products</ListItemText>
+                      <ListItemText style={styles.quantity}>Q-ty</ListItemText>
+                      <ListItemText style={styles.price}>Price ($)</ListItemText>
+                    </ListItem>
+                    <Divider />
 
-
-              <FieldArray name="items"
-                          render={arrayHelpers => (
-                            <InvoiceItemForm
-                              arrayHelpers={arrayHelpers}
-                              values={values}
-                              handleChange={handleChange}
-                              {...props}/>
-                          )}
-              />
-              <Divider />
-
-                  <ListItem>
-                    <ListItemText style={styles.totalHeader}>Total</ListItemText>
-                    <ListItemText style={styles.total}>
-                      <Field
-                        name="total"
-                        component={Total}
-                      />
-                    </ListItemText>
-                  </ListItem>
-                </List>
-
-              <div style={styles.buttonWrapper}>
-                <ColorButtonGreen
-                  type="submit"
-                  // disabled
-                  disabled={isSubmitting}
-                >
-                  Submit
-                </ColorButtonGreen>
-              </div>
-              </Paper>
-
-              <Paper style={styles.discount}>
-                <Typography variant="h6" align="center" gutterBottom>Discount (%)</Typography>
-                <Field
-                  type="number"
-                  name="discount"
-                  label="discount"
-                  validate={isDiscount}
-                  component={TextField}
-                  style={styles.numberFormControl}
+                <FieldArray name="items"
+                            render={arrayHelpers => (
+                              <InvoiceItemForm
+                                name={'items'}
+                                arrayHelpers={arrayHelpers}
+                                values={values}
+                                onProductChange={(index) => {console.log(index)}}
+                                handleChange={handleChange}
+                                {...props}/>
+                            )}
                 />
-                <ErrorMessage name="discount" component="div" />
-              </Paper>
+                <Divider />
+
+                    <ListItem>
+                      <ListItemText style={styles.totalHeader}>Total</ListItemText>
+                      <ListItemText style={styles.total}>
+                        <Field
+                          name="total"
+                          component={Total}
+                        />
+                      </ListItemText>
+                    </ListItem>
+                  </List>
+
+                <div style={styles.buttonWrapper}>
+                  <ColorButtonGreen
+                    type="submit"
+                    disabled={isInvoicesLoading}
+                    // disabled={isSubmitting}
+                  >
+                    Submit
+                  </ColorButtonGreen>
+                </div>
+                </Paper>
+
+                <Paper style={styles.discount}>
+                  <Typography variant="h6" align="center" gutterBottom>Discount (%)</Typography>
+                  <Field
+                    type="number"
+                    name="discount"
+                    label="discount"
+                    validate={isDiscount}
+                    component={TextField}
+                    style={styles.numberFormControl}
+                    inputProps={{
+                      min: 0,
+                      max: 50
+                    }}
+                  />
+                </Paper>
               </div>
             </Form>
           )}

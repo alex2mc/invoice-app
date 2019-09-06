@@ -17,6 +17,9 @@ export default function router() {
       <Route exact path='/customers' component={Customers} />
       <Route exact path='/invoices' component={Invoices} />
       <Route exact path='/newinvoice' component={InvoiceForm} />
+      {/*<Route exact path='/invoice/new' component={InvoiceForm} />*/}
+      {/*<Route exact path='/invoice/:id/view' component={InvoiceForm} />*/}
+      {/*<Route exact path='/invoice/:id/edit' component={InvoiceForm} />*/}
     </>
   );
 }

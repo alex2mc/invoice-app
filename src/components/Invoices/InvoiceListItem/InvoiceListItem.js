@@ -19,7 +19,7 @@ import { styles } from './styles';
 
 
 
-const Invoice  = ({inv_id, discount, total, customers, deleteInvoice, ...props}) => {
+const InvoiceListItem  = ({inv_id, discount, total, customers, deleteInvoice, ...props}) => {
   const [isOpen, setToggleOpen] = useState(false)
 
   const handleToggleOpen = () => {
@@ -98,4 +98,4 @@ const mapDispatchToProps = dispatch =>
     getInvoices
   }, dispatch);
 
-export default connect(null,mapDispatchToProps)(withRouter(Invoice))
+export default connect(null,mapDispatchToProps)(withRouter(InvoiceListItem))

@@ -3,15 +3,12 @@ import { bindActionCreators } from "redux";
 import { connect, useSelector } from "react-redux";
 import { getCustomers } from "../../../../store/customers/actions";
 import { getCustomersArray } from "../../../../store/customers/selectors";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import InputLabel from "@material-ui/core/InputLabel";
+import { MenuItem, FormControl, Select, InputLabel, FormHelperText } from "@material-ui/core";
 import { styles } from './styles';
 
 
 
-const CustomerSelector = ({getCustomers, field}) => {
+const CustomerSelector = ({getCustomers, field, form, ...props}) => {
   useEffect(() => {
     getCustomers();
   }, [getCustomers]);
@@ -20,13 +17,14 @@ const CustomerSelector = ({getCustomers, field}) => {
 
 
   return (
-    <FormControl style={styles.formControl}>
+    <FormControl style={styles.formControl} error={form.touched.customer_id && !!form.errors.customer_id}>
       <InputLabel htmlFor={field.name}>Select Name</InputLabel>
       <Select
         {...field}
         id={field.name}
         margin="dense"
         style={styles.selectEmpty}
+        {...props}
       >
         {
           customers.map(customer => (
@@ -34,6 +32,7 @@ const CustomerSelector = ({getCustomers, field}) => {
           ))
         }
       </Select>
+      <FormHelperText>{form.touched.customer_id && form.errors.customer_id}</FormHelperText>
     </FormControl>
   )
 }

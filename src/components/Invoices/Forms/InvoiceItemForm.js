@@ -1,38 +1,50 @@
 import React from 'react';
-import { Field } from "formik";
-import { TextField } from "formik-material-ui";
-import Divider from "@material-ui/core/Divider";
-import ProductSelector from "./utility/ProductSelector";
 import { useSelector } from "react-redux";
 import { getEntities as getProductsEntities } from "../../../store/products/selectors";
-import { styles } from "./styles";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItem from "@material-ui/core/ListItem";
 
-const InvoiceItemForm = ({values, arrayHelpers, handleChange, getProducts,  ...props}) => {
+import { ErrorMessage, Field } from "formik";
+import { TextField } from "formik-material-ui";
+import { ListItem, ListItemText }from "@material-ui/core";
+import { styles } from "./styles";
+
+import ProductSelector from "./utility/ProductSelector";
+import { requiredProduct, isQuantity } from "../../../shared/validators/validators";
+import {calculateInvoiceItemPrice} from "./utility/utils";
+
+
+
+
+const InvoiceItemForm = ({values: {items}, arrayHelpers, handleChange, getProducts, onProductChange,  ...props}) => {
   // console.log(values);
 
-  const HandleProductChange = (e, index) => {
+  const handleProductChange = (e, index) => {
     handleChange(e);
-    if(index === (values.items.length - 1)) {
-      arrayHelpers.push( {product_name: '', quantity: 1})
+    onProductChange(index);
+    if(index === (items.length - 1)) {
+      arrayHelpers.push( {product_id: '', quantity: 1})
     }
+  }
+
+  const handleRemovingInvoiceItem = (index) => {
+      arrayHelpers.remove(index)
   }
 
   const productsEntities = useSelector(state => getProductsEntities(state))
 
   return (
     <>
-      {values.items.map((item, index) => (
+      {items.map((item, index) => (
         <div key={index}>
 
           <ListItem>
             <ListItemText style={styles.product}>
               <Field
-                name={`items.${index}.product_name`}
+                name={`items.${index}.product_id`}
                 component={ProductSelector}
-                onChange={(e) => HandleProductChange(e, index)}
+                validate={(e) => requiredProduct(e, index)} //TODO: remove lambda functions
+                onChange={(e) => handleProductChange(e, index)}
               />
+              {/*<ErrorMessage name={`items.${index}.product_id`}>{msg => <div style={styles.errorMessage}>{msg}</div>}</ErrorMessage>*/}
             </ListItemText>
 
             <ListItemText style={styles.quantity}>
@@ -41,22 +53,39 @@ const InvoiceItemForm = ({values, arrayHelpers, handleChange, getProducts,  ...p
                 name={`items.${index}.quantity`}
                 label="q-ty"
                 component={TextField}
+                validate={isQuantity}
                 style={styles.numberFormControl}
+                inputProps={{
+                  min: 1,
+                  max: 100
+                }}
               />
             </ListItemText>
 
             <ListItemText style={styles.price}>
-              <Field
-                name={`items.${index}`}
-                render={({ field }) => (
-                  <span>
-                    {(productsEntities[field.value.product_name] && productsEntities[field.value.product_name].price * field.value.quantity) || 0}
-                  </span>
-                )}
-              />
+              {
+               productsEntities[items[index].product_id]
+                 ? (calculateInvoiceItemPrice(productsEntities, items[index])).toFixed(2)
+                 : 0
+              }
             </ListItemText>
 
-           <Divider />
+             <ListItemText style={styles.remove}>
+               {
+                 items[index].product_id
+                 ?
+                  <button
+                    type="button"
+                    style={styles.buttonRemove}
+                    onClick={() => handleRemovingInvoiceItem(index)}
+                  >
+                    x
+                  </button>
+                 : null
+               }
+            </ListItemText>
+
+
           </ListItem>
 
         </div>
