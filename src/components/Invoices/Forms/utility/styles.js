@@ -7,7 +7,7 @@ const theme = createMuiTheme({
 export const styles = ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
+    minWidth: 145,
   },
   selectEmpty: {
     marginTop: theme.spacing(2),

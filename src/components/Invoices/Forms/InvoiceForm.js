@@ -10,13 +10,20 @@ import CustomerSelector from "./utility/CustomerSelector";
 import {isDiscount, isRequired} from "../../../shared/validators/validators";
 import InvoiceItemForm from "./InvoiceItemForm";
 import Total from "./utility/Total";
-// import InvoiceItemForm from './InvoiceItemForm'
+import Paper from "@material-ui/core/Paper";
+import { styles } from './styles';
+import Typography from "@material-ui/core/Typography";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
 
 
 const InvoiceForm = ({getCustomers, ...props}) => {
 
   return (
     <Container>
+      <Paper style={styles.wrapper}>
       <Formik
         initialValues={{discount: 0, customer_id: '', items: [{product_name: '', quantity: 1}] }}
         onSubmit={(values, {setSubmitting}) => {
@@ -28,29 +35,24 @@ const InvoiceForm = ({getCustomers, ...props}) => {
         {({isSubmitting, values, handleChange}) => (
 
           <Form>
-
             <Field
-              type="number"
-              name="discount"
-              label="discount"
-              validate={isDiscount}
-              component={TextField}
+              name="customer_id"
+              validate={isRequired}
+              component={CustomerSelector}
             />
-            <ErrorMessage name="discount" component="div" />
-
-            <br/>
-
-              <Field
-                name="customer_id"
-                validate={isRequired}
-                component={CustomerSelector}
-              />
-
             <ErrorMessage name="customer_id" component="div" />
-            <br/>
-            <br/>
-            <br/>
-            <br/>
+
+            <div  style={styles.main}>
+            <Paper style={styles.items}>
+
+              <List>
+                <ListItem>
+                  <ListItemText style={styles.product}>Products</ListItemText>
+                  <ListItemText style={styles.quantity}>Q-ty</ListItemText>
+                  <ListItemText style={styles.price}>Price ($)</ListItemText>
+                </ListItem>
+                <Divider />
+
 
             <FieldArray name="items"
                         render={arrayHelpers => (
@@ -58,27 +60,46 @@ const InvoiceForm = ({getCustomers, ...props}) => {
                         )}
             />
 
-            {/*<InvoiceItemForm arrayHelpers={arrayHelpers} values={values} handleChange={handleChange} {...props}/>*/}
-            <br/>
-            <br/>
+            <Divider />
 
-            <Field
-              name="total"
-              component={Total}
-            />
+                <ListItem>
+                  <ListItemText style={styles.totalHeader}>Total</ListItemText>
+                  <ListItemText style={styles.total}>
+                    <Field
+                      name="total"
+                      component={Total}
+                    />
+                  </ListItemText>
+                </ListItem>
+              </List>
 
-            <br/>
-            <br/>
-            <br/>
-            <br/>
+            <div style={styles.buttonWrapper}>
+              <ColorButtonGreen
+                type="submit"
+                disabled={isSubmitting}>
+                Submit
+              </ColorButtonGreen>
+            </div>
+            </Paper>
 
-            <ColorButtonGreen type="submit" disabled={isSubmitting}>
-              Submit
-            </ColorButtonGreen>
+            <Paper style={styles.discount}>
+              <Typography variant="h6" align="center" gutterBottom style={styles.tableHeader}>Discount (%)</Typography>
+              <Field
+                type="number"
+                name="discount"
+                label="discount"
+                validate={isDiscount}
+                component={TextField}
+                style={styles.numberFormControl}
+              />
+              <ErrorMessage name="discount" component="div" />
+            </Paper>
+            </div>
           </Form>
         )}
 
       </Formik>
+      </Paper>
     </Container>
   )
 };
