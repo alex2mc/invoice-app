@@ -21,7 +21,7 @@ import { calculateInvoiceItemsTotal, makeItemsQuantityNumber } from './utility/u
 
 
 
-const InvoiceForm = ({postInvoice, ...props}) => {
+const InvoiceForm = ({postInvoice, initialValues, ...props}) => {
   const productsEntities = useSelector(state => getProductsEntities(state))
   const isInvoicesLoading = useSelector(state => getIsPostInvoiceLoading(state))
 
@@ -40,7 +40,7 @@ const InvoiceForm = ({postInvoice, ...props}) => {
     <Container>
       <Paper style={styles.wrapper}>
         <Formik
-          initialValues={{discount: 0, customer_id: '', items: [{product_id: '', quantity: 1}] }}
+          initialValues={initialValues}
           onSubmit={({items, discount, customer_id}, {setSubmitting}) => {
 
             const filteredItems = items.filter(item => item.product_id)

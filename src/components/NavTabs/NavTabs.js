@@ -9,8 +9,8 @@ import { Link, withRouter } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
 import { getInvoicesArray } from '../../store/invoices/selectors';
 import { styles } from './styles'
-import { bindActionCreators } from "redux";
-import { getInvoices } from "../../store/invoices/actions";
+import { bindActionCreators } from 'redux';
+import { getInvoices } from '../../store/invoices/actions';
 
 
 
@@ -44,9 +44,9 @@ const NavTabs = ({getInvoices, ...props}) => {
                 <Typography variant="h6" color="textPrimary"> Invoices ({invoicesAmount})</Typography>
               </Link>
               {
-                props.location.pathname !== "/newinvoice"
+                props.location.pathname !== "/invoice/new"
                   ?
-                  <Link to="/newinvoice">
+                  <Link to="/invoice/new">
                     <Typography variant="h6" color="textPrimary"> + New Invoice</Typography>
                   </Link>
                   : null
