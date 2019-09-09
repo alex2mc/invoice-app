@@ -2,10 +2,7 @@ import { ofType } from 'redux-observable';
 import { map, mergeMap } from 'rxjs/operators';
 import { from } from 'rxjs'
 
-import { transferActionEpicFactory } from '../utils/transfer-action';
 import { Actions as InvoicesRequestActions, ActionTypes as InvoicesRequestsActionTypes } from '../invoices-requests';
-import { Actions as CustomersRequestActions } from '../customers-requests/index';
-import { Actions as ProductsRequestActions } from '../products-requests/index';
 
 import {
   GET_INVOICES,
@@ -27,12 +24,13 @@ import {
   updateInvoiceSucceeded,
   updateInvoiceFail,
   DELETE_INVOICE_SUCCEEDED,
-  GET_INVOICE_SUCCEEDED,
   POST_INVOICE_SUCCEEDED,
   POST_INVOICE_ITEMS_SUCCEEDED,
   postInvoiceItemsSucceeded,
   postInvoiceItemsFail,
-  GET_INVOICE_ITEMS_SUCCEEDED, UPDATE_INVOICE_SUCCEEDED, updateInvoiceItemsSucceeded, updateInvoiceItemsFail,
+  UPDATE_INVOICE_SUCCEEDED,
+  updateInvoiceItemsSucceeded,
+  updateInvoiceItemsFail,
 } from "./actions";
 
 
@@ -205,24 +203,11 @@ export const getInvoiceRequestFail = (action$) =>
 );
 
 
-export const continueOnGetInvoiceSuccess = (action$) =>
-  action$.pipe(
-    ofType(GET_INVOICE_SUCCEEDED),
-    map(
-      (action) => {
-      const id = action.payload.customer_id;
-      return CustomersRequestActions.getCustomer.action(id)
-      },
-    ),
-  );
-
-
 export const updateInvoiceRequest = (action$) =>
   action$.pipe(
     ofType(UPDATE_INVOICE),
     map(
       (action) => {
-
         return InvoicesRequestActions.updateInvoice.action(action.payload, action.payload.items)
       },
     ),
@@ -247,6 +232,7 @@ export const updateInvoiceItemsRequest = (action$) =>
     ofType(UPDATE_INVOICE_SUCCEEDED),
     mergeMap(
       (action) => {
+
         const { payload, meta } = action.payload;
 
         const invoice_id = payload.response._id;
@@ -286,28 +272,30 @@ export const epics = [
   postInvoiceRequestSuccess,
   postInvoiceRequestFail,
 
-
   postInvoiceItemsRequest,
   postInvoiceItemsRequestSuccess,
   postInvoiceItemsRequestFail,
 
-
   deleteInvoiceRequest,
   deleteInvoiceRequestSuccess,
   deleteInvoiceRequestFail,
+
   continueOnDeleteInvoiceSuccess,
+
   getInvoiceItemsRequest,
   getInvoiceItemsRequestSuccess,
   getInvoiceItemsRequestFail,
+
   getInvoiceRequest,
   getInvoiceRequestSuccess,
   getInvoiceRequestFail,
-  continueOnGetInvoiceSuccess,
+
   continueOnPostInvoiceItemsSuccess,
 
   updateInvoiceRequest,
   updateInvoiceRequestSuccess,
   updateInvoiceRequestFail,
+
   updateInvoiceItemsRequest,
   updateInvoiceItemsRequestSuccess,
   updateInvoiceItemsRequestFail

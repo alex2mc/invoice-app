@@ -54,7 +54,7 @@ import {
   ActionTypes as updateInvoiceItemsActionTypes,
   epic as updateInvoiceItemsEpic,
   reducer as updateInvoiceItemsReducer,
-} from './nested-states/update-invoice';
+} from './nested-states/update-invoice-items';
 
 export const Actions = {
   getInvoices,

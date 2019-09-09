@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect, useSelector} from "react-redux";
 import { bindActionCreators } from "redux";
-import { postInvoice } from "../../../store/invoices/actions";
+import { postInvoice, updateInvoice } from "../../../store/invoices/actions";
 import { getEntities as getProductsEntities } from "../../../store/products/selectors";
 import { getIsPostInvoiceLoading } from "../../../store/invoices-requests/selectors";
 
@@ -21,10 +21,11 @@ import { calculateInvoiceItemsTotal, makeItemsQuantityNumber } from './utility/u
 
 
 
-const InvoiceForm = ({postInvoice, initialValues, action, buttonText, ...props}) => {
-  console.log('initialValues', initialValues);
+const InvoiceForm = ({initialValues, action, id, buttonText, updateInvoice, postInvoice, ...props}) => {
+  // console.log('initialValues', initialValues);
   const productsEntities = useSelector(state => getProductsEntities(state))
   const isInvoicesLoading = useSelector(state => getIsPostInvoiceLoading(state))
+
 
   const handleProductChange = (arrayHelpers, index) => {
     const items = arrayHelpers.form.values[arrayHelpers.name];
@@ -50,13 +51,17 @@ const InvoiceForm = ({postInvoice, initialValues, action, buttonText, ...props})
             const total = calculateInvoiceItemsTotal(reducedItems, discount, productsEntities)
 
             const payload = {
+              id,
               items: reducedItems,
               discount,
               customer_id,
               total,
             }
 
-            action(payload)
+            props.location.pathname === `/invoice/${id}/edit`
+              ? updateInvoice(payload)
+              : postInvoice(payload)
+
             props.history.push("/invoices")
 
             setSubmitting(false);
@@ -145,7 +150,8 @@ const InvoiceForm = ({postInvoice, initialValues, action, buttonText, ...props})
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
-    postInvoice
+    postInvoice,
+    updateInvoice
   }, dispatch);
 
 export default connect(null, mapDispatchToProps)(InvoiceForm);

@@ -6,9 +6,6 @@ import {
 } from './actions';
 
 const initialState = {
-  // invoices: [],
-  // invoiceItems: [],
-  // invoice: null,
   entities: {},
   ids: [],
   currentInvoiceId: null,
@@ -20,7 +17,6 @@ export default function invoicesReducer(state = initialState, action) {
 
     case GET_INVOICES_SUCCEEDED: {
       const invoices = action.payload
-
 
       const newEntities = invoices.reduce((acc, invoice) => {
         return {
@@ -49,12 +45,16 @@ export default function invoicesReducer(state = initialState, action) {
 
     case GET_INVOICE_SUCCEEDED:
     case UPDATE_INVOICE_SUCCEEDED: {
+     const invoice = action.payload
+
+      const newEntities = {
+        ...state.entities,
+        [invoice._id]: invoice,
+      };
+
       return {
         ...state,
-        invoice: {
-          ...state.invoice,
-          invoice: action.payload
-        }
+        entities: newEntities,
       };
     }
 

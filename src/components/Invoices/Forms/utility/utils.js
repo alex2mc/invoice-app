@@ -19,6 +19,7 @@ export const makeItemsQuantityNumber = (items) => {
   return items.reduce((acc, item) => {
     return [...acc,
       {
+        _id: item._id,
         quantity: +item.quantity,
         product_id: item.product_id
       }
