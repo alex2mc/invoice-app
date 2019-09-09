@@ -3,25 +3,31 @@ import { bindActionCreators } from "redux";
 import { connect, useSelector } from "react-redux";
 import { getProducts } from "../../../../store/products/actions";
 import { getProductsArray } from "../../../../store/products/selectors";
-import {MenuItem, FormControl, Select, InputLabel, FormHelperText} from "@material-ui/core";
+import { MenuItem, FormControl, Select, InputLabel, FormHelperText } from "@material-ui/core";
 import { styles } from './styles';
+import _ from 'lodash'
 
 
 
 const ProductSelector = ({getProducts, field, form, ...props}) => {
-  console.log(form.errors.items);
   useEffect(() => {
     getProducts();
   }, [getProducts]);
 
-  const products = useSelector(state => getProductsArray(state))
+  const fieldError = _.get(form.errors, field.name)
+  const fieldTouched = _.get(form.touched, field.name)
 
+  const products = useSelector(state => getProductsArray(state))
   return (
-    <FormControl style={styles.formControl} >
+    <FormControl
+      style={styles.formControl}
+      error={fieldTouched && !!fieldError}
+    >
       <InputLabel htmlFor={field.name}>Select Product</InputLabel>
       <Select
         {...field}
         id={field.name}
+        name={field.name}
         margin="dense"
         style={styles.selectEmpty}
         {...props}
@@ -32,7 +38,7 @@ const ProductSelector = ({getProducts, field, form, ...props}) => {
           ))
         }
       </Select>
-      {/*<FormHelperText> {form.errors.items}</FormHelperText>*/}
+      <FormHelperText>{fieldTouched && fieldError}</FormHelperText>
     </FormControl>
   )
 }

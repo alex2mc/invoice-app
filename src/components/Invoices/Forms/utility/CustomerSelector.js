@@ -17,7 +17,10 @@ const CustomerSelector = ({getCustomers, field, form, ...props}) => {
 
 
   return (
-    <FormControl style={styles.formControl} error={form.touched.customer_id && !!form.errors.customer_id}>
+    <FormControl
+      style={styles.formControl}
+      error={form.touched.customer_id && !!form.errors.customer_id}
+    >
       <InputLabel htmlFor={field.name}>Select Name</InputLabel>
       <Select
         {...field}
