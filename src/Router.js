@@ -6,6 +6,7 @@ import Products from './components/Products/Products';
 import Customers from './components/Customers/Customers';
 import Invoices from './components/Invoices/Invoices';
 import CreateInvoice from './components/Invoices/CreateInvoice/CreateInvoice';
+import EditInvoice from "./components/Invoices/EditInvoice/EditInvoice";
 
 
 
@@ -18,7 +19,7 @@ export default function router() {
       <Route exact path='/invoices' component={Invoices} />
       <Route exact path='/invoice/new' component={CreateInvoice} />
       {/*<Route exact path='/invoice/:id/view' component={InvoiceForm} />*/}
-      {/*<Route exact path='/invoice/:id/edit' component={InvoiceForm} />*/}
+      <Route exact path='/invoice/:id/edit' component={EditInvoice} />
     </>
   );
 }

@@ -137,3 +137,18 @@ export const updateInvoiceFail = (error) => ({
   type: UPDATE_INVOICE_FAIL,
   payload: error
 });
+
+export const updateInvoiceItems = (payload) => ({
+  type: UPDATE_INVOICE,
+  payload: payload
+});
+
+export const updateInvoiceItemsSucceeded = (invoices) => ({
+  type: UPDATE_INVOICE_SUCCEEDED,
+  payload: invoices
+});
+
+export const updateInvoiceItemsFail = (error) => ({
+  type: UPDATE_INVOICE_FAIL,
+  payload: error
+});

@@ -18,7 +18,7 @@ const Total = ({ field, form: {values}, ...props}) => {
   const total = calculateInvoiceItemsTotal(filteredItems, discount, productsEntities)
 
   return (
-    <span>{total}</span>
+    <span>{isNaN(total) ? 0 : total}</span>
   )
 }
 

@@ -47,7 +47,7 @@ const InvoiceListItem  = ({inv_id, discount, total, customers, deleteInvoice, ..
         <StyledTableCell>{total.toFixed(2)}</StyledTableCell>
         <StyledTableCell style={styles.buttons}>
 
-          <Link to={`/viewinvoice/${inv_id}`}>
+          <Link to={`/invoice/${inv_id}/view`}>
             <Button variant="contained" color="secondary"> View </Button>
           </Link>
 
@@ -55,7 +55,7 @@ const InvoiceListItem  = ({inv_id, discount, total, customers, deleteInvoice, ..
             props.location.pathname === "/invoices"
               ?
               <>
-                <Link to={`/editinvoice/${inv_id}`}>
+                <Link to={`/invoice/${inv_id}/edit`}>
                   <ColorButtonYellow variant="contained" color="secondary"> Edit </ColorButtonYellow>
                 </Link>
 

@@ -32,7 +32,7 @@ import {
   POST_INVOICE_ITEMS_SUCCEEDED,
   postInvoiceItemsSucceeded,
   postInvoiceItemsFail,
-  GET_INVOICE_ITEMS_SUCCEEDED,
+  GET_INVOICE_ITEMS_SUCCEEDED, UPDATE_INVOICE_SUCCEEDED, updateInvoiceItemsSucceeded, updateInvoiceItemsFail,
 } from "./actions";
 
 
@@ -217,43 +217,64 @@ export const continueOnGetInvoiceSuccess = (action$) =>
   );
 
 
-
-
-
-export const continueOnGetInvoiceItemsSuccess = (action$) =>
-  action$.pipe(
-    ofType(GET_INVOICE_ITEMS_SUCCEEDED),
-    map(
-      (response) => {       
-        // console.log(response.payload);
-      return ProductsRequestActions.getProduct.action()
-      },
-      ),
-  );
-
 export const updateInvoiceRequest = (action$) =>
   action$.pipe(
     ofType(UPDATE_INVOICE),
     map(
-      (payload) => {
-        // console.log(payload.payload.invoice_id);
+      (action) => {
 
-        return InvoicesRequestActions.updateInvoice.action(payload.payload)
+        return InvoicesRequestActions.updateInvoice.action(action.payload, action.payload.items)
       },
     ),
   );
 
-export const updateInvoiceRequestSuccess = transferActionEpicFactory(
-  InvoicesRequestsActionTypes.updateInvoiceActionTypes.ACTION_SUCCEEDED,
-  updateInvoiceSucceeded,
-  UPDATE_INVOICE,
-);
+export const updateInvoiceRequestSuccess = (action$) =>
+  action$.pipe(
+    ofType(InvoicesRequestsActionTypes.updateInvoiceActionTypes.ACTION_SUCCEEDED),
+    map((action) => updateInvoiceSucceeded(action)),
+  );
 
-export const updateInvoiceRequestFail = transferActionEpicFactory(
-  InvoicesRequestsActionTypes.updateInvoiceActionTypes.ACTION_FAILED,
-  updateInvoiceFail,
-  UPDATE_INVOICE,
-);
+export const updateInvoiceRequestFail = (action$) =>
+  action$.pipe(
+    ofType(InvoicesRequestsActionTypes.updateInvoiceActionTypes.ACTION_FAILED),
+    map((action) => updateInvoiceFail(action)),
+  );
+
+
+
+export const updateInvoiceItemsRequest = (action$) =>
+  action$.pipe(
+    ofType(UPDATE_INVOICE_SUCCEEDED),
+    mergeMap(
+      (action) => {
+        const { payload, meta } = action.payload;
+
+        const invoice_id = payload.response._id;
+        const items = meta;
+
+        return from(items)
+          .pipe(
+            map(  item => {
+              return InvoicesRequestActions.updateInvoiceItems.action({...item, invoice_id})
+            })
+          );
+      }
+    )
+  );
+
+
+export const updateInvoiceItemsRequestSuccess = (action$) =>
+  action$.pipe(
+    ofType(InvoicesRequestsActionTypes.updateInvoiceItemsActionTypes.ACTION_SUCCEEDED),
+    map((action) => updateInvoiceItemsSucceeded(action.payload)),
+  );
+
+export const updateInvoiceItemsRequestFail = (action$) =>
+  action$.pipe(
+    ofType(InvoicesRequestsActionTypes.updateInvoiceItemsActionTypes.ACTION_FAILED),
+    map((action) => updateInvoiceItemsFail(action.payload)),
+  );
+
 
 
 export const epics = [
@@ -284,8 +305,10 @@ export const epics = [
   continueOnGetInvoiceSuccess,
   continueOnPostInvoiceItemsSuccess,
 
-  // updateInvoiceRequest,
-  // updateInvoiceRequestSuccess,
-  // updateInvoiceRequestFail
-  // continueOnGetInvoiceItemsSuccess
+  updateInvoiceRequest,
+  updateInvoiceRequestSuccess,
+  updateInvoiceRequestFail,
+  updateInvoiceItemsRequest,
+  updateInvoiceItemsRequestSuccess,
+  updateInvoiceItemsRequestFail
 ];

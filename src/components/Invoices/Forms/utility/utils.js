@@ -1,6 +1,6 @@
 
 export const calculateInvoiceItemPrice = (products, item) => {
-  return products[item.product_id].price * item.quantity
+  return products[item.product_id] && products[item.product_id].price * item.quantity
 }
 
 export const calculateInvoiceItemsTotal = (items, discount, products) => {

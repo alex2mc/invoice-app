@@ -21,7 +21,8 @@ import { calculateInvoiceItemsTotal, makeItemsQuantityNumber } from './utility/u
 
 
 
-const InvoiceForm = ({postInvoice, initialValues, ...props}) => {
+const InvoiceForm = ({postInvoice, initialValues, action, buttonText, ...props}) => {
+  console.log('initialValues', initialValues);
   const productsEntities = useSelector(state => getProductsEntities(state))
   const isInvoicesLoading = useSelector(state => getIsPostInvoiceLoading(state))
 
@@ -55,7 +56,7 @@ const InvoiceForm = ({postInvoice, initialValues, ...props}) => {
               total,
             }
 
-            postInvoice(payload)
+            action(payload)
             props.history.push("/invoices")
 
             setSubmitting(false);
@@ -71,7 +72,7 @@ const InvoiceForm = ({postInvoice, initialValues, ...props}) => {
                 component={CustomerSelector}
               />
 
-              <div  style={styles.main}>
+              <div style={styles.main}>
                 <Paper style={styles.items}>
 
                   <List>
@@ -111,7 +112,7 @@ const InvoiceForm = ({postInvoice, initialValues, ...props}) => {
                     type="submit"
                     disabled={isInvoicesLoading}
                   >
-                    Submit
+                    {buttonText}
                   </ColorButtonGreen>
                 </div>
                 </Paper>
