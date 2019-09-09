@@ -22,7 +22,7 @@ import { calculateInvoiceItemsTotal, makeItemsQuantityNumber } from './utility/u
 
 
 const InvoiceForm = ({initialValues, action, id, buttonText, updateInvoice, postInvoice, ...props}) => {
-  // console.log('initialValues', initialValues);
+
   const productsEntities = useSelector(state => getProductsEntities(state))
   const isInvoicesLoading = useSelector(state => getIsPostInvoiceLoading(state))
 
@@ -43,6 +43,7 @@ const InvoiceForm = ({initialValues, action, id, buttonText, updateInvoice, post
       <Paper style={styles.wrapper}>
         <Formik
           initialValues={initialValues}
+          enableReinitialize={true}
           onSubmit={({items, discount, customer_id}, {setSubmitting}) => {
 
             const filteredItems = items.filter(item => item.product_id)

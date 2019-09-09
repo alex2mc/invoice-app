@@ -29,7 +29,6 @@ const EditInvoice = ({getInvoice, getInvoiceItems, ...props}) => {
   const invoices = useSelector(state => getInvoicesEntities(state))
   const invoiceItems = useSelector(state => getInvoiceItemsArray(state))
 
-  const items = [...invoiceItems, {product_id: '', quantity: 1}]
 
   const invoice = invoices[props.match.params.id]
 
@@ -38,12 +37,14 @@ const EditInvoice = ({getInvoice, getInvoiceItems, ...props}) => {
   const customer_id = invoice && invoice.customer_id
 
 
-  const initialValues = {discount, customer_id, items}
-
-
-  if(isInvoiceLoading || isInvoiceItemsLoading || !discount || !customer_id) {
+  if(isInvoiceLoading || isInvoiceItemsLoading || !discount || !customer_id || invoiceItems.length === 0) {
     return <Spinner />
   }
+
+  const items = [...invoiceItems, {product_id: '', quantity: 1}]
+
+  const initialValues = {discount, customer_id, items}
+
 
   return (
     <InvoiceForm
