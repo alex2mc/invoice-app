@@ -5,7 +5,7 @@ import { postInvoice } from "../../../store/invoices/actions";
 import { getEntities as getProductsEntities } from "../../../store/products/selectors";
 import { getIsPostInvoiceLoading } from "../../../store/invoices-requests/selectors";
 
-import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
+import { Formik, Form, Field, FieldArray } from 'formik';
 import { Container, Paper, Typography, List, ListItem, ListItemText, Divider } from "@material-ui/core";
 import { TextField } from 'formik-material-ui';
 import ColorButtonGreen from "../../UI/Buttons/ColorButtonGreen";
@@ -16,7 +16,7 @@ import InvoiceItemForm from "./InvoiceItemForm";
 import Total from "./utility/Total";
 
 import { isDiscount, required } from "../../../shared/validators/validators";
-import {calculateInvoiceItemsTotal, makeItemsQuantityNumber} from './utility/utils'
+import { calculateInvoiceItemsTotal, makeItemsQuantityNumber } from './utility/utils'
 
 
 
@@ -24,6 +24,18 @@ import {calculateInvoiceItemsTotal, makeItemsQuantityNumber} from './utility/uti
 const InvoiceForm = ({postInvoice, ...props}) => {
   const productsEntities = useSelector(state => getProductsEntities(state))
   const isInvoicesLoading = useSelector(state => getIsPostInvoiceLoading(state))
+
+  const handleProductChange = (arrayHelpers, index) => {
+    const items = arrayHelpers.form.values[arrayHelpers.name];
+    if (index >= (items.length -1)) {
+      arrayHelpers.push({quantity: 1, product_id: ''});
+    }
+  }
+
+  const handleRemovingInvoiceItem = (arrayHelpers, index) => {
+      arrayHelpers.remove(index)
+  }
+
   return (
     <Container>
       <Paper style={styles.wrapper}>
@@ -50,7 +62,7 @@ const InvoiceForm = ({postInvoice, ...props}) => {
           }}
         >
 
-          {({isSubmitting, values, handleChange}) => (
+          {({values, handleChange}) => (
 
             <Form>
               <Field
@@ -58,7 +70,6 @@ const InvoiceForm = ({postInvoice, ...props}) => {
                 validate={required}
                 component={CustomerSelector}
               />
-              {/*<ErrorMessage name="customer_id">{msg => <div style={styles.errorMessage}>{msg}</div>}</ErrorMessage>*/}
 
               <div  style={styles.main}>
                 <Paper style={styles.items}>
@@ -75,9 +86,9 @@ const InvoiceForm = ({postInvoice, ...props}) => {
                             render={arrayHelpers => (
                               <InvoiceItemForm
                                 name={'items'}
-                                arrayHelpers={arrayHelpers}
                                 values={values}
-                                onProductChange={(index) => {console.log(index)}}
+                                onProductChange={handleProductChange.bind(this, arrayHelpers)}
+                                onRemovingInvoiceItem={handleRemovingInvoiceItem.bind(this, arrayHelpers)}
                                 handleChange={handleChange}
                                 {...props}/>
                             )}
@@ -99,7 +110,6 @@ const InvoiceForm = ({postInvoice, ...props}) => {
                   <ColorButtonGreen
                     type="submit"
                     disabled={isInvoicesLoading}
-                    // disabled={isSubmitting}
                   >
                     Submit
                   </ColorButtonGreen>

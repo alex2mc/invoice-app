@@ -2,12 +2,6 @@ export const required = (value) => {
   return !value ? "Required" : null;
 }
 
-export const requiredProduct = (value, index) => {
-  if(!value && index === 0) {
-    return "Choose product(-s)"
-  }
-}
-
 export const isQuantity = (value) => {
   if(value <= 0) {
     return "Never happen"

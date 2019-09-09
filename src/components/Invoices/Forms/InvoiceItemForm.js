@@ -2,31 +2,27 @@ import React from 'react';
 import { useSelector } from "react-redux";
 import { getEntities as getProductsEntities } from "../../../store/products/selectors";
 
-import { ErrorMessage, Field } from "formik";
+import { Field } from "formik";
 import { TextField } from "formik-material-ui";
 import { ListItem, ListItemText }from "@material-ui/core";
 import { styles } from "./styles";
 
 import ProductSelector from "./utility/ProductSelector";
-import { requiredProduct, isQuantity } from "../../../shared/validators/validators";
-import {calculateInvoiceItemPrice} from "./utility/utils";
+import { isQuantity, required } from "../../../shared/validators/validators";
+import { calculateInvoiceItemPrice } from "./utility/utils";
 
 
 
 
-const InvoiceItemForm = ({values: {items}, arrayHelpers, handleChange, getProducts, onProductChange,  ...props}) => {
-  // console.log(values);
+const InvoiceItemForm = ({values: {items}, handleChange, onRemovingInvoiceItem, onProductChange,  ...props}) => {
 
   const handleProductChange = (e, index) => {
     handleChange(e);
-    onProductChange(index);
-    if(index === (items.length - 1)) {
-      arrayHelpers.push( {product_id: '', quantity: 1})
-    }
+    onProductChange(index)
   }
 
   const handleRemovingInvoiceItem = (index) => {
-      arrayHelpers.remove(index)
+    onRemovingInvoiceItem(index)
   }
 
   const productsEntities = useSelector(state => getProductsEntities(state))
@@ -41,10 +37,9 @@ const InvoiceItemForm = ({values: {items}, arrayHelpers, handleChange, getProduc
               <Field
                 name={`items.${index}.product_id`}
                 component={ProductSelector}
-                validate={(e) => requiredProduct(e, index)} //TODO: remove lambda functions
+                validate={items.length === 1 ? required : null}
                 onChange={(e) => handleProductChange(e, index)}
               />
-              {/*<ErrorMessage name={`items.${index}.product_id`}>{msg => <div style={styles.errorMessage}>{msg}</div>}</ErrorMessage>*/}
             </ListItemText>
 
             <ListItemText style={styles.quantity}>
