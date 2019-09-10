@@ -235,10 +235,12 @@ export const updateInvoiceItemsRequest = (action$) =>
 
         const { payload, meta } = action.payload;
 
-        const invoice_id = payload.response._id;
+        const invoice_id = payload.response && payload.response._id;
         const items = meta;
 
-        return from(items)
+        const itemsForUpdate = items.filter(item => item._id)
+
+        return from(itemsForUpdate)
           .pipe(
             map(  item => {
               return InvoicesRequestActions.updateInvoiceItems.action({...item, invoice_id})
